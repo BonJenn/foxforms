@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap');
+
+
+
+:root {
+    --orange: #FBA834;
+    --navy: #333A73;
+    --blue: #387ADF;
+    --retro: rgb(56, 122, 223);
+    --kids: rgb(80, 196, 237);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box; 
+    
+   }
+
+html, body {
+    margin: 0;
+    padding: 0;
+}
+
+.home {
+    background-image: radial-gradient(circle, #f6b947, #f88800);
+    margin-top: 0;
+    padding-top: 0;
+
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+}
+
+.slide-out {
+    animation: slideOut 0.5s forwards;
+}
+.slide-in {
+    animation: slideIn 0.5s forwards;
+}
+@keyframes slideOut {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+}
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}

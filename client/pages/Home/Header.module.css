@@ -1,0 +1,24 @@
+.headerStyle {
+    height: 150px;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    align-self: flex-start;
+    position: fixed;
+    top: 0;
+
+}
+
+.headerStyle h1 {
+    font-size: 80px;
+    color: black;
+    font-family: 'Protest Strike';
+    
+}
+
+.headerStyle h1 span {
+    color: var(--orange);
+}

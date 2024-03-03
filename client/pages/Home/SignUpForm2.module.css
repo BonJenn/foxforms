@@ -1,0 +1,42 @@
+.signUpForm2 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust based on your needs */
+    width: 100%; /* Adjust based on your needs */
+    max-width: auto; /* or whatever max width you prefer */
+    margin-top: 150px;; /* This can help center it in certain layouts */
+    /*border: solid red 10px;*/ 
+    border-radius: 10px;
+    
+}
+
+.signUpForm2 form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 100px;
+}
+
+.signUpForm2 h1 {
+    text-align: center;
+}
+
+
+.signUpForm2 input {
+    height: 80px;
+    width: 600px;
+    border-radius: 20px;
+    font-size: 40px;
+    padding: 30px;
+    font-weight: bold;
+    margin: 20px;
+}
+
+.signUpForm2 button {
+    margin: 50px;
+    padding: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}

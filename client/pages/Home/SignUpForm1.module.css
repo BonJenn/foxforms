@@ -1,0 +1,59 @@
+.signUpForm1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust based on your needs */
+    width: 100%; /* Adjust based on your needs */
+    max-width: auto; /* or whatever max width you prefer */
+    margin-top: 300px;
+    /*border: solid red 10px;*/ 
+    border-radius: 10px;
+    
+}
+
+.signUpForm1 form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 100px;
+}
+
+.signUpForm1 h1 {
+    text-align: center;
+}
+
+
+.signUpForm1 input {
+    height: 80px;
+    width: 830px;
+    border-radius: 20px;
+    font-size: 40px;
+    padding: 30px;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.signUpForm1 .customDomain {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.signUpForm1 .customDomain h1 {
+    margin: 0px 10px 10px;
+}
+
+.signUpForm1 .customDomain input {
+    width: 500px;
+}
+
+.signUpForm1 button {
+    margin: 50px;
+    padding: 20px;
+    font-size: 30px;
+    font-weight: bold;
+}
