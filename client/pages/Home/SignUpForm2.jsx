@@ -5,14 +5,25 @@ const SignUpForm2 = () => {
     const [formData, setFormData] = useState({
         email: '',
         password: '',
+        confirmPassword: '', // Add confirm password to the state
     });
+    const [passwordError, setPasswordError] = useState(''); // Add state to track password error
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (passwordError && (e.target.name === 'password' || e.target.name === 'confirmPassword')) {
+            setPasswordError(''); // Clear password error when user starts correcting
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Add a check to ensure password and confirmPassword match
+        if (formData.password !== formData.confirmPassword) {
+            console.error('Passwords do not match');
+            setPasswordError('Passwords do not match'); // Set password error
+            return; // Prevent form submission if passwords don't match
+        }
         try {
             const response = await fetch('http://localhost:5174/signup', { // Adjust the URL as needed
                 method: 'POST',
@@ -22,6 +33,7 @@ const SignUpForm2 = () => {
                 body: JSON.stringify({
                     email: formData.email,
                     password: formData.password,
+                   
                 }),
             });
             if (!response.ok) {
@@ -42,7 +54,11 @@ const SignUpForm2 = () => {
             
                 <input type="email" id="email" name="email" required onChange={handleChange} placeholder="Email" />
 
-                <input type="password" id="password" name="password" required onChange={handleChange} placeholder="password" />
+                <input type="password" id="password" name="password" required onChange={handleChange} placeholder="Password" />
+
+                <input type="password" id="confirmPassword" name="confirmPassword" required onChange={handleChange} placeholder="Confirm Password" /> {/* Add confirm password input */}
+
+                {passwordError && <div className={styles.passwordError}>{passwordError}</div>} {/* Display password error */}
 
                 <button type="submit">Sign Up</button>
             </form>

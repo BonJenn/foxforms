@@ -126,7 +126,7 @@ app.delete('/forms/:id', async (req, res) => {
 // User authentication endpoints
 app.post('/signup', async (req, res) => {
     const { email, password } = req.body;
-    const usersCollection = dbClient.db('FoxForms').collection('users');
+    const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const existingUser = await usersCollection.findOne({ email: email.toLowerCase() });
@@ -136,26 +136,25 @@ app.post('/signup', async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = {
-            _id: new ObjectId(),
             email: email.toLowerCase(),
             passwordHash: hashedPassword,
             createdAt: new Date(),
         };
 
-        await usersCollection.insertOne(newUser);
+        const result = await usersCollection.insertOne(newUser);
+        const token = jwt.sign({ userId: result.insertedId, email: newUser.email }, JWT_SECRET, { expiresIn: '24h' });
 
-        const token = jwt.sign({ userId: newUser._id, email: newUser.email }, JWT_SECRET, { expiresIn: '24h' });
-
-        res.status(201).json({ token, userId: newUser._id });
+        res.status(201).json({ token, userId: result.insertedId });
     } catch (error) {
         console.error("Error signing up user:", error);
         res.status(500).send("Error signing up user.");
     }
 });
 
+
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
-    const usersCollection = dbClient.db('FoxForms').collection('users');
+    const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const user = await usersCollection.findOne({ email: email.toLowerCase() });
@@ -181,7 +180,7 @@ app.post('/login', async (req, res) => {
 app.put('/user/:id', async (req, res) => {
     const { id } = req.params;
     const { email, password } = req.body;
-    const usersCollection = dbClient.db('FoxForms').collection('users');
+    const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;

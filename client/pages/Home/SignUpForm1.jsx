@@ -31,6 +31,7 @@ const SignUpForm1 = ({ setShowForm2 }) => { // Modified to accept setShowForm2 p
             const data = await response.json();
             console.log('Form data saved', data);
             // Optionally, navigate to the next form or show a success message
+            setShowForm2(true); // Add this line
         } catch (error) {
             console.error('Error submitting form', error);
         }
