@@ -203,6 +203,43 @@ app.put('/user/:id', async (req, res) => {
     }
 });
 
+// Time-Slots
+
+app.post('/time-slots', async (req, res) => {
+    const { eventID, startTime, endTime, maxParticipants, isBooked } = req.body;
+    const timeSlotsCollection = dbClient.db('FoxForms').collection('Time-Slots');
+
+    try {
+        const newTimeSlot = {
+            eventID: ObjectId(eventID), // Convert to ObjectId if necessary
+            startTime: new Date(startTime), // Ensure this is a Date object
+            endTime: new Date(endTime), // Ensure this is a Date object
+            maxParticipants,
+            isBooked
+        };
+
+        const result = await timeSlotsCollection.insertOne(newTimeSlot);
+        console.log("Insert result", result);
+        res.status(201).json(result.ops[0]);
+    } catch (error) {
+        console.error("Failed to create time slot:", error);
+        res.status(500).send("An error occurred while creating the time slot.");
+    }
+});
+
+app.get('/time-slots', async (req, res) => {
+    const timeSlotsCollection = dbClient.db('FoxForms').collection('Time-Slots');
+
+    try {
+        const timeSlots = await timeSlotsCollection.find({}).toArray();
+        res.json(timeSlots);
+    } catch (error) {
+        console.error("Failed to fetch time slots:", error);
+        res.status(500).send("An error occurred while fetching the time slots.");
+    }
+});
+
+
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
@@ -214,3 +251,12 @@ connectToDatabase().then(() => {
     app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 }).catch(console.error);
 
+
+// Test
+app.post('/test', (req, res) => {
+    res.status(200).json({ message: 'Test endpoint is working' });
+});
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+});
