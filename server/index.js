@@ -102,9 +102,9 @@ app.put('/forms/:id', async (req, res) => {
     try {
         const updateDocument = {
             $set: {
-                title,
-                customDomain,
-                infoType,
+                ...(title && { title }), // Only include title if it's provided
+                ...(customDomain && { customDomain }), // Only include customDomain if it's provided
+                ...(infoType && { infoType }), // Only include infoType if it's provided
                 updatedAt: new Date(),
             },
         };
