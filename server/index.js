@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain } = req.body;
+    const { title, customDomain, infoType } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -55,16 +55,26 @@ app.post('/forms', async (req, res) => {
           
             title, 
             customDomain,
+            infoType,
             createdAt: new Date(),
         };
 
-        await formsCollection.insertOne(newForm);
-        res.status(201).json(newForm);
+        // Capture the result of the insert operation
+        const result = await formsCollection.insertOne(newForm);
+        // Construct the response object including the _id
+        const createdForm = {
+            _id: result.insertedId, // This is the generated _id
+            ...newForm
+        };
+
+        res.status(201).json(createdForm); // Send the form including its _id
     } catch (error) {
         console.error("Failed to create form:", error);
         res.status(500).send("An error occurred while creating the form.");
     }
 });
+
+// Search for Forms
 
 app.get('/forms', async (req, res) => {
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
@@ -78,9 +88,15 @@ app.get('/forms', async (req, res) => {
     }
 });
 
+// Update Forms
+
 app.put('/forms/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, customDomain } = req.body;
+    console.log(`Received ID: ${id}`); // This should be a valid ObjectId string
+    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+        return res.status(400).send("Invalid ID format");
+    }
+    const { title, customDomain, infoType } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -88,11 +104,12 @@ app.put('/forms/:id', async (req, res) => {
             $set: {
                 title,
                 customDomain,
+                infoType,
                 updatedAt: new Date(),
             },
         };
 
-        const result = await formsCollection.updateOne({ _id: ObjectId(id) }, updateDocument);
+        const result = await formsCollection.updateOne({ _id: new ObjectId(id) }, updateDocument);
 
         if (result.matchedCount === 0) {
             return res.status(404).send("Form not found.");
@@ -105,12 +122,18 @@ app.put('/forms/:id', async (req, res) => {
     }
 });
 
+// Delete Forms
+
 app.delete('/forms/:id', async (req, res) => {
     const { id } = req.params;
+    console.log(`Attempting to delete form with ID: ${id}`); // Ensure ID is logged
+    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+        return res.status(400).send("Invalid ID format");
+    }
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        const result = await formsCollection.deleteOne({ _id: ObjectId(id) });
+        const result = await formsCollection.deleteOne({ _id: new ObjectId(id) });
 
         if (result.deletedCount === 0) {
             return res.status(404).send("Form not found.");
@@ -179,6 +202,10 @@ app.post('/login', async (req, res) => {
 
 app.put('/user/:id', async (req, res) => {
     const { id } = req.params;
+    console.log(`Attempting to update user with ID: ${id}`); // Ensure ID is logged
+    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
+        return res.status(400).send("Invalid ID format");
+    }
     const { email, password } = req.body;
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
@@ -191,7 +218,7 @@ app.put('/user/:id', async (req, res) => {
             },
         };
 
-        const result = await usersCollection.updateOne({ _id: ObjectId(id) }, updateDoc);
+        const result = await usersCollection.updateOne({ _id: new ObjectId(id) }, updateDoc);
         if (result.matchedCount === 0) {
             return res.status(404).send('User not found.');
         }
@@ -211,7 +238,7 @@ app.post('/time-slots', async (req, res) => {
 
     try {
         const newTimeSlot = {
-            eventID: ObjectId(eventID), // Convert to ObjectId if necessary
+            eventID: new ObjectId(eventID), // Convert to ObjectId if necessary
             startTime: new Date(startTime), // Ensure this is a Date object
             endTime: new Date(endTime), // Ensure this is a Date object
             maxParticipants,

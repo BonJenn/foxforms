@@ -1,4 +1,4 @@
-.signUpForm2 {
+.signUpForm3 {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -6,35 +6,18 @@
     height: 100%; /* Adjust based on your needs */
     width: 100%; /* Adjust based on your needs */
     max-width: auto; /* or whatever max width you prefer */
-    margin-top: 150px;; /* This can help center it in certain layouts */
+    margin-top: 300px;
     /*border: solid red 10px;*/ 
     border-radius: 10px;
     
 }
 
-.signUpForm2 form {
+.signUpForm3Buttons {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 100px;
+    flex-direction: row;
 }
 
-.signUpForm2 h1 {
-    text-align: center;
-}
-
-
-.signUpForm2 input {
-    height: 80px;
-    width: 600px;
-    border-radius: 20px;
-    font-size: 40px;
-    padding: 30px;
-    font-weight: bold;
-    margin: 20px;
-}
-
-.signUpForm2 button {
+.signUpForm3 button {
     margin: 50px;
     padding: 20px;
     font-size: 30px;
