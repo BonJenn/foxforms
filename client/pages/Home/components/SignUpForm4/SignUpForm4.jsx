@@ -14,8 +14,10 @@ const SignUpForm4 = ({ onBack, onNext }) => {
     return (
         <div className={styles.signUpForm4}>
             <h1>My form is for</h1>
-            <button type="button" onClick={() => handleSubmit('noDates')}>No particular dates</button>
-            <button type="button" onClick={() => handleSubmit('specificDates')}>One or more specific dates</button>
+            <div className={styles.signUpForm4Buttons}>
+                <button type="button" onClick={() => handleSubmit('noDates')}>No particular dates</button>
+                <button type="button" onClick={() => handleSubmit('specificDates')}>One or more specific dates</button>
+            </div>
             <button type="button" onClick={onBack}>Back</button>
         </div>
     );

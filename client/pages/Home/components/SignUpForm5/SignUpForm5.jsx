@@ -15,8 +15,10 @@ const SignUpForm5 = ({ onBack, onNext }) => {
         <div className={styles.signUpForm5}>
             <h1>Confirmation</h1>
             <p>Please confirm that all the information you've entered is correct.</p>
-            <button type="button" onClick={handleSubmit}>Confirm</button>
-            <button type="button" onClick={onBack}>Back</button>
+            <div className={styles.SignUpForm5Buttons}>
+                <button type="button" onClick={handleSubmit}>Confirm</button>
+                <button type="button" onClick={onBack}>Back</button>
+            </div>
             {confirmation && <p>Thank you for confirming. Your information has been submitted.</p>}
         </div>
     );
