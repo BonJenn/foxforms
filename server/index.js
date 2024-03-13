@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain, infoType, dynamicFields, additionalFields } = req.body;
+    const { title, customDomain, infoType, dynamicFields } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
