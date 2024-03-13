@@ -25,3 +25,20 @@
     font-size: 30px;
     font-weight: bold;
 }
+
+.signUpForm4Extended {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 30px;
+    padding: 30px;
+    border: solid red 10px;
+}
+
+.signUpForm4Extended input {
+    height: 50px;
+    width: 300px;
+    margin: 10px;
+}
+

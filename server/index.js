@@ -47,15 +47,15 @@ app.get('/', (req, res) => {
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain, infoType } = req.body;
+    const { title, customDomain, infoType, dynamicFields, additionalFields } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
         const newForm = {
-          
             title, 
             customDomain,
             infoType,
+            additionalFields,
             createdAt: new Date(),
         };
 
@@ -96,7 +96,7 @@ app.put('/forms/:id', async (req, res) => {
     if (!/^[0-9a-fA-F]{24}$/.test(id)) {
         return res.status(400).send("Invalid ID format");
     }
-    const { title, customDomain, infoType } = req.body;
+    const { title, customDomain, infoType, additionalFields } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -105,6 +105,7 @@ app.put('/forms/:id', async (req, res) => {
                 ...(title && { title }), // Only include title if it's provided
                 ...(customDomain && { customDomain }), // Only include customDomain if it's provided
                 ...(infoType && { infoType }), // Only include infoType if it's provided
+                ...(additionalFields && { additionalFields }), // Include dynamicFields if provided
                 updatedAt: new Date(),
             },
         };

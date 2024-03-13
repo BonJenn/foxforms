@@ -26,7 +26,7 @@ const FormWizard = () => {
             case 3:
                 return <SignUpForm3 onNext={nextStep} onBack={prevStep} formId={formId} />;
             case 4:
-                return <SignUpForm4 onNext={nextStep} onBack={prevStep} />;
+                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} />;
             case 5:
                 return <SignUpForm5 onNext={nextStep} onBack={prevStep} />;
             case 6:
