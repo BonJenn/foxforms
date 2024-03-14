@@ -9,8 +9,10 @@ import SignUpForm6 from './SignUpForm6/SignUpForm6';
 const FormWizard = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [formId, setFormId] = useState(null); // Add this line
-    const [additionalFields, setAdditionalFields] = useState([]); // Added for additionalFields state
-    const [infoType, setInfoType] = useState(''); // Manage infoType in FormWizard
+    const [additionalFields, setAdditionalFields] = useState([]);
+    const [infoType, setInfoType] = useState('');
+    const [email, setEmail] = useState(''); // Add this line
+    const [password, setPassword] = useState(''); // Add this line
 
     const nextStep = () => setCurrentStep(currentStep + 1);
     const prevStep = () => setCurrentStep(currentStep - 1);
@@ -19,7 +21,7 @@ const FormWizard = () => {
         setFormId(id);
     };
 
-    const updateAdditionalFields = (fields) => { // Added for updating additionalFields
+    const updateAdditionalFields = (fields) => {
         setAdditionalFields(fields);
     };
 
@@ -28,11 +30,11 @@ const FormWizard = () => {
             case 1:
                 return <SignUpForm1 onNext={nextStep} updateFormId={updateFormId} />;
             case 2:
-                return <SignUpForm2 onNext={nextStep} onBack={prevStep} />;
+                return <SignUpForm2 onNext={nextStep} onBack={prevStep} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />;
             case 3:
-                return <SignUpForm3 onNext={nextStep} onBack={prevStep} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
+                return <SignUpForm3 onNext={nextStep} onBack={() => setCurrentStep(1)} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
             case 4:
-                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} updateAdditionalFields={updateAdditionalFields} additionalFields={additionalFields} />;
+                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} />;
             case 5:
                 return <SignUpForm5 onNext={nextStep} onBack={prevStep} />;
             case 6:

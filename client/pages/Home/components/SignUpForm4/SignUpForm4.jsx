@@ -29,16 +29,6 @@ const SignUpForm4 = ({ onBack, onNext, formId, updateAdditionalFields }) => {
         }
     };
 
-    const addField = () => {
-        if (newField) {
-            setAdditionalFields([...additionalFields, newField]);
-            setNewField('');
-        }
-    };
-
-    const removeField = (index) => {
-        setAdditionalFields(additionalFields.filter((_, i) => i !== index));
-    };
 
     const handleBack = () => {
         updateAdditionalFields(additionalFields); // Update the parent's state
@@ -58,22 +48,9 @@ const SignUpForm4 = ({ onBack, onNext, formId, updateAdditionalFields }) => {
                 <button type="button" onClick={handleBack}>Back</button>
                 <button onClick={handleSubmit}>Next</button>
             </div>
-        </div>
-
-        <div className={styles.signUpForm4Extended}>
-            <h1>What information do you want to capture?</h1>
-            <ul>
-                {additionalFields.map((field, index) => (
-                    <li key={index}>{field} <button onClick={() => removeField(index)}>x</button></li>
-                ))}
-            </ul>
-            <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} />
-            <button onClick={addField}>+</button>
-            <div className={styles.buttonContainer}>
-                <button type="button" onClick={handleBack}>Back</button>
-                <button onClick={handleSubmit}>Next</button>
-            </div>
+           
         </div>        
+          
         </>
       
     );
