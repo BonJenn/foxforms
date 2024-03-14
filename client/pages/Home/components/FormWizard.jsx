@@ -9,12 +9,18 @@ import SignUpForm6 from './SignUpForm6/SignUpForm6';
 const FormWizard = () => {
     const [currentStep, setCurrentStep] = useState(1);
     const [formId, setFormId] = useState(null); // Add this line
+    const [additionalFields, setAdditionalFields] = useState([]); // Added for additionalFields state
+    const [infoType, setInfoType] = useState(''); // Manage infoType in FormWizard
 
     const nextStep = () => setCurrentStep(currentStep + 1);
     const prevStep = () => setCurrentStep(currentStep - 1);
 
     const updateFormId = (id) => {
         setFormId(id);
+    };
+
+    const updateAdditionalFields = (fields) => { // Added for updating additionalFields
+        setAdditionalFields(fields);
     };
 
     const renderStep = () => {
@@ -24,9 +30,9 @@ const FormWizard = () => {
             case 2:
                 return <SignUpForm2 onNext={nextStep} onBack={prevStep} />;
             case 3:
-                return <SignUpForm3 onNext={nextStep} onBack={prevStep} formId={formId} />;
+                return <SignUpForm3 onNext={nextStep} onBack={prevStep} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
             case 4:
-                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} />;
+                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} updateAdditionalFields={updateAdditionalFields} additionalFields={additionalFields} />;
             case 5:
                 return <SignUpForm5 onNext={nextStep} onBack={prevStep} />;
             case 6:

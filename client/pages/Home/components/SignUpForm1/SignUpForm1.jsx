@@ -23,6 +23,7 @@ const SignUpForm1 = ({ updateFormId, onNext }) => { // Modified to accept onBack
                 body: JSON.stringify({
                     title: formData.formName,
                     customDomain: formData.customDomain,
+                    additionalFields: [], 
                 }),
             });
             if (!response.ok) {

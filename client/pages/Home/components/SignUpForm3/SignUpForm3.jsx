@@ -1,17 +1,46 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './SignUpForm3.module.css';
 
 {/* Form Capture Field Options */}
-const SignUpForm3 = ({ onBack, onNext, formId }) => {
-    const [infoType, setInfoType] = useState('');
-    const [additionalFields, setAdditionalFields] = useState([]);
+const SignUpForm3 = ({ onBack, onNext, formId, additionalFields: initialAdditionalFields, infoType, setInfoType, updateAdditionalFields }) => {
+    const [additionalFields, setAdditionalFields] = useState(initialAdditionalFields);
     const [newField, setNewField] = useState('');
+
+    useEffect(() => {
+      if (additionalFields.length > 0 && !infoType) {
+        setInfoType('extended');
+      }
+    }, [additionalFields, infoType, setInfoType]);
+
+    useEffect(() => {
+        return () => {
+            updateAdditionalFields(additionalFields);
+        };
+    }, [additionalFields, updateAdditionalFields]);
+
 
 
     {/* Determine the infoType of the form */}
     const handleSubmit = async (type) => {
         setInfoType(type);
+        // Add a fetch request here for 'basic' similar to 'extended'
         if (type === 'basic') {
+            try {
+                const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        infoType: type,
+                    }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to update form infoType');
+                }
+            } catch (error) {
+                console.error('Error updating form infoType:', error);
+            }
             onNext();
         } else if (type === 'extended') {
             console.log(`Updating form with ID: ${formId}`); // Added line to log formId
@@ -83,16 +112,20 @@ const SignUpForm3 = ({ onBack, onNext, formId }) => {
                         <h1>What information do you want to capture?</h1>
                         <ul>
                             {additionalFields.map((field, index) => (
-                                <li key={index}>{field} <button onClick={() => removeField(index)}>x</button></li>
+                                <li key={index}>{field} <div className="remove-field-container"><button onClick={() => removeField(index)}>x</button></div></li>
                             ))}
                         </ul>
-                        <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} />
-                        <button onClick={addField}>+</button>
-                        <button onClick={handleSubmitAdditionalFields}>Next</button>
+                        <div className={styles.fieldAddContainer}>
+                            <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} />
+                            <button onClick={addField}>+</button>
+                        </div>
+                        <div className={styles.buttonContainer}>
+                            <button type="button" onClick={onBack}>Back</button>
+                            <button onClick={handleSubmitAdditionalFields}>Next</button>
+                        </div>
                     </div>        
                 )}
 
-            <button type="button" onClick={onBack}>Back</button>
         </div>
     );
 };

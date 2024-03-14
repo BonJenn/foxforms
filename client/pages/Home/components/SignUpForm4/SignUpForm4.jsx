@@ -3,7 +3,7 @@ import styles from './SignUpForm4.module.css';
 
 
   {/* Form Dates */}
-const SignUpForm4 = ({ onBack, onNext, formId }) => {
+const SignUpForm4 = ({ onBack, onNext, formId, updateAdditionalFields }) => {
     const [formDateOption, setFormDateOption] = useState('');
     const [additionalFields, setAdditionalFields] = useState([]);
     const [newField, setNewField] = useState('');
@@ -40,6 +40,11 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
         setAdditionalFields(additionalFields.filter((_, i) => i !== index));
     };
 
+    const handleBack = () => {
+        updateAdditionalFields(additionalFields); // Update the parent's state
+        onBack(); // Navigate back
+    };
+
     return (
 
         <>
@@ -49,7 +54,10 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
                 <button type="button" onClick={() => handleSubmit('noDates')}>No particular dates</button>
                 <button type="button" onClick={() => handleSubmit('specificDates')}>One or more specific dates</button>
             </div>
-            <button type="button" onClick={onBack}>Back</button>
+            <div className={styles.buttonContainer}>
+                <button type="button" onClick={handleBack}>Back</button>
+                <button onClick={handleSubmit}>Next</button>
+            </div>
         </div>
 
         <div className={styles.signUpForm4Extended}>
@@ -61,7 +69,10 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
             </ul>
             <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} />
             <button onClick={addField}>+</button>
-            <button onClick={handleSubmit}>Next</button>
+            <div className={styles.buttonContainer}>
+                <button type="button" onClick={handleBack}>Back</button>
+                <button onClick={handleSubmit}>Next</button>
+            </div>
         </div>        
         </>
       
