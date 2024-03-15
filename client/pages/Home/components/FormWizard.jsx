@@ -54,7 +54,7 @@ const FormWizard = () => {
             case 3:
                 return <SignUpForm3 onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
             case 4:
-                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} />;
+                return <SignUpForm4 onNext={nextStep} onBack={prevStep} formId={formId} updateAdditionalFields={updateAdditionalFields} />;
             case 5:
                 return <SignUpForm5 onNext={nextStep} onBack={prevStep} />;
             case 6:
