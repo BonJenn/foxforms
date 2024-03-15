@@ -51,11 +51,13 @@ app.post('/forms', async (req, res) => {
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
+        
         // Check if customDomain already exists
         const domainExists = await formsCollection.findOne({ customDomain: customDomain });
         if (domainExists) {
             return res.status(409).send('Custom domain is already taken.');
         }
+        
 
         const newForm = {
             title, 
@@ -94,18 +96,16 @@ app.get('/forms', async (req, res) => {
 
 app.put('/forms/:id', async (req, res) => {
     const { id } = req.params;
-    console.log(`Received ID: ${id}`); // This should be a valid ObjectId string
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-        return res.status(400).send("Invalid ID format");
-    }
     const { title, customDomain, infoType, additionalFields } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        // Check if customDomain already exists in another form
-        const domainExists = await formsCollection.findOne({ customDomain: customDomain, _id: { $ne: new ObjectId(id) } });
-        if (domainExists) {
-            return res.status(409).send('Custom domain is already taken.');
+        // Only check for existing customDomain if it's being updated
+        if (customDomain) {
+            const domainExists = await formsCollection.findOne({ customDomain: customDomain, _id: { $ne: new ObjectId(id) } });
+            if (domainExists) {
+                return res.status(409).send('Custom domain is already taken.');
+            }
         }
 
         const updateDocument = {
