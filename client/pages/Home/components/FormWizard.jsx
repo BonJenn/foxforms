@@ -30,7 +30,7 @@ const FormWizard = () => {
     const renderStep = () => {
         switch (currentStep) {
             case 1:
-                return <SignUpForm1 onNext={nextStep} updateFormId={updateFormId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} />;
+                return <SignUpForm1 onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} />;
             case 2:
                 return <SignUpForm2 onNext={nextStep} onBack={prevStep} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />;
             case 3:

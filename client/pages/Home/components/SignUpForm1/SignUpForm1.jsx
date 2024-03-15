@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './SignUpForm1.module.css';
 
-const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain }) => { // Modified to accept onBack, onNext props
+const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId }) => { // Modified to accept onBack, onNext props
     // Removed the useState for formData
 
     const handleChange = (e) => {
@@ -11,17 +11,19 @@ const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const url = formId ? `http://localhost:5174/forms/${formId}` : 'http://localhost:5174/forms';
+        const method = formId ? 'PUT' : 'POST';
+
         try {
         
-            const response = await fetch('http://localhost:5174/forms', {
-                method: 'POST',
+            const response = await fetch(url, {
+                method: method,
                 headers: {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
                     title: formName,
                     customDomain: customDomain,
-                    additionalFields: [], 
                 }),
             });
             if (!response.ok) {
@@ -29,7 +31,7 @@ const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain
             }
             const data = await response.json();
             console.log('Form data saved', data);
-            updateFormId(data._id);
+            if (!formId) updateFormId(data._id); // Only update formId if it's a new form
             onNext(); // Modified to use onNext instead of setShowForm2(true)
         } catch (error) {
             console.error('Error submitting form', error);

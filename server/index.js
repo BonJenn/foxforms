@@ -70,7 +70,7 @@ app.post('/forms', async (req, res) => {
         res.status(201).json(createdForm); // Send the form including its _id
     } catch (error) {
         console.error("Failed to create form:", error);
-        res.status(500).send("An error occurred while creating the form.");
+        res.status(500).json({ error: "An error occurred while creating the form." });
     }
 });
 
@@ -84,7 +84,7 @@ app.get('/forms', async (req, res) => {
         res.json(allForms);
     } catch (error) {
         console.error("Failed to fetch forms:", error);
-        res.status(500).send("An error occurred while fetching the forms.");
+        res.status(500).json({ error: "An error occurred while fetching the forms." });
     }
 });
 
@@ -116,10 +116,10 @@ app.put('/forms/:id', async (req, res) => {
             return res.status(404).send("Form not found.");
         }
 
-        res.status(200).send("Form updated successfully.");
+        res.status(200).json({ message: 'Form updated successfully.' });
     } catch (error) {
         console.error("Failed to update form:", error);
-        res.status(500).send("An error occurred while updating the form.");
+        res.status(500).json({ error: "An error occurred while updating the form." });
     }
 });
 
@@ -140,10 +140,10 @@ app.delete('/forms/:id', async (req, res) => {
             return res.status(404).send("Form not found.");
         }
 
-        res.status(200).send("Form deleted successfully.");
+        res.status(200).json({ message: "Form deleted successfully." });
     } catch (error) {
         console.error("Failed to delete form:", error);
-        res.status(500).send("An error occurred while deleting the form.");
+        res.status(500).json({ error: "An error occurred while deleting the form." });
     }
 });
 
@@ -171,7 +171,7 @@ app.post('/signup', async (req, res) => {
         res.status(201).json({ token, userId: result.insertedId });
     } catch (error) {
         console.error("Error signing up user:", error);
-        res.status(500).send("Error signing up user.");
+        res.status(500).json({ error: "Error signing up user." });
     }
 });
 
@@ -197,7 +197,7 @@ app.post('/login', async (req, res) => {
         res.status(200).json({ token, userId: user._id });
     } catch (error) {
         console.error("Error logging in user:", error);
-        res.status(500).send("Error logging in user.");
+        res.status(500).json({ error: "Error logging in user." });
     }
 });
 
@@ -224,10 +224,10 @@ app.put('/user/:id', async (req, res) => {
             return res.status(404).send('User not found.');
         }
 
-        res.status(200).send('User updated successfully.');
+        res.status(200).json({ message: 'User updated successfully.' });
     } catch (error) {
         console.error("Error updating user:", error);
-        res.status(500).send("Error updating user.");
+        res.status(500).json({ error: "Error updating user." });
     }
 });
 
@@ -251,7 +251,7 @@ app.post('/time-slots', async (req, res) => {
         res.status(201).json(result.ops[0]);
     } catch (error) {
         console.error("Failed to create time slot:", error);
-        res.status(500).send("An error occurred while creating the time slot.");
+        res.status(500).json({ error: "An error occurred while creating the time slot." });
     }
 });
 
@@ -263,7 +263,7 @@ app.get('/time-slots', async (req, res) => {
         res.json(timeSlots);
     } catch (error) {
         console.error("Failed to fetch time slots:", error);
-        res.status(500).send("An error occurred while fetching the time slots.");
+        res.status(500).json({ error: "An error occurred while fetching the time slots." });
     }
 });
 
@@ -271,7 +271,7 @@ app.get('/time-slots', async (req, res) => {
 // Error handling middleware
 app.use((err, req, res, next) => {
     console.error(err.stack);
-    res.status(500).send('Something broke!');
+    res.status(500).json({ error: 'Something broke!' });
 });
 
 // Start the server
