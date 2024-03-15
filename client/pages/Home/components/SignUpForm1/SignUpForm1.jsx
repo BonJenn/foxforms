@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react';
 import styles from './SignUpForm1.module.css';
 
-const SignUpForm1 = ({ updateFormId, onNext }) => { // Modified to accept onBack, onNext props
-    const [formData, setFormData] = useState({
-        formName: '',
-        customDomain: '',
-    });
+const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain }) => { // Modified to accept onBack, onNext props
+    // Removed the useState for formData
 
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (e.target.name === 'formName') setFormName(e.target.value);
+        else if (e.target.name === 'customDomain') setCustomDomain(e.target.value);
     };
 
     const handleSubmit = async (e) => {
@@ -21,8 +19,8 @@ const SignUpForm1 = ({ updateFormId, onNext }) => { // Modified to accept onBack
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    title: formData.formName,
-                    customDomain: formData.customDomain,
+                    title: formName,
+                    customDomain: customDomain,
                     additionalFields: [], 
                 }),
             });
@@ -44,10 +42,10 @@ const SignUpForm1 = ({ updateFormId, onNext }) => { // Modified to accept onBack
             <div className={styles.signUpForm1}>
                 <h1>What is the name of your Sign Up Form?</h1>
                 <form onSubmit={(e) => handleSubmit(e)}>
-                    <input type="text" id="formName" name="formName" required onChange={handleChange} placeholder="Name of your Form" />
+                    <input type="text" id="formName" name="formName" required onChange={handleChange} value={formName} placeholder="Name of your Form" />
                     <div className={styles.customDomain}>
                         <h1>FoxForms.io/</h1>
-                        <input type="text" id="customDomain" name="customDomain" required onChange={handleChange} placeholder="Food-Truck-Fridays" />
+                        <input type="text" id="customDomain" name="customDomain" required onChange={handleChange} value={customDomain} placeholder="Food-Truck-Fridays" />
                     </div>
                     <button type="submit">Next</button>
                 </form>

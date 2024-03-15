@@ -8,11 +8,13 @@ import SignUpForm6 from './SignUpForm6/SignUpForm6';
 
 const FormWizard = () => {
     const [currentStep, setCurrentStep] = useState(1);
-    const [formId, setFormId] = useState(null); // Add this line
+    const [formId, setFormId] = useState(null); 
     const [additionalFields, setAdditionalFields] = useState([]);
     const [infoType, setInfoType] = useState('');
-    const [email, setEmail] = useState(''); // Add this line
-    const [password, setPassword] = useState(''); // Add this line
+    const [email, setEmail] = useState(''); 
+    const [password, setPassword] = useState(''); 
+    const [formName, setFormName] = useState(''); // Add this line
+    const [customDomain, setCustomDomain] = useState(''); // Add this line
 
     const nextStep = () => setCurrentStep(currentStep + 1);
     const prevStep = () => setCurrentStep(currentStep - 1);
@@ -28,7 +30,7 @@ const FormWizard = () => {
     const renderStep = () => {
         switch (currentStep) {
             case 1:
-                return <SignUpForm1 onNext={nextStep} updateFormId={updateFormId} />;
+                return <SignUpForm1 onNext={nextStep} updateFormId={updateFormId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} />;
             case 2:
                 return <SignUpForm2 onNext={nextStep} onBack={prevStep} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />;
             case 3:
