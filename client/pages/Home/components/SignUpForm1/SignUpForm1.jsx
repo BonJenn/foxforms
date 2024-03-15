@@ -3,6 +3,7 @@ import styles from './SignUpForm1.module.css';
 
 const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId }) => { // Modified to accept onBack, onNext props
     // Removed the useState for formData
+    const [errorMessage, setErrorMessage] = useState('');
 
     const handleChange = (e) => {
         if (e.target.name === 'formName') setFormName(e.target.value);
@@ -27,19 +28,25 @@ const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain
                 }),
             });
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                if (response.status === 409) {
+                    throw new Error('Custom domain is already taken. Please choose another one.');
+                } else {
+                    throw new Error('Network response was not ok');
+                }
             }
             const data = await response.json();
             console.log('Form data saved', data);
             if (!formId) updateFormId(data._id); // Only update formId if it's a new form
-            onNext(); // Modified to use onNext instead of setShowForm2(true)
+            onNext(); // Proceed to the next step
         } catch (error) {
             console.error('Error submitting form', error);
+            setErrorMessage(error.message); // Update the state with the error message
         }
     };
 
     return ( 
         <>
+            {errorMessage && <div className={styles.error}>{errorMessage}</div>}
             {/* Form Name and Custom Domain */}
             <div className={styles.signUpForm1}>
                 <h1>What is the name of your Sign Up Form?</h1>

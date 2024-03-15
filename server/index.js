@@ -51,6 +51,12 @@ app.post('/forms', async (req, res) => {
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
+        // Check if customDomain already exists
+        const domainExists = await formsCollection.findOne({ customDomain: customDomain });
+        if (domainExists) {
+            return res.status(409).send('Custom domain is already taken.');
+        }
+
         const newForm = {
             title, 
             customDomain,
@@ -59,22 +65,18 @@ app.post('/forms', async (req, res) => {
             createdAt: new Date(),
         };
 
-        // Capture the result of the insert operation
         const result = await formsCollection.insertOne(newForm);
-        // Construct the response object including the _id
         const createdForm = {
-            _id: result.insertedId, // This is the generated _id
+            _id: result.insertedId,
             ...newForm
         };
 
-        res.status(201).json(createdForm); // Send the form including its _id
+        res.status(201).json(createdForm);
     } catch (error) {
         console.error("Failed to create form:", error);
         res.status(500).json({ error: "An error occurred while creating the form." });
     }
 });
-
-// Search for Forms
 
 app.get('/forms', async (req, res) => {
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
@@ -100,12 +102,18 @@ app.put('/forms/:id', async (req, res) => {
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
+        // Check if customDomain already exists in another form
+        const domainExists = await formsCollection.findOne({ customDomain: customDomain, _id: { $ne: new ObjectId(id) } });
+        if (domainExists) {
+            return res.status(409).send('Custom domain is already taken.');
+        }
+
         const updateDocument = {
             $set: {
-                ...(title && { title }), // Only include title if it's provided
-                ...(customDomain && { customDomain }), // Only include customDomain if it's provided
-                ...(infoType && { infoType }), // Only include infoType if it's provided
-                ...(additionalFields && { additionalFields }), // Include dynamicFields if provided
+                ...(title && { title }),
+                ...(customDomain && { customDomain }),
+                ...(infoType && { infoType }),
+                ...(additionalFields && { additionalFields }),
                 updatedAt: new Date(),
             },
         };
