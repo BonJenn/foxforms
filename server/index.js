@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain, infoType, additionalFields } = req.body;
+    const { title, customDomain, infoType, additionalFields, dates } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -64,6 +64,7 @@ app.post('/forms', async (req, res) => {
             customDomain,
             infoType,
             additionalFields,
+            dates, // Add dates here
             createdAt: new Date(),
         };
 
@@ -96,7 +97,7 @@ app.get('/forms', async (req, res) => {
 
 app.put('/forms/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, customDomain, infoType, additionalFields } = req.body;
+    const { title, customDomain, infoType, additionalFields, dates } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -114,6 +115,7 @@ app.put('/forms/:id', async (req, res) => {
                 ...(customDomain && { customDomain }),
                 ...(infoType && { infoType }),
                 ...(additionalFields && { additionalFields }),
+                ...(dates && { dates }), // Add dates here
                 updatedAt: new Date(),
             },
         };
