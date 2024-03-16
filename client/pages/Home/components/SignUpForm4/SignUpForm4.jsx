@@ -6,7 +6,7 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
     const [additionalFields, setAdditionalFields] = useState([]);
     const [newField, setNewField] = useState('');
     const [showDateForm, setShowDateForm] = useState(false);
-    const [dates, setDates] = useState({ startDate: '', endDate: '' });
+    const [dates, setDates] = useState([]);
 
     const handleSubmit = async (dateOption = '') => {
         if (dateOption === 'noDates') {
@@ -14,6 +14,14 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
         } else if (dateOption === 'specificDates') {
             setShowDateForm(true); // Show the date form
         }
+    };
+
+    const addDate = () => {
+        setDates([...dates, '']); // Add an empty string as a placeholder for a new date
+    };
+
+    const removeDate = (index) => {
+        setDates(dates.filter((_, i) => i !== index));
     };
 
     const handleDateFormSubmit = async (event) => {
@@ -25,7 +33,7 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({
-                    dates: dates,
+                    dates: dates.filter(date => date !== ''), // Filter out any empty strings
                 }),
             });
             if (!response.ok) {
@@ -37,7 +45,6 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
         }
     };
 
-    // Define the handleBack function
     const handleBack = () => {
         onBack(); // Call the onBack function passed as a prop
     };
@@ -51,21 +58,24 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
                 <button type="button" onClick={() => handleSubmit('specificDates')}>One or more specific dates</button>
             </div>
             {showDateForm && (
-                <form onSubmit={handleDateFormSubmit}>
-                    <input 
-                        type="date" 
-                        value={dates.startDate} 
-                        onChange={(e) => setDates({ ...dates, startDate: e.target.value })} 
-                        placeholder="Start Date"
-                    />
-                    <input 
-                        type="date" 
-                        value={dates.endDate} 
-                        onChange={(e) => setDates({ ...dates, endDate: e.target.value })} 
-                        placeholder="End Date"
-                    />
-                    <button type="submit">Submit Dates</button>
-                </form>
+                <div>
+                    {dates.map((date, index) => (
+                        <div key={index}>
+                            <input 
+                                type="date" 
+                                value={date} 
+                                onChange={(e) => {
+                                    const newDates = [...dates];
+                                    newDates[index] = e.target.value;
+                                    setDates(newDates);
+                                }} 
+                            />
+                            <button type="button" onClick={() => removeDate(index)}>x</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={addDate}>+</button>
+                    <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
+                </div>
             )}
             <div className={styles.buttonContainer}>
                 <button type="button" onClick={handleBack}>Back</button>
