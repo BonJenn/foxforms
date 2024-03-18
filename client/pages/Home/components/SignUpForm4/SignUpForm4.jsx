@@ -57,30 +57,33 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
                 <button type="button" onClick={() => handleSubmit('noDates')}>No particular dates</button>
                 <button type="button" onClick={() => handleSubmit('specificDates')}>One or more specific dates</button>
             </div>
-            {showDateForm && (
-                <div>
-                    {dates.map((date, index) => (
-                        <div key={index}>
-                            <input 
-                                type="date" 
-                                value={date} 
-                                onChange={(e) => {
-                                    const newDates = [...dates];
-                                    newDates[index] = e.target.value;
-                                    setDates(newDates);
-                                }} 
-                            />
-                            <button type="button" onClick={() => removeDate(index)}>x</button>
-                        </div>
-                    ))}
-                    <button type="button" onClick={addDate}>+</button>
-                    <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
+            <div className={styles.signUpForm4Extended}>
+
                 </div>
-            )}
-            <div className={styles.buttonContainer}>
-                <button type="button" onClick={handleBack}>Back</button>
-                <button type="button" onClick={() => handleSubmit()}>Next</button>
-            </div>
+                {showDateForm && (
+                    <div className={styles.datePicker}>
+                        {dates.map((date, index) => (
+                            <div key={index}>
+                                <input 
+                                    type="date" 
+                                    value={date} 
+                                    onChange={(e) => {
+                                        const newDates = [...dates];
+                                        newDates[index] = e.target.value;
+                                        setDates(newDates);
+                                    }} 
+                                />
+                                <button type="button" onClick={() => removeDate(index)}>x</button>
+                            </div>
+                        ))}
+                        <button type="button" onClick={addDate}>+</button>
+                        <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
+                    </div>
+                )}
+                <div className={styles.buttonContainer}>
+                    <button type="button" onClick={handleBack}>Back</button>
+                    <button type="button" onClick={() => handleSubmit()}>Next</button>
+                </div>
           </div>
         </>
     );

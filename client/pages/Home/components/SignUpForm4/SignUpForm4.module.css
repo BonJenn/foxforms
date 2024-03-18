@@ -11,7 +11,7 @@
     margin-top: 300px;
     /*border: solid red 10px;*/ 
     border-radius: 10px;
-    
+    background-color: green;
 }
 
 .signUpForm4Buttons {
@@ -27,18 +27,32 @@
 }
 
 .signUpForm4Extended {
-    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     margin: 30px;
     padding: 30px;
-    border: solid red 10px;
 }
 
 .signUpForm4Extended input {
     height: 50px;
     width: 300px;
     margin: 10px;
+}
+
+.datePicker input {
+    font-family: 'Helvetica Neue';
+    font-weight: bold;
+    height: 50px;
+    width: 200px;
+    color: black;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.datePicker button {
+    justify-content: center;
+    height: 70px;
 }
 
