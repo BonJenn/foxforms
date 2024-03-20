@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import styles from './SignUpForm1.module.css';
+import styles from './BasicInfoForm.module.css';
 
-const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId }) => { // Modified to accept onBack, onNext props
+const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId }) => { // Modified to accept onBack, onNext props
     // Removed the useState for formData
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -63,5 +63,5 @@ const SignUpForm1 = ({ updateFormId, onNext, formName, setFormName, customDomain
     );
 }
 
-export default SignUpForm1;
+export default BasicInfoForm;
 

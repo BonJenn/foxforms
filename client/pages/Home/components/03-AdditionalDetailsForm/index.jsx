@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import styles from './SignUpForm3.module.css';
+import styles from './AdditionalDetailsForm.module.css';
 
 {/* Form Capture Field Options */}
-const SignUpForm3 = ({ onBack, onNext, formId, additionalFields: initialAdditionalFields, infoType, setInfoType, updateAdditionalFields }) => {
+const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initialAdditionalFields, infoType, setInfoType, updateAdditionalFields }) => {
     const [additionalFields, setAdditionalFields] = useState(initialAdditionalFields);
     const [newField, setNewField] = useState('');
 
@@ -130,4 +130,4 @@ const SignUpForm3 = ({ onBack, onNext, formId, additionalFields: initialAddition
     );
 };
 
-export default SignUpForm3;
+export default AdditionalDetailsForm;

@@ -1,33 +1,25 @@
-import React from 'react';
+import { useState } from 'react';
 import styles from './SignUpForm6.module.css';
 
-{/* Available Time Slots */}
-const SignUpForm6 = ({ onBack }) => {
+
+{/* Does Your Sheet Have Time Slots? */}
+const SignUpForm6 = ({ onBack, onNext }) => {
+    const [confirmation, setConfirmation] = useState(false);
+
+    const handleSubmit = () => {
+        setConfirmation(true);
+        onNext(); // Assuming onNext is a prop function to move to the next form or complete the process
+    };
+
     return (
-        <div className={styles.signUpForm6}>
-          <form>
-                    <h1>Available Time Slots</h1>
-                    <table className={styles.timeSlotsTable}>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Start Time</th>
-                                <th>End Time</th>
-                                <th>Availability</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {timeSlots.map((slot) => (
-                                <tr key={slot._id}>
-                                    <td>{slot.maxParticipants}</td>
-                                    <td>{slot.startTime}</td>
-                                    <td>{slot.endTime}</td>
-                                    <td>{slot.isBooked ? 'Booked' : 'Available'}</td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </form>
+        <div className={styles.signUpForm5}>
+            <h1>Confirmation</h1>
+            <p>Please confirm that all the information you've entered is correct.</p>
+            <div className={styles.SignUpForm5Buttons}>
+                <button type="button" onClick={handleSubmit}>Confirm</button>
+                <button type="button" onClick={onBack}>Back</button>
+            </div>
+            {confirmation && <p>Thank you for confirming. Your information has been submitted.</p>}
         </div>
     );
 };

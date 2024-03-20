@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; // Combine import statements
-import styles from './SignUpForm4.module.css';
+import styles from './DateSelectionForm.module.css';
 
-const SignUpForm4 = ({ onBack, onNext, formId }) => {
+const DateSelectionForm = ({ onBack, onNext, formId }) => {
     const [formDateOption, setFormDateOption] = useState('');
     const [additionalFields, setAdditionalFields] = useState([]);
     const [newField, setNewField] = useState('');
@@ -13,6 +13,7 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
             onNext(); // Navigate to SignUpForm5
         } else if (dateOption === 'specificDates') {
             setShowDateForm(true); // Show the date form
+            // Removed onNext(); to prevent immediate navigation
         }
     };
 
@@ -89,4 +90,4 @@ const SignUpForm4 = ({ onBack, onNext, formId }) => {
     );
 };
 
-export default SignUpForm4;
+export default DateSelectionForm;

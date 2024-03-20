@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import styles from './SignUpForm2.module.css';
+import styles from './AccountSetupForm.module.css';
 
 {/* User Sign Up */}
-const SignUpForm2 = ({ onBack, onNext, email, setEmail, password, setPassword }) => {
+const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPassword }) => {
     const [formData, setFormData] = useState({
         confirmPassword: '',
     });
@@ -42,4 +42,4 @@ const SignUpForm2 = ({ onBack, onNext, email, setEmail, password, setPassword })
     );
 };
 
-export default SignUpForm2;
+export default AccountSetupForm;
