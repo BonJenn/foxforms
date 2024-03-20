@@ -19,14 +19,18 @@ const FormWizard = () => {
     const [lastStep, setLastStep] = useState(null); // Add this line
     const [hasSignedUp, setHasSignedUp] = useState(false); // Add this line
     const [hasTimeSlots, setHasTimeSlots] = useState(false); // Add this line
+    console.log('hasTimeSlots:', hasTimeSlots); // Log the current value of hasTimeSlots
     const [timeSlots, setTimeSlots] = useState([
         { _id: '1', date: '2023-04-10', startTime: '10:00', endTime: '11:00', isBooked: false },
         { _id: '2', date: '2023-04-11', startTime: '11:00', endTime: '12:00', isBooked: true },
         // Add more sample time slots as needed
     ]); // Modified this line
+    const [selectedDates, setSelectedDates] = useState([]); // Add this line
 
     const nextStep = () => {
-        if (currentStep === 1 && lastStep) {
+        if (currentStep === 4 && hasTimeSlots) {
+            setCurrentStep(5); // Directly move to TimeSlotForm if coming from DateSelectionForm and hasTimeSlots is true
+        } else if (currentStep === 1 && lastStep) {
             setCurrentStep(lastStep);
             setLastStep(null); // Reset lastStep after navigating
         } else {
@@ -61,12 +65,13 @@ const FormWizard = () => {
             case 3:
                 return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
             case 4:
-                return <DateSelectionForm onNext={nextStep} onBack={prevStep} formId={formId} updateAdditionalFields={updateAdditionalFields} />;
+                return <DateSelectionForm onNext={nextStep} onBack={prevStep} formId={formId} updateSelectedDates={setSelectedDates} />;
             case 5:
-                return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} />;
+                return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
             case 6:
                 if (hasTimeSlots) {
-                    return <SignUpForm7 onNext={nextStep} onBack={prevStep} dates={timeSlots.map(slot => slot.date)} />;
+                    const uniqueDates = [...new Set(timeSlots.map(slot => slot.date))];
+                    return <TimeSlotForm onNext={nextStep} onBack={prevStep} dates={uniqueDates} />;
                 } else {
                     return <AddItemsForm onNext={nextStep} onBack={prevStep} />;
                 }
