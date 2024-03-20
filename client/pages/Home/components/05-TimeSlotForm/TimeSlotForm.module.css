@@ -1,6 +1,6 @@
 /* Sign Up Form 4 */
 
-.signUpForm5 {
+.TimeSlotForm {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -19,9 +19,14 @@
     flex-direction: row;
 }
 
-.signUpForm5 button {
+.TimeSlotForm button {
     margin: 50px;
     padding: 20px;
     font-size: 30px;
     font-weight: bold;
+}
+
+.TimeSlotForm .date {
+    font-size: 20px;
+    font-weight: bolc;
 }

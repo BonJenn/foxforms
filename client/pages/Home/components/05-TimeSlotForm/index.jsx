@@ -21,7 +21,6 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
             if (!response.ok) {
                 throw new Error('Failed to update time slots');
             }
-            setHasTimeSlots(true);
             setShowTimeSlotSection(true);
         } catch (error) {
             console.error(error);
@@ -44,7 +43,6 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
             if (!response.ok) {
                 throw new Error('Failed to update time slots');
             }
-            setHasTimeSlots(false);
             setShowTimeSlotSection(false); // Assuming you want to hide the section if "No" is clicked
         } catch (error) {
             console.error(error);
@@ -66,7 +64,7 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
           <form>
             <h1>Will your form use time slots?</h1>
             <button type="button" onClick={handleYesClick}>Yes</button>
-            {/* Removed incorrect syntax and added separate onClick and onNext handlers */}
+      
             <button type="button" onClick={(event) => { handleNoClick(event); onNext(); }}>No</button>
             {showTimeSlotSection && (
                 <div>

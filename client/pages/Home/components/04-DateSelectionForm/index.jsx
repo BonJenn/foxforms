@@ -1,7 +1,7 @@
 import React, { useState } from 'react'; // Combine import statements
 import styles from './DateSelectionForm.module.css';
 
-const DateSelectionForm = ({ onBack, onNext, formId }) => {
+const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates }) => {
     const [formDateOption, setFormDateOption] = useState('');
     const [additionalFields, setAdditionalFields] = useState([]);
     const [newField, setNewField] = useState('');
@@ -13,7 +13,7 @@ const DateSelectionForm = ({ onBack, onNext, formId }) => {
             onNext(); // Navigate to SignUpForm5
         } else if (dateOption === 'specificDates') {
             setShowDateForm(true); // Show the date form
-            // Removed onNext(); to prevent immediate navigation
+            // Removed onNext(); to prevent immediate navigationx
         }
     };
 
@@ -40,6 +40,7 @@ const DateSelectionForm = ({ onBack, onNext, formId }) => {
             if (!response.ok) {
                 throw new Error('Failed to update form with dates');
             }
+            updateSelectedDates(dates.filter(date => date !== '')); // Update selectedDates in FormWizard
             onNext(); // Optionally navigate to the next form or show a confirmation
         } catch (error) {
             console.error('Error updating form with dates:', error);
