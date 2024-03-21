@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from './TimeSlotForm.module.css';
 
 const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }) => {
     const [showTimeSlotSection, setShowTimeSlotSection] = useState(false);
     const [datesWithTimeSlots, setDatesWithTimeSlots] = useState(new Set());
+    const [showTimeSlotPicker, setShowTimeSlotPicker] = useState(false);
+    const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
+
+    useEffect(() => {
+        const initialTimeSlots = {};
+        selectedDates.forEach(date => {
+            if (!timeSlotsForDates[date]) {
+                initialTimeSlots[date] = [{ startTime: '', endTime: '' }];
+            }
+        });
+        setTimeSlotsForDates(prevState => ({ ...prevState, ...initialTimeSlots }));
+    }, [selectedDates, timeSlotsForDates]);
 
     const handleYesClick = async (event) => {
         event.preventDefault();
@@ -59,13 +71,75 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
         setDatesWithTimeSlots(newDates);
     };
 
+    const addTimeSlotForDate = (date) => {
+        const newTimeSlotsForDate = [...(timeSlotsForDates[date] || []), { startTime: '', endTime: '' }];
+        setTimeSlotsForDates(prevState => ({
+            ...prevState,
+            [date]: newTimeSlotsForDate,
+        }));
+    };
+
+    const handleStartTimeChange = (date, index, newStartTime) => {
+        const updatedTimeSlots = timeSlotsForDates[date].map((slot, slotIndex) => {
+            if (slotIndex === index) {
+                return { ...slot, startTime: newStartTime };
+            }
+            return slot;
+        });
+        setTimeSlotsForDates({ ...timeSlotsForDates, [date]: updatedTimeSlots });
+    };
+
+    const handleEndTimeChange = (date, index, newEndTime) => {
+        const updatedTimeSlots = timeSlotsForDates[date].map((slot, slotIndex) => {
+            if (slotIndex === index) {
+                return { ...slot, endTime: newEndTime };
+            }
+            return slot;
+        });
+        setTimeSlotsForDates({ ...timeSlotsForDates, [date]: updatedTimeSlots });
+    };
+
+    const saveTimeSlots = async () => {
+      const updatedForm = {
+        dates: Array.from(selectedDates).map(date => ({
+          date,
+          timeSlots: timeSlotsForDates[date] || [],
+        })),
+      };
+
+      try {
+        const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(updatedForm),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to save time slots');
+        }
+
+        console.log('Time slots saved successfully');
+        // Optionally, navigate to the next form or show a success message
+      } catch (error) {
+        console.error('Error saving time slots:', error);
+      }
+    };
+
+    const goToNextForm = () => {
+        saveTimeSlots().then(() => {
+            onNext(); // Assuming onNext will navigate to 06-AddItemsForm/index.jsx
+        });
+    };
+
     return (
         <div className={styles.signUpForm5}>
           <form>
             <h1>Will your form use time slots?</h1>
             <button type="button" onClick={handleYesClick}>Yes</button>
       
-            <button type="button" onClick={(event) => { handleNoClick(event); onNext(); }}>No</button>
+            <button type="button" onClick={(event) => { event.preventDefault(); handleNoClick(event); onNext(); }}>No</button>
             {showTimeSlotSection && (
                 <div>
                     <h2>Which Dates Have Time Slots</h2>
@@ -78,9 +152,27 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
                             </label>
                         </div>
                     ))}
-                    {/* Additional UI for adding time slots will go here */}
+                    <button type="button" onClick={(event) => { event.preventDefault(); setShowTimeSlotPicker(true); }}>Choose time slots for selected dates</button>
                 </div>
             )}
+            {showTimeSlotPicker && selectedDates.map((date, index) => {
+                if (datesWithTimeSlots.has(date)) {
+                    return (
+                        <div key={index}>
+                            <h3>Time slots for {date}</h3>
+                            {timeSlotsForDates[date] && timeSlotsForDates[date].map((slot, slotIndex) => (
+                                <div key={slotIndex}>
+                                    <input type="time" value={slot.startTime} onChange={(e) => handleStartTimeChange(date, slotIndex, e.target.value)} /> to 
+                                    <input type="time" value={slot.endTime} onChange={(e) => handleEndTimeChange(date, slotIndex, e.target.value)} />
+                                    <button type="button" onClick={(event) => { event.preventDefault(); addTimeSlotForDate(date); }}>Add Time Slot</button>
+                                </div>
+                            ))}
+                        </div>
+                    );
+                }
+                return null;
+            })}
+            {showTimeSlotPicker && <button type="button" onClick={goToNextForm}>Next</button>}
           </form>
         </div>
     );

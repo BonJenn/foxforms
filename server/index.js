@@ -98,7 +98,7 @@ app.get('/forms', async (req, res) => {
 
 app.put('/forms/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots } = req.body; // Add hasTimeSlots here
+    const { title, customDomain, infoType, additionalFields, dates } = req.body; // Assuming dates now includes time slots
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -116,8 +116,7 @@ app.put('/forms/:id', async (req, res) => {
                 ...(customDomain && { customDomain }),
                 ...(infoType && { infoType }),
                 ...(additionalFields && { additionalFields }),
-                ...(dates && { dates }), // Add dates here
-                ...(hasTimeSlots !== undefined && { hasTimeSlots }), // Add this line to update hasTimeSlots
+                dates, // Directly set the new dates array, which includes time slots
                 updatedAt: new Date(),
             },
         };
