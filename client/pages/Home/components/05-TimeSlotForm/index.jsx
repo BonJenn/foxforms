@@ -70,9 +70,12 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
                 <div>
                     <h2>Which Dates Have Time Slots</h2>
                     {selectedDates.map((date, index) => (
-                        <div key={index}>
+                        <div key={index} className={styles.dateSwitch}>
                             <span>{date}</span>
-                            <button type="button" onClick={() => toggleDate(date)}>Toggle</button>
+                            <label className={styles.switch}>
+                                <input type="checkbox" checked={datesWithTimeSlots.has(date)} onChange={() => toggleDate(date)} />
+                                <span className={styles.slider}></span>
+                            </label>
                         </div>
                     ))}
                     {/* Additional UI for adding time slots will go here */}
