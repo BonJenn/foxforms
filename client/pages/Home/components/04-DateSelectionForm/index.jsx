@@ -10,10 +10,9 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates }) => {
 
     const handleSubmit = async (dateOption = '') => {
         if (dateOption === 'noDates') {
-            onNext(); // Navigate to SignUpForm5
+            onNext(); // Assuming onNext will now navigate directly to AddItemsForm
         } else if (dateOption === 'specificDates') {
-            setShowDateForm(true); // Show the date form
-            // Removed onNext(); to prevent immediate navigationx
+            setShowDateForm(true);
         }
     };
 

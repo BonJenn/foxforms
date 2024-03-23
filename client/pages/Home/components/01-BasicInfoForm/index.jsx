@@ -46,15 +46,16 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
 
     return ( 
         <>
-            {errorMessage && <div className={styles.error}>{errorMessage}</div>}
-            {/* Form Name and Custom Domain */}
             <div className={styles.signUpForm1}>
                 <h1>What is the name of your Sign Up Form?</h1>
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <input type="text" id="formName" name="formName" required onChange={handleChange} value={formName} placeholder="Name of your Form" />
                     <div className={styles.customDomain}>
-                        <h1>FoxForms.io/</h1>
-                        <input type="text" id="customDomain" name="customDomain" required onChange={handleChange} value={customDomain} placeholder="Food-Truck-Fridays" />
+                        <div className={styles.domainRow}> {/* New wrapper div for horizontal layout */}
+                            <h1>FoxForms.io/</h1>
+                            <input type="text" id="customDomain" name="customDomain" required onChange={handleChange} value={customDomain} placeholder="Food-Truck-Fridays" />
+                        </div>
+                        {errorMessage && errorMessage.includes('Custom domain') && <div className={styles.error}>{errorMessage}</div>}
                     </div>
                     <button type="submit">Next</button>
                 </form>

@@ -25,17 +25,15 @@ const FormWizard = () => {
         // Add more sample time slots as needed
     ]); // Modified this line
     const [selectedDates, setSelectedDates] = useState([]); // Add this line
+    const [usingDates, setUsingDates] = useState(true); // Add this line to track if dates are being used
 
     const updateSelectedDates = (dates) => {
         setSelectedDates(dates);
     };
 
     const nextStep = () => {
-        if (currentStep === 4 && hasTimeSlots) {
-            setCurrentStep(5); // Directly move to TimeSlotForm if coming from DateSelectionForm and hasTimeSlots is true
-        } else if (currentStep === 1 && lastStep) {
-            setCurrentStep(lastStep);
-            setLastStep(null); // Reset lastStep after navigating
+        if (currentStep === 4 && !usingDates) {
+            setCurrentStep(7); // Directly move to AddItemsForm if coming from DateSelectionForm and dates are not being used
         } else {
             setCurrentStep(currentStep + 1);
         }
@@ -68,7 +66,7 @@ const FormWizard = () => {
             case 3:
                 return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
             case 4:
-                return <DateSelectionForm onNext={() => { console.log(selectedDates); nextStep(); }} onBack={prevStep} formId={formId} updateSelectedDates={updateSelectedDates} />;
+                return <DateSelectionForm onNext={() => { console.log(selectedDates); nextStep(); }} onBack={prevStep} formId={formId} updateSelectedDates={updateSelectedDates} setUsingDates={setUsingDates} />;
             case 5:
                 return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
             case 6:
