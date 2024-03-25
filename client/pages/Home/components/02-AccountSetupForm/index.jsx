@@ -20,10 +20,27 @@ const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPasswo
         if (password !== formData.confirmPassword) {
             setPasswordError('Passwords do not match');
             return;
-        } else {
-            setPasswordError('');
-            // Proceed to the next form or submit data
-            onNext(); // Assuming onNext is a prop function to move to the next form
+        }
+
+        try {
+            const response = await fetch('http://localhost:5174/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to sign up');
+            }
+
+            const data = await response.json();
+            console.log('User signed up successfully:', data);
+            onNext(); // Proceed to the next form or action
+        } catch (error) {
+            console.error('Signup error:', error);
+            setPasswordError('Failed to sign up. Please try again.');
         }
     };
 
