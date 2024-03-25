@@ -8,14 +8,16 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
 
     useEffect(() => {
-        const initialTimeSlots = {};
-        selectedDates.forEach(date => {
-            if (!timeSlotsForDates[date]) {
-                initialTimeSlots[date] = [{ startTime: '', endTime: '' }];
-            }
+        setTimeSlotsForDates(prevState => {
+            const initialTimeSlots = { ...prevState };
+            selectedDates.forEach(date => {
+                if (!prevState[date]) {
+                    initialTimeSlots[date] = [{ startTime: '', endTime: '' }];
+                }
+            });
+            return initialTimeSlots;
         });
-        setTimeSlotsForDates(prevState => ({ ...prevState, ...initialTimeSlots }));
-    }, [selectedDates, timeSlotsForDates]);
+    }, [selectedDates]);
 
     const handleYesClick = async (event) => {
         event.preventDefault();
