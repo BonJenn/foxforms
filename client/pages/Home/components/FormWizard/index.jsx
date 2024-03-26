@@ -25,15 +25,23 @@ const FormWizard = () => {
         // Add more sample time slots as needed
     ]); // Modified this line
     const [selectedDates, setSelectedDates] = useState([]); // Add this line
-    const [usingDates, setUsingDates] = useState(true); // Add this line to track if dates are being used
+    const [usingDates, setUsingDates] = useState(false); // Initialize to false
 
     const updateSelectedDates = (dates) => {
         setSelectedDates(dates);
     };
 
     const nextStep = () => {
-        if (currentStep === 4 && !usingDates) {
-            setCurrentStep(7); // Directly move to AddItemsForm if coming from DateSelectionForm and dates are not being used
+        console.log('Current Step:', currentStep, 'Using Dates:', usingDates);
+        if (currentStep === 4) { // Assuming DateSelectionForm is at step 4
+            console.log('Before setting next step, Using Dates:', usingDates); // Add this line for debugging
+            if (usingDates === false) {
+                console.log('Skipping to AddItemsForm');
+                setCurrentStep(6); // Directly set to AddItemsForm step, adjust if your step number is different
+            } else {
+                console.log('Proceeding to TimeSlotForm');
+                setCurrentStep(5); // Proceed to TimeSlotForm
+            }
         } else {
             setCurrentStep(currentStep + 1);
         }
@@ -54,6 +62,7 @@ const FormWizard = () => {
     };
 
     const renderStep = () => {
+        console.log('Rendering Step:', currentStep, 'Using Dates:', usingDates);
         switch (currentStep) {
             case 1:
                 return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} />;
@@ -66,16 +75,11 @@ const FormWizard = () => {
             case 3:
                 return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
             case 4:
-                return <DateSelectionForm onNext={() => { console.log(selectedDates); nextStep(); }} onBack={prevStep} formId={formId} updateSelectedDates={updateSelectedDates} setUsingDates={setUsingDates} />;
+                return <DateSelectionForm onNext={() => { console.log(selectedDates); nextStep(); }} onBack={prevStep} formId={formId} updateSelectedDates={updateSelectedDates} setUsingDates={setUsingDates} usingDates={usingDates} />;
             case 5:
                 return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
             case 6:
-                if (hasTimeSlots) {
-                    const uniqueDates = [...new Set(timeSlots.map(slot => slot.date))];
-                    return <TimeSlotForm onNext={nextStep} onBack={prevStep} dates={uniqueDates} />;
-                } else {
-                    return <AddItemsForm onNext={nextStep} onBack={prevStep} />;
-                }
+                return <AddItemsForm onNext={nextStep} onBack={prevStep} />;
             default: 
                 return <div>Form Completed</div>;
 

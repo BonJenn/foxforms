@@ -1,19 +1,44 @@
-import React, { useState } from 'react'; // Combine import statements
+import React, { useState } from 'react';
 import styles from './DateSelectionForm.module.css';
 
-const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates }) => {
+const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsingDates, usingDates }) => {
     const [formDateOption, setFormDateOption] = useState('');
     const [additionalFields, setAdditionalFields] = useState([]);
     const [newField, setNewField] = useState('');
     const [showDateForm, setShowDateForm] = useState(false);
     const [dates, setDates] = useState([]);
 
+    // Use setUsingDates directly from props here and in other places as needed
+    // No need to declare it with useState since it's already provided through props
+
+    const handleCheckboxChange = (event) => {
+        const { checked } = event.target;
+        setUsingDates(checked); // Correctly using setUsingDates from props
+        setShowDateForm(checked);
+    };
+
+    const handleNotUsingDatesChange = (event) => {
+        const { checked } = event.target;
+        setUsingDates(!checked);
+        setShowDateForm(false);
+    };
+
     const handleSubmit = async (dateOption = '') => {
         if (dateOption === 'noDates') {
-            onNext(); // Assuming onNext will now navigate directly to AddItemsForm
+            setUsingDates(false); // Indicate that dates are not being used
+            console.log('Using Dates:', false);
+            onNext(); // Navigate to the next form
         } else if (dateOption === 'specificDates') {
+            setUsingDates(true); // Indicate that specific dates are being used
+            console.log('Using Dates:', true);
             setShowDateForm(true);
+            onNext();
         }
+    };
+
+    const handleNoDatesSelected = () => {
+        setUsingDates(false); // Indicate that dates are not being used
+        onNext(); // Navigate to the next form, which should be configured to go to AddItemsForm if usingDates is false
     };
 
     const addDate = () => {
@@ -54,37 +79,46 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates }) => {
         <>
           <div className={styles.signUpForm4}>
             <h1>My form is for</h1>
-            <div className={styles.signUpForm4Buttons}>
-                <button type="button" onClick={() => handleSubmit('noDates')}>No particular dates</button>
-                <button type="button" onClick={() => handleSubmit('specificDates')}>One or more specific dates</button>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={showDateForm}
+                    onChange={handleCheckboxChange}
+                />
+                Using specific dates
+            </label>
+            <label>
+                <input
+                    type="checkbox"
+                    checked={!usingDates}
+                    onChange={handleNotUsingDatesChange}
+                />
+                Not using any dates
+            </label>
+            {showDateForm && (
+                <div className={styles.datePicker}>
+                    {dates.map((date, index) => (
+                        <div key={index}>
+                            <input 
+                                type="date" 
+                                value={date} 
+                                onChange={(e) => {
+                                    const newDates = [...dates];
+                                                                       newDates[index] = e.target.value;
+                                                                       setDates(newDates);
+                                }} 
+                            />
+                            <button type="button" onClick={() => removeDate(index)}>x</button>
+                        </div>
+                    ))}
+                    <button type="button" onClick={addDate}>+</button>
+                    <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
+                </div>
+            )}
+            <div className={styles.buttonContainer}>
+                <button type="button" onClick={handleBack}>Back</button>
+                <button type="button" onClick={onNext}>Next</button>
             </div>
-            <div className={styles.signUpForm4Extended}>
-
-                </div>
-                {showDateForm && (
-                    <div className={styles.datePicker}>
-                        {dates.map((date, index) => (
-                            <div key={index}>
-                                <input 
-                                    type="date" 
-                                    value={date} 
-                                    onChange={(e) => {
-                                        const newDates = [...dates];
-                                        newDates[index] = e.target.value;
-                                        setDates(newDates);
-                                    }} 
-                                />
-                                <button type="button" onClick={() => removeDate(index)}>x</button>
-                            </div>
-                        ))}
-                        <button type="button" onClick={addDate}>+</button>
-                        <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
-                    </div>
-                )}
-                <div className={styles.buttonContainer}>
-                    <button type="button" onClick={handleBack}>Back</button>
-                    <button type="button" onClick={() => handleSubmit()}>Next</button>
-                </div>
           </div>
         </>
     );
