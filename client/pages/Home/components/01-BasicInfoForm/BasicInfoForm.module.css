@@ -81,11 +81,12 @@
 @media (max-width: 768px) { /* iPad */
     .signUpForm1 input, .signUpForm1 .customDomain input {
         width: 90%; /* Adjust width to be responsive */
-        padding: 20px; /* Adjust padding for smaller screens */
-        font-size: 30px; /* Adjust font size for readability */
+        padding: 15px; /* Reduced padding for smaller screens */
+        font-size: 25px; /* Reduced font size for readability */
     }
 
     .signUpForm1 {
+        height: 100vh;
         margin-top: 150px; /* Adjust top margin for smaller screens */
     }
 
@@ -95,19 +96,20 @@
 
     .signUpForm1 button {
         margin: 20px; /* Reduce margin for buttons */
-        padding: 15px; /* Adjust padding */
-        font-size: 25px; /* Adjust font size */
+        padding: 10px; /* Reduced padding */
+        font-size: 20px; /* Reduced font size */
     }
 }
 
 @media (max-width: 480px) { /* iPhone */
     .signUpForm1 input, .signUpForm1 .customDomain input {
         width: 85%; /* Further adjust width for smaller screens */
-        padding: 15px; /* Adjust padding */
-        font-size: 25px; /* Adjust font size for readability */
+        padding: 10px; /* Further reduced padding */
+        font-size: 20px; /* Further reduced font size for readability */
     }
 
     .signUpForm1 {
+        height: 100vh;
         margin-top: 100px; /* Adjust top margin for smaller screens */
     }
 
@@ -117,7 +119,7 @@
 
     .signUpForm1 button {
         margin: 15px; /* Further reduce margin for buttons */
-        padding: 10px; /* Adjust padding */
-        font-size: 20px; /* Adjust font size */
+        padding: 8px; /* Further reduced padding */
+        font-size: 18px; /* Further reduced font size */
     }
 }

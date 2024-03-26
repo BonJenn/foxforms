@@ -22,3 +22,23 @@
 .headerStyle h1 span {
     color: var(--orange);
 }
+
+/* iPad Screen */
+@media screen and (max-width: 1024px) {
+    .headerStyle {
+        height: 120px; /* Smaller height */
+    }
+    .headerStyle h1 {
+        font-size: 60px; /* Smaller font size */
+    }
+}
+
+/* iPhone Screen */
+@media screen and (max-width: 768px) {
+    .headerStyle {
+        height: 100px; /* Even smaller height */
+    }
+    .headerStyle h1 {
+        font-size: 40px; /* Even smaller font size */
+    }
+}
