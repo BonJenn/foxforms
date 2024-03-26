@@ -1,23 +1,23 @@
 /* Sign Up Form 2 */
 
 .signUpForm2 {
+    height: 100vh;
+    width: 100%; /* Changed to 100% for full viewport width */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Adjust based on your needs */
-    width: 100%; /* Adjust based on your needs */
-    max-width: auto; /* or whatever max width you prefer */
-    margin-top: 300px;
-    /*border: solid red 10px;*/ 
+    max-width: auto;
+    margin-top: 0;
     border-radius: 10px;
-    
+    overflow: hidden;
 }
 
 .signUpForm2 form {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin: 100px;
 }
 
@@ -25,10 +25,9 @@
     text-align: center;
 }
 
-
 .signUpForm2 input {
     height: 80px;
-    width: 830px;
+    width: 80%; /* Adjusted for responsiveness */
     border-radius: 20px;
     font-size: 40px;
     padding: 30px;
@@ -42,4 +41,37 @@
     padding: 20px;
     font-size: 30px;
     font-weight: bold;
+    width: 200px;
+}
+/* Media queries for responsiveness */
+@media (max-width: 768px) { /* For iPads */
+    .signUpForm2 {
+        width: 100%;
+    }
+
+    .signUpForm2 input, .signUpForm2 button {
+        width: 90%; /* Adjust width for smaller devices */
+        font-size: 20px; /* Smaller font size */
+        padding: 15px; /* Adjust padding */
+    }
+
+    .signUpForm2 form {
+        margin: 50px; /* Reduce margin */
+    }
+}
+
+@media (max-width: 480px) { /* For iPhones */
+    .signUpForm2 {
+        width: 100%;
+    }
+
+    .signUpForm2 input, .signUpForm2 button {
+        width: 90%; /* Adjust width for smaller devices */
+        font-size: 18px; /* Even smaller font size */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .signUpForm2 form {
+        margin: 20px; /* Further reduce margin */
+    }
 }

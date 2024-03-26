@@ -136,7 +136,7 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
     };
 
     return (
-        <div className={styles.signUpForm5}>
+        <div className={styles.timeSlotForm}>
           <form>
             <h1>Will your form use time slots?</h1>
             <button type="button" onClick={handleYesClick}>Yes</button>

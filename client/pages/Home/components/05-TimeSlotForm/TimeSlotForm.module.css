@@ -1,17 +1,16 @@
 /* Sign Up Form 4 */
 
-.TimeSlotForm {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 100%; /* Adjust based on your needs */
-    width: 100%; /* Adjust based on your needs */
-    max-width: auto; /* or whatever max width you prefer */
-    margin-top: 300px;
-    /*border: solid red 10px;*/ 
-    border-radius: 10px;
-    
+.timeSlotForm {
+  height: 100vh;
+  width: 100vh; /* Consider changing this to width: 100%; if you want it to span the full width of the viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: auto;
+  margin-top: 0; /* Adjusted to remove additional top margin */
+  border-radius: 10px;
+  overflow: hidden; /* Prevents scrolling by hiding overflow */
 }
 
 .signUpForm5Buttons {
@@ -88,4 +87,48 @@ input:checked + .slider:before {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+/* Responsive adjustments for iPad */
+@media (max-width: 768px) {
+  .timeSlotForm {
+    width: 100%; /* Full width */
+    height: auto; /* Adjust height to be auto for better flexibility */
+    padding: 20px; /* Add some padding */
+  }
+
+  .TimeSlotForm button {
+    margin: 20px; /* Reduce margin */
+    padding: 15px; /* Adjust padding */
+    font-size: 25px; /* Adjust font size */
+  }
+
+  .TimeSlotForm .date {
+    font-size: 18px; /* Adjust font size */
+  }
+
+  .signUpForm5Buttons {
+    flex-direction: column; /* Stack buttons vertically */
+  }
+}
+
+/* Responsive adjustments for iPhone */
+@media (max-width: 480px) {
+  .timeSlotForm {
+    padding: 10px; /* Further reduce padding */
+  }
+
+  .TimeSlotForm button {
+    margin: 10px; /* Further reduce margin */
+    padding: 10px; /* Further reduce padding */
+    font-size: 20px; /* Further reduce font size */
+  }
+
+  .TimeSlotForm .date {
+    font-size: 16px; /* Further reduce font size */
+  }
+
+  .signUpForm5Buttons {
+    flex-direction: column; /* Ensure buttons are stacked vertically */
+  }
 }

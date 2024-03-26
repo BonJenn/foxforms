@@ -1,15 +1,14 @@
 .signUpForm3 {
+    height: 100vh;
+    width: 100vh; /* Consider changing this to width: 100%; if you want it to span the full width of the viewport */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Adjust based on your needs */
-    width: 100%; /* Adjust based on your needs */
-    max-width: auto; /* or whatever max width you prefer */
-    margin-top: 300px;
-    /*border: solid red 10px;*/ 
+    max-width: auto;
+    margin-top: 0; /* Adjusted to remove additional top margin */
     border-radius: 10px;
-    
+    overflow: hidden; /* Prevents scrolling by hiding overflow */
 }
 
 .signUpForm3Buttons {
@@ -79,4 +78,46 @@
 .buttonContainer {
     display: flex;
     justify-content: space-between;
+}
+/* Responsive adjustments for iPad (devices with width up to 768px) */
+@media (max-width: 768px) {
+    .signUpForm3 {
+        width: 100%; /* Full width on smaller devices */
+        height: 100vh; /* Adjust height to be auto for better flexibility */
+        padding: 20px; /* Add some padding for smaller screens */
+    }
+
+    .signUpForm3Extended input, .signUpForm3Extended li {
+        width: 100%; /* Make input and list items take full width */
+        font-size: 30px; /* Adjust font size for better readability */
+        height: 80px; /* Adjust height for a better fit */
+    }
+
+    .signUpForm3 button {
+        margin: 20px 0; /* Reduce margin for buttons */
+        padding: 15px; /* Adjust padding */
+        font-size: 25px; /* Adjust font size */
+    }
+
+    .signUpForm3Extended li {
+        flex-direction: column; /* Stack elements vertically in list items */
+        padding: 15px; /* Adjust padding */
+    }
+}
+
+/* Responsive adjustments for iPhone (devices with width up to 480px) */
+@media (max-width: 480px) {
+    .signUpForm3Extended input, .signUpForm3Extended li {
+        font-size: 20px; /* Further reduce font size for very small screens */
+        height: 60px; /* Adjust height for a better fit */
+    }
+
+    .signUpForm3 button {
+        font-size: 20px; /* Further reduce font size for buttons */
+        padding: 10px; /* Reduce padding */
+    }
+
+    .signUpForm3Extended li {
+        padding: 10px; /* Reduce padding for list items */
+    }
 }

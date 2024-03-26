@@ -1,0 +1,31 @@
+.formContainer {
+    height: 100vh;
+    width: 100%; /* Changed to 100% for full viewport width */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    max-width: auto;
+    margin-top: 0; /* Adjusted to remove additional top margin */
+    border-radius: 10px;
+    overflow: hidden; /* Prevents scrolling by hiding overflow */
+}
+/* iPad responsiveness */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .formContainer {
+        width: 80%; /* Adjust width for iPad */
+        margin: auto; /* Center the form on the page */
+        height: auto; /* Adjust height to fit content */
+        padding: 20px; /* Add some padding */
+    }
+}
+
+/* iPhone responsiveness */
+@media (max-width: 767px) {
+    .formContainer {
+        width: 90%; /* Adjust width for iPhone */
+        margin: auto; /* Center the form on the page */
+        height: auto; /* Adjust height to fit content */
+        padding: 10px; /* Add some padding */
+    }
+}

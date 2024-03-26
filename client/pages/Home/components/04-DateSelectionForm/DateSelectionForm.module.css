@@ -5,13 +5,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%; /* Adjust based on your needs */
-    width: 100%; /* Adjust based on your needs */
+    height: 100vh; /* Adjust based on your needs */
+    width: 100vh; /* Adjust based on your needs */
     max-width: auto; /* or whatever max width you prefer */
-    margin-top: 300px;
+    margin-top: 100px; /* Adjusted from 300px to 100px */
     /*border: solid red 10px;*/ 
     border-radius: 10px;
-    background-color: green;
+  
 }
 
 .signUpForm4Buttons {
@@ -56,3 +56,47 @@
     height: 70px;
 }
 
+/* Add responsive adjustments below */
+
+/* iPad responsiveness */
+@media screen and (max-width: 1024px) {
+    .signUpForm4 {
+        height: auto; /* Adjust height for smaller screens */
+        width: 90vw; /* Use viewport width for better responsiveness */
+        margin-top: 50px; /* Reduce margin */
+    }
+
+    .signUpForm4Extended input, .datePicker input {
+        width: 80%; /* Make input fields take up more of the form's width */
+    }
+
+    .signUpForm4 button {
+        margin: 20px; /* Reduce margin */
+        padding: 15px; /* Adjust padding */
+        font-size: 25px; /* Adjust font size */
+    }
+}
+
+/* iPhone responsiveness */
+@media screen and (max-width: 414px) {
+    .signUpForm4 {
+        flex-direction: column; /* Ensure vertical layout */
+        width: 95vw; /* Increase width to use more of the viewport */
+        margin-top: 20px; /* Further reduce margin */
+    }
+
+    .signUpForm4Buttons {
+        flex-direction: column; /* Stack buttons vertically */
+    }
+
+    .signUpForm4 button, .datePicker button {
+        margin: 10px auto; /* Center buttons with automatic horizontal margins */
+        padding: 10px; /* Adjust padding */
+        font-size: 20px; /* Adjust font size for smaller screens */
+    }
+
+    .signUpForm4Extended input, .datePicker input {
+        width: 90%; /* Make input fields wider to fill form */
+        margin: 5px; /* Reduce margin */
+    }
+}
