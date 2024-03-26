@@ -100,7 +100,7 @@
         font-size: 20px; /* Reduced font size */
     }
 
-    .domainRow {
+    .signUpForm1 .customDomain  .domainRow {
         display: flex;
         flex-direction: column;
     }
@@ -128,7 +128,7 @@
         font-size: 18px; /* Further reduced font size */
     }
 
-    .domainRow {
+    .signUpForm1 .customDomain .domainRow {
         display: flex;
         flex-direction: column;
     }
