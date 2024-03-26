@@ -99,6 +99,11 @@
         padding: 10px; /* Reduced padding */
         font-size: 20px; /* Reduced font size */
     }
+
+    .domainRow {
+        display: flex;
+        flex-direction: column;
+    }
 }
 
 @media (max-width: 480px) { /* iPhone */
@@ -121,5 +126,10 @@
         margin: 15px; /* Further reduce margin for buttons */
         padding: 8px; /* Further reduced padding */
         font-size: 18px; /* Further reduced font size */
+    }
+
+    .domainRow {
+        display: flex;
+        flex-direction: column;
     }
 }

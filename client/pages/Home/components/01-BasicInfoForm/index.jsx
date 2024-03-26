@@ -52,8 +52,8 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
                     <input type="text" id="formName" name="formName" required onChange={handleChange} value={formName} placeholder="Name of your Form" />
                     <div className={styles.customDomain}>
                         <div className={styles.domainRow}> {/* New wrapper div for horizontal layout */}
-                            <h1>FoxForms.io/</h1>
                             <input type="text" id="customDomain" name="customDomain" required onChange={handleChange} value={customDomain} placeholder="Food-Truck-Fridays" />
+                            <h1>.FoxForms.io</h1>
                         </div>
                         {errorMessage && errorMessage.includes('Custom domain') && <div className={styles.error}>{errorMessage}</div>}
                     </div>
