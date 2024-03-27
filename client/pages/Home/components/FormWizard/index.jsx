@@ -24,8 +24,9 @@ const FormWizard = () => {
         { _id: '2', date: '2023-04-11', startTime: '11:00', endTime: '12:00', isBooked: true },
         // Add more sample time slots as needed
     ]); // Modified this line
-    const [selectedDates, setSelectedDates] = useState([]); // Add this line
+    const [selectedDates, setSelectedDates] = useState({}); // Initialize to an object
     const [usingDates, setUsingDates] = useState(false); // Initialize to false
+    const [timeSlotsForDates, setTimeSlotsForDates] = useState({}); // Add this line to manage time slots for selected dates
 
     const updateSelectedDates = (dates) => {
         setSelectedDates(dates);
@@ -79,7 +80,7 @@ const FormWizard = () => {
             case 5:
                 return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
             case 6:
-                return <AddItemsForm onNext={nextStep} onBack={prevStep} />;
+                return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} />;
             default: 
                 return <div>Form Completed</div>;
 
