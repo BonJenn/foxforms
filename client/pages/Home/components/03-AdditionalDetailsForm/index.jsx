@@ -124,9 +124,17 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                             <button onClick={handleSubmitAdditionalFields}>Next</button>
                         </div>
                     </div>        
+
+                    
                 )}
 
+                <button type="button" onClick={onBack}>Back</button>
+                <button onClick={handleSubmitAdditionalFields}>Next</button>
+
+
         </div>
+
+
     );
 };
 

@@ -295,6 +295,30 @@ app.get('/time-slots', async (req, res) => {
     }
 });
 
+app.put('/forms/:formId/items', async (req, res) => {
+    const { formId } = req.params;
+    const { date, slotIndex, items } = req.body;
+    const formsCollection = dbClient.db('FoxForms').collection('Forms');
+
+    try {
+        // Logic to update the specific item for the date and slotIndex
+        // This is a simplified example. You'll need to adjust it based on your data structure
+        const updateResult = await formsCollection.updateOne(
+            { _id: new ObjectId(formId), "timeSlotsForDates.date": date },
+            { $set: { "timeSlotsForDates.$.slots.$[slot].items": items } },
+            { arrayFilters: [{ "slot.index": slotIndex }] }
+        );
+
+        if (updateResult.matchedCount === 0) {
+            return res.status(404).send('Form or slot not found.');
+        }
+
+        res.status(200).json({ message: 'Item saved successfully.' });
+    } catch (error) {
+        console.error("Error saving item:", error);
+        res.status(500).json({ error: "Error saving item." });
+    }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -306,13 +330,3 @@ app.use((err, req, res, next) => {
 connectToDatabase().then(() => {
     app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 }).catch(console.error);
-
-
-// Test
-app.post('/test', (req, res) => {
-    res.status(200).json({ message: 'Test endpoint is working' });
-});
-
-app.listen(PORT, '0.0.0.0', () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-});

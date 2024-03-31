@@ -60,3 +60,4 @@ const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPasswo
 };
 
 export default AccountSetupForm;
+

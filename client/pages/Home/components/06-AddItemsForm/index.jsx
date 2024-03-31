@@ -61,32 +61,72 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
 
     const updateItem = (date, slotIndex, itemIndex, field, value) => {
         const updatedItems = { ...items };
+        if (!updatedItems[date]) {
+            updatedItems[date] = {};
+        }
+        if (!updatedItems[date][slotIndex]) {
+            updatedItems[date][slotIndex] = [];
+        }
+        if (!updatedItems[date][slotIndex][itemIndex]) {
+            updatedItems[date][slotIndex][itemIndex] = { description: '', slots: 1 }; // Default structure
+        }
         updatedItems[date][slotIndex][itemIndex][field] = value;
         setItems(updatedItems);
+    };
+
+    const saveItemsToBackend = async () => {
+        try {
+            const response = await fetch(`http://localhost:5174/forms/${formId}/items`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(items),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to save items');
+            }
+            console.log('Items saved successfully');
+        } catch (error) {
+            console.error('Error saving items:', error);
+        }
     };
 
     return (
         <div className={styles.formContainer}>
             <h1>Add Items Here</h1>
-            <div>
-                <h2>Time Slots for Selected Dates</h2>
-                {Object.entries(timeSlotsForDates).length > 0 ? (
-                Object.entries(timeSlotsForDates).map(([date, slots]) => (
-                    <div key={date}>
-                    <h3>{date}</h3>
-                    <ul>
-                        {slots.map((slot, index) => (
-                        <li key={index}>
-                            Start Time: {slot.startTime || 'N/A'}, End Time: {slot.endTime || 'N/A'}
-                        </li>
-                        ))}
-                    </ul>
-                    </div>
-                ))
-                ) : (
-                <p>No time slots available.</p>
-                )}
-            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time Slot</th>
+                        <th>Items</th>
+                        <th># of Slots</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {Object.entries(timeSlotsForDates).map(([date, slots]) => (
+                        slots.map((slot, slotIndex) => (
+                            <tr key={`${date}-${slotIndex}`}>
+                                <td>{date}</td>
+                                <td>{`${formatTime(slot.startTime)} - ${formatTime(slot.endTime)}`}</td>
+                                <td>
+                                    <input type="text" />
+                                </td>
+                                <td>
+                                    <input type="number" />
+                                </td>
+                                <td>
+                                    <button onClick={() => saveItemsToBackend()}>Save</button>
+                                    <button onClick={() => removeItem(date, slotIndex, 0)}>Delete</button>
+                               
+                                </td>
+                            </tr>
+                        ))
+                    ))}
+                </tbody>
+            </table>
             <button onClick={onBack}>Back</button>
             <button onClick={onNext}>Next</button>
         </div>
