@@ -5,12 +5,13 @@
   width: 100vh; /* Consider changing this to width: 100%; if you want it to span the full width of the viewport */
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   max-width: auto;
   margin-top: 0; /* Adjusted to remove additional top margin */
   border-radius: 10px;
   overflow: hidden; /* Prevents scrolling by hiding overflow */
+  gap: 50px; /* Adjust this value as needed to increase vertical space */
 }
 
 .buttonContainer {
@@ -122,6 +123,7 @@ input:checked + .slider:before {
     width: 100%; /* Full width */
     height: auto; /* Adjust height to be auto for better flexibility */
     padding: 20px; /* Add some padding */
+    gap: 30px; /* Increase vertical space */
   }
 
   .TimeSlotForm button {
@@ -145,6 +147,7 @@ input:checked + .slider:before {
 @media (max-width: 480px) {
   .timeSlotForm {
     padding: 10px; /* Further reduce padding */
+    gap: 20px; /* Increase vertical space */
   }
 
   .TimeSlotForm button {
@@ -169,4 +172,21 @@ input:checked + .slider:before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
+}
+
+/* TimeSlotForm.module.css */
+
+.timeInput {
+  background-color: white; /* Light grey background */
+  border: 1px solid #ccc; /* Light grey border */
+  padding: 10px 15px; /* Increase padding for larger touch area */
+  border-radius: 8px; /* Rounded corners */
+  font-size: 16px; /* Larger font size for better readability */
+  color: #333; /* Dark grey color for text */
+  outline: none; /* Remove the default focus outline */
+  transition: border-color 0.3s; /* Smooth transition for border color */
+}
+
+.timeInput:focus {
+  border-color: #007bff; /* Change border color to blue when focused */
 }
