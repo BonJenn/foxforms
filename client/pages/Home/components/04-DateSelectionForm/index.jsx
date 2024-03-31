@@ -15,6 +15,9 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
         const { checked } = event.target;
         setUsingDates(checked); // Correctly using setUsingDates from props
         setShowDateForm(checked);
+        if (checked && dates.length === 0) {
+            addDate(); // Automatically add a date input when checking the box
+        }
     };
 
     const handleNotUsingDatesChange = (event) => {
@@ -80,20 +83,24 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
           <div className={styles.signUpForm4}>
             <h1>My form is for</h1>
             <label>
-                <input
-                    type="checkbox"
-                    checked={showDateForm}
-                    onChange={handleCheckboxChange}
-                />
-                Using specific dates
+                <span className={styles.checkboxLabel}>
+                    <input
+                        type="checkbox"
+                        checked={showDateForm}
+                        onChange={handleCheckboxChange}
+                    />
+                    <h3>Using specific dates</h3>
+                </span>
             </label>
             <label>
-                <input
-                    type="checkbox"
-                    checked={!usingDates}
-                    onChange={handleNotUsingDatesChange}
-                />
-                Not using any dates
+                <span className={styles.checkboxLabel}>
+                    <input
+                        type="checkbox"
+                        checked={!usingDates}
+                        onChange={handleNotUsingDatesChange}
+                    />
+                    <h3>Not using any dates</h3>
+                </span>
             </label>
             {showDateForm && (
                 <div className={styles.datePicker}>
@@ -111,13 +118,13 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
                             <button type="button" onClick={() => removeDate(index)}>x</button>
                         </div>
                     ))}
-                    <button type="button" onClick={addDate}>+</button>
+                    <button type="button" className={styles.moreDatesButton} onClick={addDate}>+</button>
                     <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
                 </div>
             )}
             <div className={styles.buttonContainer}>
                 <button type="button" onClick={handleBack}>Back</button>
-                <button type="button" onClick={onNext}>Next</button>
+            
             </div>
           </div>
         </>

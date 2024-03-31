@@ -141,12 +141,13 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
         <div className={styles.timeSlotForm}>
           <form>
             <h1>Will your form use time slots?</h1>
-            <button type="button" onClick={handleYesClick}>Yes</button>
-      
-            <button type="button" onClick={(event) => { event.preventDefault(); handleNoClick(event); onNext(); }}>No</button>
+            <div className={styles.buttonContainer}>
+                <button type="button" onClick={handleYesClick}>Yes</button>
+                <button type="button" onClick={(event) => { event.preventDefault(); handleNoClick(event); onNext(); }}>No</button>
+            </div>
             {showTimeSlotSection && (
                 <div>
-                    <h2>Which Dates Have Time Slots</h2>
+                    <h2 className={styles.timeSlotText}>Which Dates Have Time Slots</h2>
                     {selectedDates.map((date, index) => (
                         <div key={index} className={styles.dateSwitch}>
                             <span>{date}</span>
@@ -156,13 +157,15 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
                             </label>
                         </div>
                     ))}
-                    <button type="button" onClick={(event) => { event.preventDefault(); setShowTimeSlotPicker(true); }}>Choose time slots for selected dates</button>
+                    <div className={styles.dateExpandButton}>
+                        <button type="button" onClick={(event) => { event.preventDefault(); setShowTimeSlotPicker(true); }}>Choose time slots for selected dates</button>
+                    </div>
                 </div>
             )}
             {showTimeSlotPicker && selectedDates.map((date, index) => {
                 if (datesWithTimeSlots.has(date)) {
                     return (
-                        <div key={index}>
+                        <div key={index} className={styles.timeSlotPickerContainer}>
                             <h3>Time slots for {date}</h3>
                             {timeSlotsForDates[date] && timeSlotsForDates[date].map((slot, slotIndex) => (
                                 <div key={slotIndex}>
