@@ -63,7 +63,7 @@ const FormWizard = () => {
     };
 
     const renderStep = () => {
-        console.log('Rendering Step:', currentStep, 'Using Dates:', usingDates);
+        
         switch (currentStep) {
             case 1:
                 return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} />;
@@ -80,7 +80,7 @@ const FormWizard = () => {
             case 5:
                 return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
             case 6:
-                return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} />;
+                return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} formId={formId} />;
             default: 
                 return <div>Form Completed</div>;
 

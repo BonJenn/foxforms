@@ -94,11 +94,27 @@ app.get('/forms', async (req, res) => {
     }
 });
 
+app.get('/forms/:id', async (req, res) => {
+    const { id } = req.params;
+    const formsCollection = dbClient.db('FoxForms').collection('Forms');
+
+    try {
+        const form = await formsCollection.findOne({ _id: new ObjectId(id) });
+        if (!form) {
+            return res.status(404).send("Form not found.");
+        }
+        res.json(form);
+    } catch (error) {
+        console.error("Failed to fetch form:", error);
+        res.status(500).json({ error: "An error occurred while fetching the form." });
+    }
+});
+
 // Update Forms
 
 app.put('/forms/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, customDomain, infoType, additionalFields, dates } = req.body; // Assuming dates now includes time slots
+    const { title, customDomain, infoType, additionalFields, dates, timeSlotsForDates } = req.body; // Include timeSlotsForDates in the destructuring
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -116,7 +132,8 @@ app.put('/forms/:id', async (req, res) => {
                 ...(customDomain && { customDomain }),
                 ...(infoType && { infoType }),
                 ...(additionalFields && { additionalFields }),
-                dates, // Directly set the new dates array, which includes time slots
+                dates, // Keep handling dates as before
+                timeSlotsForDates, // Add this line to handle the new timeSlotsForDates data
                 updatedAt: new Date(),
             },
         };

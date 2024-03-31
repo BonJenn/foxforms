@@ -107,6 +107,8 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
           date,
           timeSlots: timeSlotsForDates[date] || [],
         })),
+        // Include the timeSlotsForDates data
+        timeSlotsForDates: timeSlotsForDates,
       };
 
       try {
