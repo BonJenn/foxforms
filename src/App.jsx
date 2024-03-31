@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Analytics } from "@vercel/analytics/react"
 import Home from '../client/pages/Home/Home.jsx'
 import Onboarding from '../client/pages/Onboarding/Onboarding.jsx'
 import Dashboard from '../client/pages/Dashboard/Dashboard.jsx'
@@ -15,6 +16,7 @@ function App() {
   return (
         <BrowserRouter>
       <>
+        <Analytics />
         <Routes>
           <Route path="/" element={<Home />} />
           {authToken && <Route path="/dashboard" element={<Dashboard />} />}
