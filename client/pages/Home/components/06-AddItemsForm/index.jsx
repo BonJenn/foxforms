@@ -14,6 +14,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
     const [newItem, setNewItem] = useState(""); // Changed from array to string to match expected data type
+    const [numberOfSlots, setNumberOfSlots] = useState(0);
 
     // Fetch form data on component mount or formId change
     useEffect(() => {
@@ -71,7 +72,10 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ items: [newItem] }), // Adjusted to send newItem as an array of items
+                body: JSON.stringify({ 
+                    items: [newItem],
+                    slots: [numberOfSlots] 
+                }), // Adjusted to send newItem as an array of items
             });
             if (!response.ok) {
                 throw new Error('Failed to save items');
@@ -108,6 +112,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                                         </div>
                                     ))}
                                     <input value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder="Add New Item" />
+                                    <input value={numberOfSlots} onChange={(e) => setNumberOfSlots(e.target.value)} />
                                     <button onClick={() => { addItemToSlot(date, slotIndex, newItem); setNewItem(''); }}>Add New Item</button>
                                 </td>
                                 <td>
