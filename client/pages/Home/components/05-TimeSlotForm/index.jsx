@@ -171,7 +171,9 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
                                 <div key={slotIndex}>
                                     <input type="time" value={slot.startTime} onChange={(e) => handleStartTimeChange(date, slotIndex, e.target.value)} className={styles.timeInput} /> to 
                                     <input type="time" value={slot.endTime} onChange={(e) => handleEndTimeChange(date, slotIndex, e.target.value)} className={styles.timeInput} />
-                                    <button type="button" onClick={(event) => { event.preventDefault(); addTimeSlotForDate(date); }}>Add Time Slot</button>
+                                  
+                                         <button type="button" onClick={(event) => { event.preventDefault(); addTimeSlotForDate(date); }}>Add Time Slot</button>
+                                    
                                 </div>
                             ))}
                         </div>
@@ -179,8 +181,10 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
                 }
                 return null;
             })}
-            
-            {showTimeSlotPicker && <button type="button" onClick={goToNextForm}>Next</button>}
+              
+            <div className={styles.nextButtonContainer}>
+                {showTimeSlotPicker && <button type="button" onClick={goToNextForm}>Next</button>}
+            </div>
           </form>
         </div>
     );

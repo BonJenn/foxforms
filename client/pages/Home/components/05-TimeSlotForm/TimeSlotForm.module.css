@@ -12,6 +12,7 @@
   border-radius: 10px;
   overflow: hidden; /* Prevents scrolling by hiding overflow */
   gap: 50px; /* Adjust this value as needed to increase vertical space */
+  text-align: center;
 }
 
 .buttonContainer {
@@ -141,6 +142,16 @@ input:checked + .slider:before {
     justify-content: center; /* Center buttons horizontally */
     gap: 20px; /* Adjust the gap as needed for spacing between buttons */
   }
+}
+
+.timeSlotPickerContainer input {
+  margin: 20px;
+}
+
+.nextButtonContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
 }
 
 /* Responsive adjustments for iPhone */

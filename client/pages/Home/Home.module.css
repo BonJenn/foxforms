@@ -22,7 +22,7 @@ html, body {
 
 .home {
     background-image: radial-gradient(circle, #f6b947, #f88800);
-    margin-top: 0;
+    margin-top: 80px;
     padding-top: 0;
 
     width: 100vw;
