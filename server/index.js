@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots } = req.body;
+    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots, items, slots } = req.body; // Include items and slots in the destructuring
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -66,6 +66,8 @@ app.post('/forms', async (req, res) => {
             additionalFields,
             dates, // Add dates here
             hasTimeSlots, // Add this line
+            items, // Add items here
+            slots, // Add slots here
             createdAt: new Date(),
         };
 
@@ -114,7 +116,7 @@ app.get('/forms/:id', async (req, res) => {
 
 app.put('/forms/:id', async (req, res) => {
     const { id } = req.params;
-    const { title, customDomain, infoType, additionalFields, dates, timeSlotsForDates } = req.body; // Include timeSlotsForDates in the destructuring
+    const { title, customDomain, infoType, additionalFields, dates, timeSlotsForDates, items, slots } = req.body; // Include items and slots in the destructuring
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -134,6 +136,8 @@ app.put('/forms/:id', async (req, res) => {
                 ...(additionalFields && { additionalFields }),
                 dates, // Keep handling dates as before
                 timeSlotsForDates, // Add this line to handle the new timeSlotsForDates data
+                items, // Add this line to handle the new items data
+                slots, // Add this line to handle the new slots data
                 updatedAt: new Date(),
             },
         };
@@ -148,6 +152,30 @@ app.put('/forms/:id', async (req, res) => {
     } catch (error) {
         console.error("Failed to update form:", error);
         res.status(500).json({ error: "An error occurred while updating the form." });
+    }
+});
+
+app.put('/forms/:formId/items', async (req, res) => {
+    const { formId } = req.params;
+    const { items, slots } = req.body; // Adjusted to include items and slots
+    const formsCollection = dbClient.db('FoxForms').collection('Forms');
+
+    try {
+        // Logic to update the specific items and slots for the form
+        // This is a simplified example. You'll need to adjust it based on your data structure
+        const updateResult = await formsCollection.updateOne(
+            { _id: new ObjectId(formId) },
+            { $set: { items, slots } } // Updated to set items and slots
+        );
+
+        if (updateResult.matchedCount === 0) {
+            return res.status(404).send('Form not found.');
+        }
+
+        res.status(200).json({ message: 'Items and slots updated successfully.' });
+    } catch (error) {
+        console.error("Error updating items and slots:", error);
+        res.status(500).json({ error: "Error updating items and slots." });
     }
 });
 
@@ -295,30 +323,6 @@ app.get('/time-slots', async (req, res) => {
     }
 });
 
-app.put('/forms/:formId/items', async (req, res) => {
-    const { formId } = req.params;
-    const { date, slotIndex, items } = req.body;
-    const formsCollection = dbClient.db('FoxForms').collection('Forms');
-
-    try {
-        // Logic to update the specific item for the date and slotIndex
-        // This is a simplified example. You'll need to adjust it based on your data structure
-        const updateResult = await formsCollection.updateOne(
-            { _id: new ObjectId(formId), "timeSlotsForDates.date": date },
-            { $set: { "timeSlotsForDates.$.slots.$[slot].items": items } },
-            { arrayFilters: [{ "slot.index": slotIndex }] }
-        );
-
-        if (updateResult.matchedCount === 0) {
-            return res.status(404).send('Form or slot not found.');
-        }
-
-        res.status(200).json({ message: 'Item saved successfully.' });
-    } catch (error) {
-        console.error("Error saving item:", error);
-        res.status(500).json({ error: "Error saving item." });
-    }
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
