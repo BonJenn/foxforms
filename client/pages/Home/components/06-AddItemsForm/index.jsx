@@ -13,9 +13,8 @@ const formatTime = (time) => {
 const AddItemsForm = ({ onNext, onBack, formId }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
-    // Adjust newItem to be an object where each key represents a slot and its value the input for that slot
-    const [newItem, setNewItem] = useState({}); // Changed from string to object
-    const [numberOfSlots, setNumberOfSlots] = useState(0);
+    const [newItem, setNewItem] = useState({}); // Object to manage item descriptions independently
+    const [numberOfSlots, setNumberOfSlots] = useState({}); // Changed from single value to object
 
     // Fetch form data on component mount or formId change
     useEffect(() => {
@@ -48,17 +47,26 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         }));
     };
 
+    const handleNumberOfSlotsChange = (date, slotIndex, value) => {
+        setNumberOfSlots(prev => ({
+            ...prev,
+            [`${date}-${slotIndex}`]: value
+        }));
+    };
+
     const addItemToSlot = (date, slotIndex, description) => {
+        const slots = numberOfSlots[`${date}-${slotIndex}`] || 1; // Default to 1 if not specified
         if (!description) {
             console.error('Description is empty');
             return; // Early return if description is empty
         }
         setTimeSlotsForDates(prev => {
             const updatedSlots = (prev[date] || []).map((slot, index) => 
-                index === slotIndex ? { ...slot, items: [...(slot.items || []), { description, slots: 1 }] } : slot
+                index === slotIndex ? { ...slot, items: [...(slot.items || []), { description, slots }] } : slot
             );
             // Reset the input for the current slot after adding the item
             setNewItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
+            setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' })); // Reset number of slots input
             return { ...prev, [date]: updatedSlots };
         });
     };
@@ -127,7 +135,12 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                                         onChange={(e) => handleNewItemChange(date, slotIndex, e.target.value)} 
                                         placeholder="Add New Item" 
                                     />
-                                    <input value={numberOfSlots} onChange={(e) => setNumberOfSlots(e.target.value)} />
+                                    <input 
+                                        type="number"
+                                        value={numberOfSlots[`${date}-${slotIndex}`] || ''} 
+                                        onChange={(e) => handleNumberOfSlotsChange(date, slotIndex, e.target.value)} 
+                                        placeholder="Number of Slots" 
+                                    />
                                     <button onClick={() => { addItemToSlot(date, slotIndex, newItem[`${date}-${slotIndex}`]); }}>Add New Item</button>
                                 </td>
                                 <td>
