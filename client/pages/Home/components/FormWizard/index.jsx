@@ -4,8 +4,8 @@ import AccountSetupForm from '../02-AccountSetupForm';
 import AdditionalDetailsForm from '../03-AdditionalDetailsForm';
 import DateSelectionForm from '../04-DateSelectionForm';
 import TimeSlotForm from '../05-TimeSlotForm';
-import SignUpForm6 from '../SignUpForm6/SignUpForm6';
-import AddItemsForm from '../06-AddItemsForm'; // Assuming SignUpForm7 is created
+import AddItemsForm from '../06-AddItemsForm';
+import OptionsForm from '../07-OptionsForm';
 
 const FormWizard = () => {
     const [currentStep, setCurrentStep] = useState(1);
@@ -81,6 +81,8 @@ const FormWizard = () => {
                 return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
             case 6:
                 return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} formId={formId} />;
+            case 7:
+                return <OptionsForm onNext={nextStep} onBack={prevStep} formId={formId} />;
             default: 
                 return <div>Form Completed</div>;
 
