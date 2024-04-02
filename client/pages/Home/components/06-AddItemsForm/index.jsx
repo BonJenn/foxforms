@@ -13,7 +13,8 @@ const formatTime = (time) => {
 const AddItemsForm = ({ onNext, onBack, formId }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
-    const [newItem, setNewItem] = useState(""); // Changed from array to string to match expected data type
+    // Adjust newItem to be an object where each key represents a slot and its value the input for that slot
+    const [newItem, setNewItem] = useState({}); // Changed from string to object
     const [numberOfSlots, setNumberOfSlots] = useState(0);
 
     // Fetch form data on component mount or formId change
@@ -39,6 +40,14 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         console.log('newItem:', newItem);
     }, [newItem]);
 
+    // Adjust the input handlers to manage each slot's input independently
+    const handleNewItemChange = (date, slotIndex, value) => {
+        setNewItem(prev => ({
+            ...prev,
+            [`${date}-${slotIndex}`]: value
+        }));
+    };
+
     const addItemToSlot = (date, slotIndex, description) => {
         if (!description) {
             console.error('Description is empty');
@@ -48,6 +57,8 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
             const updatedSlots = (prev[date] || []).map((slot, index) => 
                 index === slotIndex ? { ...slot, items: [...(slot.items || []), { description, slots: 1 }] } : slot
             );
+            // Reset the input for the current slot after adding the item
+            setNewItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
             return { ...prev, [date]: updatedSlots };
         });
     };
@@ -111,9 +122,13 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                                             <button onClick={() => removeItemFromSlot(date, slotIndex, itemIndex)}>Delete Item</button>
                                         </div>
                                     ))}
-                                    <input value={newItem} onChange={(e) => setNewItem(e.target.value)} placeholder="Add New Item" />
+                                    <input 
+                                        value={newItem[`${date}-${slotIndex}`] || ''} 
+                                        onChange={(e) => handleNewItemChange(date, slotIndex, e.target.value)} 
+                                        placeholder="Add New Item" 
+                                    />
                                     <input value={numberOfSlots} onChange={(e) => setNumberOfSlots(e.target.value)} />
-                                    <button onClick={() => { addItemToSlot(date, slotIndex, newItem); setNewItem(''); }}>Add New Item</button>
+                                    <button onClick={() => { addItemToSlot(date, slotIndex, newItem[`${date}-${slotIndex}`]); }}>Add New Item</button>
                                 </td>
                                 <td>
                                     <button onClick={() => saveItemsToBackend()}>Save</button>
