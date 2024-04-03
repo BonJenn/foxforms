@@ -13,8 +13,12 @@ const formatTime = (time) => {
 const AddItemsForm = ({ onNext, onBack, formId }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
-    const [newItem, setNewItem] = useState({}); // Object to manage item descriptions independently
-    const [numberOfSlots, setNumberOfSlots] = useState({}); // Changed from single value to object
+    const [newItem, setNewItem] = useState(""); // Changed from array to string to match expected data type
+    const [numberOfSlots, setNumberOfSlots] = useState(0);
+    const [selectedDate, setSelectedDate] = useState('');
+    const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
+    const [displayItemsAndSlots, setDisplayItemsAndSlots] = useState({});
+    const [itemsAndSlots, setItemsAndSlots] = useState(null);
 
     // Fetch form data on component mount or formId change
     useEffect(() => {
@@ -39,35 +43,25 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         console.log('newItem:', newItem);
     }, [newItem]);
 
-    // Adjust the input handlers to manage each slot's input independently
-    const handleNewItemChange = (date, slotIndex, value) => {
-        setNewItem(prev => ({
-            ...prev,
-            [`${date}-${slotIndex}`]: value
-        }));
-    };
-
-    const handleNumberOfSlotsChange = (date, slotIndex, value) => {
-        setNumberOfSlots(prev => ({
-            ...prev,
-            [`${date}-${slotIndex}`]: value
-        }));
-    };
-
-    const addItemToSlot = (date, slotIndex, description) => {
-        const slots = numberOfSlots[`${date}-${slotIndex}`] || 1; // Default to 1 if not specified
-        if (!description) {
-            console.error('Description is empty');
-            return; // Early return if description is empty
+    const addItemToSlot = (date, slotIndex, newItemName, numberOfSlots) => {
+        if (!newItemName || numberOfSlots <= 0) {
+            console.error('Invalid item name or number of slots');
+            return; // Early return if invalid input
         }
         setTimeSlotsForDates(prev => {
-            const updatedSlots = (prev[date] || []).map((slot, index) => 
-                index === slotIndex ? { ...slot, items: [...(slot.items || []), { description, slots }] } : slot
-            );
-            // Reset the input for the current slot after adding the item
-            setNewItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
-            setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' })); // Reset number of slots input
-            return { ...prev, [date]: updatedSlots };
+            const updatedSlots = { ...prev };
+            // Ensure the date key maps to an array
+            if (!updatedSlots[date]) {
+                updatedSlots[date] = [];
+            }
+            // Ensure the slotIndex is initialized
+            if (!updatedSlots[date][slotIndex]) {
+                updatedSlots[date][slotIndex] = { items: [], isSaved: false };
+            }
+            const items = updatedSlots[date][slotIndex].items || [];
+            items.push({ name: newItemName, slots: numberOfSlots });
+            updatedSlots[date][slotIndex] = { ...updatedSlots[date][slotIndex], items, isSaved: true };
+            return updatedSlots;
         });
     };
 
@@ -84,9 +78,10 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         });
     };
 
-    const saveItemsToBackend = async () => {
+    const saveItemsToBackend = async (date, slotIndex) => {
+        let isMounted = true;
         try {
-            const response = await fetch(`http://localhost:5174/forms/${formId}/items`, {
+            const response = await fetch(`http://localhost:5174/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -99,11 +94,63 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
             if (!response.ok) {
                 throw new Error('Failed to save items');
             }
-            console.log('Items saved successfully');
+            if (isMounted) {
+                console.log('Items saved to backend');
+                setTimeSlotsForDates(prev => {
+                    const updatedSlots = { ...prev };
+                    if (updatedSlots[date] && updatedSlots[date][slotIndex]) {
+                        updatedSlots[date][slotIndex].isSaved = true;
+                        updatedSlots[date][slotIndex].items = [{ name: newItem, slots: numberOfSlots }];
+                    }
+                    return updatedSlots;
+                });
+                setNewItem('');
+                setNumberOfSlots(0);
+            }
         } catch (error) {
             console.error('Error saving items:', error);
+        } finally {
+            if (isMounted) {
+                // Clean-up actions if needed
+            }
+        }
+        return () => {
+            isMounted = false; // Set flag to false when component unmounts
+        };
+    };
+
+    const displayData = async () => {
+        try {
+            const response = await fetch(`http://localhost:5174/forms/${formId}`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch form data');
+            }
+            const formData = await response.json();
+            // Assuming the items and slots are part of an 'items' array in the form data
+            // and each item in this array has 'slots' properties
+            const itemsData = formData.items || [];
+            const slotsData = formData.slots || [];
+            // Now, itemsData contains the array of items and slots
+            // You can set this to state, or process it as needed
+            setDisplayItemsAndSlots({itemsData, slotsData}); // Corrected to set an object
+        } catch (error) {
+            console.error('Error fetching form data:', error);
         }
     };
+
+    useEffect(() => {
+        if (timeSlotsForDates) {
+            Object.values(timeSlotsForDates).forEach(slots => {
+                slots.forEach(slot => {
+                    if (slot.isSaved) {
+                        displayData().then(data => {
+                            setItemsAndSlots(data);
+                        });
+                    }
+                });
+            });
+        }
+    }, [timeSlotsForDates]);
 
     return (
         <div className={styles.formContainer}>
@@ -118,33 +165,39 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                     </tr>
                 </thead>
                 <tbody>
-                    {Object.entries(timeSlotsForDates).map(([date, slots]) =>
-                        slots?.map((slot, slotIndex) => (
+                    {Object.entries(timeSlotsForDates || {}).map(([date, slots]) =>
+                        (slots || []).map((slot, slotIndex) => (
                             <tr key={`${date}-${slotIndex}`}>
                                 <td>{date}</td>
                                 <td>{`${formatTime(slot.startTime)} - ${formatTime(slot.endTime)}`}</td>
                                 <td>
-                                    {slot.items?.map((item, itemIndex) => (
-                                        <div key={itemIndex}>
-                                            <span>{item.description} - {item.slots} slots</span>
-                                            <button onClick={() => removeItemFromSlot(date, slotIndex, itemIndex)}>Delete Item</button>
-                                        </div>
-                                    ))}
-                                    <input 
-                                        value={newItem[`${date}-${slotIndex}`] || ''} 
-                                        onChange={(e) => handleNewItemChange(date, slotIndex, e.target.value)} 
-                                        placeholder="Add New Item" 
-                                    />
-                                    <input 
-                                        type="number"
-                                        value={numberOfSlots[`${date}-${slotIndex}`] || ''} 
-                                        onChange={(e) => handleNumberOfSlotsChange(date, slotIndex, e.target.value)} 
-                                        placeholder="Number of Slots" 
-                                    />
-                                    <button onClick={() => { addItemToSlot(date, slotIndex, newItem[`${date}-${slotIndex}`]); }}>Add New Item</button>
+                                    {slot.isSaved ? (
+                                        slot.items.map((item, index) => (
+                                            <div key={index}>
+                                                {item.name} - {item.slots} slots
+                                            </div>
+                                        ))
+                                    ) : (
+                                        <>
+                                            <input 
+                                                value={newItem || ''} 
+                                                onChange={(e) => setNewItem(e.target.value)} 
+                                                placeholder="Add New Item" 
+                                            />
+                                            <input 
+                                                type="number"
+                                                value={numberOfSlots || ''} 
+                                                onChange={(e) => setNumberOfSlots(parseInt(e.target.value, 10) || 0)} 
+                                                placeholder="Number of Slots" 
+                                            />
+                                            <button onClick={() => addItemToSlot(date, slotIndex, newItem, numberOfSlots)}>Add New Item</button>
+                                        </>
+                                    )}
                                 </td>
                                 <td>
-                                    <button onClick={() => saveItemsToBackend()}>Save</button>
+                                    {!slot.isSaved && (
+                                        <button onClick={() => saveItemsToBackend(date, slotIndex)}>Save</button>
+                                    )}
                                 </td>
                             </tr>
                         ))
