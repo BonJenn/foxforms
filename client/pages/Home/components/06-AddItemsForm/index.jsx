@@ -13,8 +13,8 @@ const formatTime = (time) => {
 const AddItemsForm = ({ onNext, onBack, formId }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
-    const [newItem, setNewItem] = useState(""); // Changed from array to string to match expected data type
-    const [numberOfSlots, setNumberOfSlots] = useState(0);
+    const [newItem, setNewItem] = useState({}); // Now an object
+    const [numberOfSlots, setNumberOfSlots] = useState({}); // Now an object
     const [selectedDate, setSelectedDate] = useState('');
     const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
     const [displayItemsAndSlots, setDisplayItemsAndSlots] = useState({});
@@ -43,8 +43,10 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         console.log('newItem:', newItem);
     }, [newItem]);
 
-    const addItemToSlot = (date, slotIndex, newItemName, numberOfSlots) => {
-        if (!newItemName || numberOfSlots <= 0) {
+    const addItemToSlot = (date, slotIndex) => {
+        const newItemName = newItem[`${date}-${slotIndex}`] || '';
+        const slots = numberOfSlots[`${date}-${slotIndex}`] || 0;
+        if (!newItemName || slots <= 0) {
             console.error('Invalid item name or number of slots');
             return; // Early return if invalid input
         }
@@ -59,7 +61,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                 updatedSlots[date][slotIndex] = { items: [], isSaved: false };
             }
             const items = updatedSlots[date][slotIndex].items || [];
-            items.push({ name: newItemName, slots: numberOfSlots });
+            items.push({ name: newItemName, slots: slots });
             updatedSlots[date][slotIndex] = { ...updatedSlots[date][slotIndex], items, isSaved: true };
             return updatedSlots;
         });
@@ -87,8 +89,8 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    items: [newItem],
-                    slots: [numberOfSlots] 
+                    items: [newItem[`${date}-${slotIndex}`]],
+                    slots: [numberOfSlots[`${date}-${slotIndex}`]] 
                 }), // Adjusted to send newItem as an array of items
             });
             if (!response.ok) {
@@ -100,12 +102,12 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                     const updatedSlots = { ...prev };
                     if (updatedSlots[date] && updatedSlots[date][slotIndex]) {
                         updatedSlots[date][slotIndex].isSaved = true;
-                        updatedSlots[date][slotIndex].items = [{ name: newItem, slots: numberOfSlots }];
+                        updatedSlots[date][slotIndex].items = [{ name: newItem[`${date}-${slotIndex}`], slots: numberOfSlots[`${date}-${slotIndex}`] }];
                     }
                     return updatedSlots;
                 });
-                setNewItem('');
-                setNumberOfSlots(0);
+                setNewItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
+                setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: 0 }));
             }
         } catch (error) {
             console.error('Error saving items:', error);
@@ -152,6 +154,15 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         }
     }, [timeSlotsForDates]);
 
+    const handleInputChange = (event, key, isItem) => {
+        const value = event.target.value;
+        if (isItem) {
+            setNewItem(prev => ({ ...prev, [key]: value }));
+        } else {
+            setNumberOfSlots(prev => ({ ...prev, [key]: parseInt(value, 10) || 0 }));
+        }
+    };
+
     return (
         <div className={styles.formContainer}>
             <h1>Add Items Here</h1>
@@ -180,17 +191,17 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                                     ) : (
                                         <>
                                             <input 
-                                                value={newItem || ''} 
-                                                onChange={(e) => setNewItem(e.target.value)} 
+                                                value={newItem[`${date}-${slotIndex}`] || ''} 
+                                                onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, true)} 
                                                 placeholder="Add New Item" 
                                             />
                                             <input 
                                                 type="number"
-                                                value={numberOfSlots || ''} 
-                                                onChange={(e) => setNumberOfSlots(parseInt(e.target.value, 10) || 0)} 
+                                                value={numberOfSlots[`${date}-${slotIndex}`] || ''} 
+                                                onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, false)} 
                                                 placeholder="Number of Slots" 
                                             />
-                                            <button onClick={() => addItemToSlot(date, slotIndex, newItem, numberOfSlots)}>Add New Item</button>
+                                            <button onClick={() => addItemToSlot(date, slotIndex)}>Add New Item</button>
                                         </>
                                     )}
                                 </td>
