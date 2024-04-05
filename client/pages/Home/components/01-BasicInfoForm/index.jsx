@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './BasicInfoForm.module.css';
 
-const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId }) => { // Modified to accept onBack, onNext props
+const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId, updateGlobalPayloadState }) => { // Modified to accept onBack, onNext props
     // Removed the useState for formData
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -38,6 +38,13 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
             console.log('Form data saved', data);
             if (!formId) updateFormId(data._id); // Only update formId if it's a new form
             onNext(); // Proceed to the next step
+
+            // Update the global payload with title and customDomain
+            updateGlobalPayloadState({
+                title: formName, // Assuming formName holds the title input
+                customDomain: customDomain, // Directly using the customDomain state
+            });
+
         } catch (error) {
             console.error('Error submitting form', error);
             setErrorMessage(error.message); // Update the state with the error message

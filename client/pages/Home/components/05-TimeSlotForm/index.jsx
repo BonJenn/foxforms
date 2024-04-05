@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TimeSlotForm.module.css';
 
-const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }) => {
+const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId, updateGlobalPayloadState }) => {
     const [showTimeSlotSection, setShowTimeSlotSection] = useState(false);
     const [datesWithTimeSlots, setDatesWithTimeSlots] = useState(new Set());
     const [showTimeSlotPicker, setShowTimeSlotPicker] = useState(false);
@@ -129,6 +129,18 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId }
       } catch (error) {
         console.error('Error saving time slots:', error);
       }
+
+      updateGlobalPayloadState(prevState => {
+        const updatedState = { ...prevState };
+        updatedState.dates = updatedState.dates || {};
+        selectedDates.forEach(date => {
+            if (!updatedState.dates[date]) {
+                updatedState.dates[date] = { hasTimeSlots: true, timeSlots: [] };
+            }
+            updatedState.dates[date].timeSlots = timeSlotsForDates[date] || [];
+        });
+        return updatedState;
+      });
     };
 
     const goToNextForm = () => {

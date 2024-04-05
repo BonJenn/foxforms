@@ -114,38 +114,20 @@ app.get('/forms/:id', async (req, res) => {
 
 // Update Forms
 
-app.put('/forms/:id', async (req, res) => {
-    const { id } = req.params;
-    const { title, customDomain, infoType, additionalFields, dates, timeSlotsForDates, items, slots } = req.body; // Include items and slots in the destructuring
+app.put('/forms/:formId', async (req, res) => {
+    const { formId } = req.params;
+    const updates = req.body; // This should include the structured payload
+
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        // Only check for existing customDomain if it's being updated
-        if (customDomain) {
-            const domainExists = await formsCollection.findOne({ customDomain: customDomain, _id: { $ne: new ObjectId(id) } });
-            if (domainExists) {
-                return res.status(409).send('Custom domain is already taken.');
-            }
-        }
+        const updateResult = await formsCollection.updateOne(
+            { _id: new ObjectId(formId) },
+            { $set: updates } // Using $set to update fields specified in the payload
+        );
 
-        const updateDocument = {
-            $set: {
-                ...(title && { title }),
-                ...(customDomain && { customDomain }),
-                ...(infoType && { infoType }),
-                ...(additionalFields && { additionalFields }),
-                dates, // Keep handling dates as before
-                timeSlotsForDates, // Add this line to handle the new timeSlotsForDates data
-                items, // Add this line to handle the new items data
-                slots, // Add this line to handle the new slots data
-                updatedAt: new Date(),
-            },
-        };
-
-        const result = await formsCollection.updateOne({ _id: new ObjectId(id) }, updateDocument);
-
-        if (result.matchedCount === 0) {
-            return res.status(404).send("Form not found.");
+        if (updateResult.matchedCount === 0) {
+            return res.status(404).send('Form not found.');
         }
 
         res.status(200).json({ message: 'Form updated successfully.' });
@@ -323,6 +305,27 @@ app.get('/time-slots', async (req, res) => {
     }
 });
 
+app.post('/forms/:formId/time-slots/items', async (req, res) => {
+    const { formId } = req.params;
+    const { date, timeSlot, itemName, slots } = req.body;
+    const formsCollection = dbClient.db('FoxForms').collection('Forms');
+
+    try {
+        const updateResult = await formsCollection.updateOne(
+            { _id: new ObjectId(formId), [`dates.${date}.timeSlots.${timeSlot}`]: { $exists: true } },
+            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { name: itemName, slots: slots } } }
+        );
+
+        if (updateResult.matchedCount === 0) {
+            return res.status(404).send('Form, date, or time slot not found.');
+        }
+
+        res.status(200).json({ message: 'Item added successfully.' });
+    } catch (error) {
+        console.error("Error adding item:", error);
+        res.status(500).json({ error: "Error adding item." });
+    }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

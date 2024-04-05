@@ -14,19 +14,23 @@ const FormWizard = () => {
     const [infoType, setInfoType] = useState('');
     const [email, setEmail] = useState(''); 
     const [password, setPassword] = useState(''); 
-    const [formName, setFormName] = useState(''); // Add this line
-    const [customDomain, setCustomDomain] = useState(''); // Add this line
-    const [lastStep, setLastStep] = useState(null); // Add this line
-    const [hasSignedUp, setHasSignedUp] = useState(false); // Add this line
-    const [hasTimeSlots, setHasTimeSlots] = useState(false); // Add this line
+    const [formName, setFormName] = useState(''); 
+    const [customDomain, setCustomDomain] = useState(''); 
+    const [lastStep, setLastStep] = useState(null); 
+    const [hasSignedUp, setHasSignedUp] = useState(false); 
+    const [hasTimeSlots, setHasTimeSlots] = useState(false); 
     const [timeSlots, setTimeSlots] = useState([
         { _id: '1', date: '2023-04-10', startTime: '10:00', endTime: '11:00', isBooked: false },
         { _id: '2', date: '2023-04-11', startTime: '11:00', endTime: '12:00', isBooked: true },
-        // Add more sample time slots as needed
-    ]); // Modified this line
-    const [selectedDates, setSelectedDates] = useState({}); // Initialize to an object
-    const [usingDates, setUsingDates] = useState(false); // Initialize to false
-    const [timeSlotsForDates, setTimeSlotsForDates] = useState({}); // Add this line to manage time slots for selected dates
+    ]); 
+    const [selectedDates, setSelectedDates] = useState({}); 
+    const [usingDates, setUsingDates] = useState(false); 
+    const [timeSlotsForDates, setTimeSlotsForDates] = useState({}); 
+    const [globalPayload, setGlobalPayload] = useState({});
+
+    const updateGlobalPayloadState = (updates) => {
+        setGlobalPayload(prevState => ({ ...prevState, ...updates }));
+    };
 
     const updateSelectedDates = (dates) => {
         setSelectedDates(dates);
@@ -34,14 +38,14 @@ const FormWizard = () => {
 
     const nextStep = () => {
         console.log('Current Step:', currentStep, 'Using Dates:', usingDates);
-        if (currentStep === 4) { // Assuming DateSelectionForm is at step 4
-            console.log('Before setting next step, Using Dates:', usingDates); // Add this line for debugging
+        if (currentStep === 4) { 
+            console.log('Before setting next step, Using Dates:', usingDates); 
             if (usingDates === false) {
                 console.log('Skipping to AddItemsForm');
-                setCurrentStep(6); // Directly set to AddItemsForm step, adjust if your step number is different
+                setCurrentStep(6); 
             } else {
                 console.log('Proceeding to TimeSlotForm');
-                setCurrentStep(5); // Proceed to TimeSlotForm
+                setCurrentStep(5); 
             }
         } else {
             setCurrentStep(currentStep + 1);
@@ -66,23 +70,23 @@ const FormWizard = () => {
         
         switch (currentStep) {
             case 1:
-                return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} />;
+                return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 2:
                 if (hasSignedUp) {
-                    return <AdditionalDetailsForm onNext={nextStep} onBack={() => setCurrentStep(1)} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
+                    return <AdditionalDetailsForm onNext={nextStep} onBack={() => setCurrentStep(1)} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
                 } else {
-                    return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} email={email} setEmail={setEmail} password={password} setPassword={setPassword} />;
+                    return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} email={email} setEmail={setEmail} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
                 }
             case 3:
-                return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} />;
+                return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 4:
-                return <DateSelectionForm onNext={() => { console.log(selectedDates); nextStep(); }} onBack={prevStep} formId={formId} updateSelectedDates={updateSelectedDates} setUsingDates={setUsingDates} usingDates={usingDates} />;
+                return <DateSelectionForm onNext={() => { console.log(selectedDates); nextStep(); }} onBack={prevStep} formId={formId} updateSelectedDates={updateSelectedDates} setUsingDates={setUsingDates} usingDates={usingDates} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 5:
-                return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} />;
+                return <TimeSlotForm onNext={nextStep} onBack={prevStep} setHasTimeSlots={setHasTimeSlots} selectedDates={selectedDates} formId={formId} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 6:
-                return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} formId={formId} />;
+                return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} formId={formId} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 7:
-                return <OptionsForm onNext={nextStep} onBack={prevStep} formId={formId} />;
+                return <OptionsForm onNext={nextStep} onBack={prevStep} formId={formId} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             default: 
                 return <div>Form Completed</div>;
 

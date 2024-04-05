@@ -10,7 +10,7 @@ const formatTime = (time) => {
     return `${formattedHours}:${minutes} ${period}`;
 };
 
-const AddItemsForm = ({ onNext, onBack, formId }) => {
+const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
     const [newItem, setNewItem] = useState({}); // Now an object
@@ -43,27 +43,14 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         console.log('newItem:', newItem);
     }, [newItem]);
 
-    const addItemToSlot = (date, slotIndex) => {
-        const newItemName = newItem[`${date}-${slotIndex}`] || '';
-        const slots = numberOfSlots[`${date}-${slotIndex}`] || 0;
-        if (!newItemName || slots <= 0) {
-            console.error('Invalid item name or number of slots');
-            return; // Early return if invalid input
-        }
-        setTimeSlotsForDates(prev => {
-            const updatedSlots = { ...prev };
-            // Ensure the date key maps to an array
-            if (!updatedSlots[date]) {
-                updatedSlots[date] = [];
+    const addItemToSlot = (date, slotIndex, itemName, numberOfSlots) => {
+        updateGlobalPayloadState(prevState => {
+            let updatedState = { ...prevState };
+            if (!updatedState.dates[date].timeSlots[slotIndex].items) {
+                updatedState.dates[date].timeSlots[slotIndex].items = [];
             }
-            // Ensure the slotIndex is initialized
-            if (!updatedSlots[date][slotIndex]) {
-                updatedSlots[date][slotIndex] = { items: [], isSaved: false };
-            }
-            const items = updatedSlots[date][slotIndex].items || [];
-            items.push({ name: newItemName, slots: slots });
-            updatedSlots[date][slotIndex] = { ...updatedSlots[date][slotIndex], items, isSaved: true };
-            return updatedSlots;
+            updatedState.dates[date].timeSlots[slotIndex].items.push({ name: itemName, slots: numberOfSlots });
+            return updatedState;
         });
     };
 
@@ -81,44 +68,31 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
     };
 
     const saveItemsToBackend = async (date, slotIndex) => {
-        let isMounted = true;
-        try {
-            const response = await fetch(`http://localhost:5174/forms/${formId}`, {
-                method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ 
-                    items: [newItem[`${date}-${slotIndex}`]],
-                    slots: [numberOfSlots[`${date}-${slotIndex}`]] 
-                }), // Adjusted to send newItem as an array of items
-            });
-            if (!response.ok) {
-                throw new Error('Failed to save items');
-            }
-            if (isMounted) {
-                console.log('Items saved to backend');
-                setTimeSlotsForDates(prev => {
-                    const updatedSlots = { ...prev };
-                    if (updatedSlots[date] && updatedSlots[date][slotIndex]) {
-                        updatedSlots[date][slotIndex].isSaved = true;
-                        updatedSlots[date][slotIndex].items = [{ name: newItem[`${date}-${slotIndex}`], slots: numberOfSlots[`${date}-${slotIndex}`] }];
-                    }
-                    return updatedSlots;
+        const timeSlot = timeSlotsForDates[date][slotIndex];
+        if (!timeSlot || !timeSlot.items) return;
+
+        timeSlot.items.forEach(async (item) => {
+            try {
+                const response = await fetch(`http://localhost:5174/forms/${formId}/time-slots/items`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        date,
+                        timeSlot: `${formatTime(timeSlot.startTime)}-${formatTime(timeSlot.endTime)}`,
+                        itemName: item.name,
+                        slots: item.slots,
+                    }),
                 });
-                setNewItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
-                setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: 0 }));
+                if (!response.ok) {
+                    throw new Error('Failed to save item');
+                }
+                console.log('Item saved to backend');
+            } catch (error) {
+                console.error('Error saving item:', error);
             }
-        } catch (error) {
-            console.error('Error saving items:', error);
-        } finally {
-            if (isMounted) {
-                // Clean-up actions if needed
-            }
-        }
-        return () => {
-            isMounted = false; // Set flag to false when component unmounts
-        };
+        });
     };
 
     const displayData = async () => {
@@ -201,7 +175,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                                                 onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, false)} 
                                                 placeholder="Number of Slots" 
                                             />
-                                            <button onClick={() => addItemToSlot(date, slotIndex)}>Add New Item</button>
+                                            <button onClick={() => addItemToSlot(date, slotIndex, newItem[`${date}-${slotIndex}`], numberOfSlots[`${date}-${slotIndex}`])}>Add New Item</button>
                                         </>
                                     )}
                                 </td>

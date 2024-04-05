@@ -1,22 +1,19 @@
 import React, { useState } from 'react';
 import styles from './DateSelectionForm.module.css';
 
-const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsingDates, usingDates }) => {
+const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsingDates, usingDates, updateGlobalPayloadState }) => {
     const [formDateOption, setFormDateOption] = useState('');
     const [additionalFields, setAdditionalFields] = useState([]);
     const [newField, setNewField] = useState('');
     const [showDateForm, setShowDateForm] = useState(false);
     const [dates, setDates] = useState([]);
 
-    // Use setUsingDates directly from props here and in other places as needed
-    // No need to declare it with useState since it's already provided through props
-
     const handleCheckboxChange = (event) => {
         const { checked } = event.target;
-        setUsingDates(checked); // Correctly using setUsingDates from props
+        setUsingDates(checked);
         setShowDateForm(checked);
         if (checked && dates.length === 0) {
-            addDate(); // Automatically add a date input when checking the box
+            addDate();
         }
     };
 
@@ -68,6 +65,9 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
                 throw new Error('Failed to update form with dates');
             }
             updateSelectedDates(dates.filter(date => date !== '')); // Update selectedDates in FormWizard
+            updateGlobalPayloadState({
+                dates: dates.filter(date => date !== ''),
+            });
             onNext(); // Optionally navigate to the next form or show a confirmation
         } catch (error) {
             console.error('Error updating form with dates:', error);

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './AccountSetupForm.module.css';
 
 {/* User Sign Up */}
-const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPassword }) => {
+const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPassword, updateGlobalPayloadState }) => {
     const [formData, setFormData] = useState({
         confirmPassword: '',
     });
@@ -11,7 +11,7 @@ const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPasswo
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'email') setEmail(value);
-        else if (name === 'password') setPassword(value);
+        else if (name === 'password') setPassword(value); // Add this line to update password
         else setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -37,6 +37,10 @@ const AccountSetupForm = ({ onBack, onNext, email, setEmail, password, setPasswo
 
             const data = await response.json();
             console.log('User signed up successfully:', data);
+            // Update the global payload with email
+            updateGlobalPayloadState({
+                email: email, // Directly using the email state
+            });
             onNext(); // Proceed to the next form or action
         } catch (error) {
             console.error('Signup error:', error);
