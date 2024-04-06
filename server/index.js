@@ -116,21 +116,25 @@ app.get('/forms/:id', async (req, res) => {
 
 app.put('/forms/:formId', async (req, res) => {
     const { formId } = req.params;
-    const updates = req.body; // This should include the structured payload
+    const updates = req.body; // This should include the structured payload with nested items and slots
 
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
+        // Adjust this section to handle nested structure
+        // Example: Assuming 'updates' contains dates with nested timeSlots, which in turn contain nested items
+        const processedUpdates = processNestedStructure(updates); // You need to implement this function based on your data structure
+
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId) },
-            { $set: updates } // Using $set to update fields specified in the payload
+            { $set: processedUpdates }
         );
 
         if (updateResult.matchedCount === 0) {
             return res.status(404).send('Form not found.');
         }
 
-        res.status(200).json({ message: 'Form updated successfully.' });
+        res.status(200).json({ message: 'Form updated successfully with nested items and slots.' });
     } catch (error) {
         console.error("Failed to update form:", error);
         res.status(500).json({ error: "An error occurred while updating the form." });
@@ -326,6 +330,53 @@ app.post('/forms/:formId/time-slots/items', async (req, res) => {
         res.status(500).json({ error: "Error adding item." });
     }
 });
+
+// Example implementation of processNestedStructure
+function processNestedStructure(updates) {
+    let processedUpdates = {};
+
+    if (updates.dates) {
+        processedUpdates.dates = updates.dates.map(date => {
+            let dateObj = { date: date.date };
+
+            if (date.timeSlots) {
+                dateObj.timeSlots = date.timeSlots.map(timeSlot => {
+                    let timeSlotObj = { startTime: timeSlot.startTime, endTime: timeSlot.endTime };
+
+                    if (timeSlot.items) {
+                        timeSlotObj.items = timeSlot.items.map(item => {
+                            let itemObj = { name: item.name };
+
+                            if (item.slots) {
+                                itemObj.slots = item.slots;
+                            }
+
+                            return itemObj;
+                        });
+                    }
+
+                    return timeSlotObj;
+                });
+            } else if (date.items) {
+                dateObj.items = date.items.map(item => {
+                    let itemObj = { name: item.name };
+
+                    if (item.slots) {
+                        itemObj.slots = item.slots;
+                    }
+
+                    return itemObj;
+                });
+            } else if (date.slots) {
+                dateObj.slots = date.slots;
+            }
+
+            return dateObj;
+        });
+    }
+
+    return processedUpdates;
+}
 
 // Error handling middleware
 app.use((err, req, res, next) => {
