@@ -30,7 +30,13 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
                     throw new Error('Failed to fetch form data');
                 }
                 const formData = await response.json();
-                setTimeSlotsForDates(formData.timeSlotsForDates || {});
+                // Assuming formData contains a dates array with nested timeSlots
+                // Adjust this according to your actual data structure
+                const timeSlotsMapping = {};
+                formData.dates.forEach(dateObj => {
+                    timeSlotsMapping[dateObj.date] = dateObj.timeSlots || [];
+                });
+                setTimeSlotsForDates(timeSlotsMapping);
             } catch (error) {
                 console.error('Error fetching form data:', error);
             }
