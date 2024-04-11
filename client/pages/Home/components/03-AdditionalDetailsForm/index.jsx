@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import styles from './AdditionalDetailsForm.module.css';
 
 {/* Form Capture Field Options */}
-const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initialAdditionalFields, infoType, setInfoType, updateAdditionalFields }) => {
+const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initialAdditionalFields, infoType, setInfoType, updateAdditionalFields, updateGlobalPayloadState }) => {
     const [additionalFields, setAdditionalFields] = useState(initialAdditionalFields);
     const [newField, setNewField] = useState('');
 
@@ -38,10 +38,10 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                 if (!response.ok) {
                     throw new Error('Failed to update form infoType');
                 }
+                onNext(); // Move this inside the try block after checking response.ok
             } catch (error) {
                 console.error('Error updating form infoType:', error);
             }
-            onNext();
         } else if (type === 'extended') {
             console.log(`Updating form with ID: ${formId}`); // Added line to log formId
             try {
@@ -61,6 +61,10 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                 console.error('Error updating form infoType:', error);
             }
         }
+        // Update the global payload with infoType
+        updateGlobalPayloadState({
+            infoType: type,
+        });
     };
 
     {/* Adds Additional Fields to the Form and Pushes to next Sign Up Form */}
@@ -83,6 +87,10 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
         } catch (error) {
             console.error('Error updating form:', error);
         }
+        // Update the global payload with additionalFields
+        updateGlobalPayloadState({
+            additionalFields: additionalFields,
+        });
     };
 
     {/* Adds a Field to the Form */}

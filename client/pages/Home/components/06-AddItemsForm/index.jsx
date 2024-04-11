@@ -10,7 +10,7 @@ const formatTime = (time) => {
     return `${formattedHours}:${minutes} ${period}`;
 };
 
-const AddItemsForm = ({ onNext, onBack, formId }) => {
+const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
     console.log('Form ID:', formId);
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({});
     const [newItem, setNewItem] = useState({}); // Now an object
@@ -33,7 +33,13 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                     throw new Error('Failed to fetch form data');
                 }
                 const formData = await response.json();
-                setTimeSlotsForDates(formData.timeSlotsForDates || {});
+                // Assuming formData contains a dates array with nested timeSlots
+                // Adjust this according to your actual data structure
+                const timeSlotsMapping = {};
+                formData.dates.forEach(dateObj => {
+                    timeSlotsMapping[dateObj.date] = dateObj.timeSlots || [];
+                });
+                setTimeSlotsForDates(timeSlotsMapping);
             } catch (error) {
                 console.error('Error fetching form data:', error);
             }
@@ -63,10 +69,8 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
             if (!updatedSlots[date][slotIndex]) {
                 updatedSlots[date][slotIndex] = { items: [], isSaved: false };
             }
-            const items = updatedSlots[date][slotIndex].items || [];
-            items.push({ name: newItemName, slots: slots });
-            updatedSlots[date][slotIndex] = { ...updatedSlots[date][slotIndex], items, isSaved: true };
-            return updatedSlots;
+            updatedState.dates[date].timeSlots[slotIndex].items.push({ name: itemName, slots: numberOfSlots });
+            return updatedState;
         });
     };
 
@@ -119,10 +123,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
             if (isMounted) {
                 // Clean-up actions if needed
             }
-        }
-        return () => {
-            isMounted = false; // Set flag to false when component unmounts
-        };
+        });
     };
 
     const displayData = async () => {
