@@ -19,6 +19,9 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
     const [selectedSlotIndex, setSelectedSlotIndex] = useState(null);
     const [displayItemsAndSlots, setDisplayItemsAndSlots] = useState({});
     const [itemsAndSlots, setItemsAndSlots] = useState(null);
+    const [isEditMode, setIsEditMode] = useState({});
+    const [initialItem, setInitialItem] = useState({});
+    const [currentItem, setCurrentItem] = useState({});
 
     // Fetch form data on component mount or formId change
     useEffect(() => {
@@ -44,7 +47,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
     }, [newItem]);
 
     const addItemToSlot = (date, slotIndex) => {
-        const newItemName = newItem[`${date}-${slotIndex}`] || '';
+        const newItemName = currentItem[`${date}-${slotIndex}`] || '';
         const slots = numberOfSlots[`${date}-${slotIndex}`] || 0;
         if (!newItemName || slots <= 0) {
             console.error('Invalid item name or number of slots');
@@ -89,7 +92,7 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                     'Content-Type': 'application/json',
                 },
                 body: JSON.stringify({ 
-                    items: [newItem[`${date}-${slotIndex}`]],
+                    items: [currentItem[`${date}-${slotIndex}`]],
                     slots: [numberOfSlots[`${date}-${slotIndex}`]] 
                 }), // Adjusted to send newItem as an array of items
             });
@@ -102,12 +105,13 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                     const updatedSlots = { ...prev };
                     if (updatedSlots[date] && updatedSlots[date][slotIndex]) {
                         updatedSlots[date][slotIndex].isSaved = true;
-                        updatedSlots[date][slotIndex].items = [{ name: newItem[`${date}-${slotIndex}`], slots: numberOfSlots[`${date}-${slotIndex}`] }];
+                        updatedSlots[date][slotIndex].items = [{ name: currentItem[`${date}-${slotIndex}`], slots: numberOfSlots[`${date}-${slotIndex}`] }];
                     }
                     return updatedSlots;
                 });
-                setNewItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
+                setCurrentItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
                 setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: 0 }));
+                setIsEditMode(prev => ({ ...prev, [`${date}-${slotIndex}`]: false }));
             }
         } catch (error) {
             console.error('Error saving items:', error);
@@ -154,10 +158,21 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
         }
     }, [timeSlotsForDates]);
 
+    const toggleEditMode = (date, slotIndex) => {
+        const currentSlot = timeSlotsForDates[date]?.[slotIndex];
+        if (currentSlot && currentSlot.items.length > 0) {
+            const currentItem = currentSlot.items[0]; // Assuming you're editing the first item
+            setInitialItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: currentItem.name }));
+            setCurrentItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: currentItem.name }));
+            setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: currentItem.slots }));
+        }
+        setIsEditMode(prev => ({ ...prev, [`${date}-${slotIndex}`]: !prev[`${date}-${slotIndex}`] }));
+    };
+
     const handleInputChange = (event, key, isItem) => {
         const value = event.target.value;
         if (isItem) {
-            setNewItem(prev => ({ ...prev, [key]: value }));
+            setCurrentItem(prev => ({ ...prev, [key]: value }));
         } else {
             setNumberOfSlots(prev => ({ ...prev, [key]: parseInt(value, 10) || 0 }));
         }
@@ -182,26 +197,27 @@ const AddItemsForm = ({ onNext, onBack, formId }) => {
                                 <td>{date}</td>
                                 <td>{`${formatTime(slot.startTime)} - ${formatTime(slot.endTime)}`}</td>
                                 <td>
-                                    {slot.isSaved ? (
-                                        slot.items.map((item, index) => (
-                                            <div key={index}>
-                                                {item.name} - {item.slots} slots
-                                            </div>
-                                        ))
+                                    {slot.isSaved && !isEditMode[`${date}-${slotIndex}`] ? (
+                                        <>
+                                            {slot.items.map((item, index) => (
+                                                <div key={index}>
+                                                    {item.name} - {item.slots} slots
+                                                </div>
+                                            ))}
+                                            <button onClick={() => toggleEditMode(date, slotIndex)}>Edit</button>
+                                        </>
                                     ) : (
                                         <>
                                             <input 
-                                                value={newItem[`${date}-${slotIndex}`] || ''} 
+                                                value={currentItem[`${date}-${slotIndex}`] || ''} 
                                                 onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, true)} 
-                                                placeholder="Add New Item" 
                                             />
                                             <input 
                                                 type="number"
                                                 value={numberOfSlots[`${date}-${slotIndex}`] || ''} 
                                                 onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, false)} 
-                                                placeholder="Number of Slots" 
                                             />
-                                            <button onClick={() => addItemToSlot(date, slotIndex)}>Add New Item</button>
+                                            <button onClick={() => { addItemToSlot(date, slotIndex); toggleEditMode(date, slotIndex); }}>Save</button>
                                         </>
                                     )}
                                 </td>
