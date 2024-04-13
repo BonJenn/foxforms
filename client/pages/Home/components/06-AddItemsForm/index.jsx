@@ -123,7 +123,7 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
             if (isMounted) {
                 // Clean-up actions if needed
             }
-        });
+        }
     };
 
     const displayData = async () => {

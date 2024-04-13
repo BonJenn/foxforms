@@ -18,15 +18,22 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
         };
     }, [additionalFields, updateAdditionalFields]);
 
-
+    useEffect(() => {
+        if (infoType) { // Check if infoType is not null or undefined
+            updateGlobalPayloadState({
+                infoType: infoType,
+            });
+        }
+    }, [infoType, updateGlobalPayloadState]);
 
     {/* Determine the infoType of the form */}
     const handleSubmit = async (type) => {
+        console.log(`infoType before setting: ${infoType}`);
         setInfoType(type);
-        // Add a fetch request here for 'basic' similar to 'extended'
-        if (type === 'basic') {
+        console.log(`infoType after setting: ${type}`);
+        if (type === 'basic' || type === 'extended') {
             try {
-                const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+                const response = await fetch(`http://localhost:5174/forms/${formId}/`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -38,33 +45,14 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                 if (!response.ok) {
                     throw new Error('Failed to update form infoType');
                 }
-                onNext(); // Move this inside the try block after checking response.ok
-            } catch (error) {
-                console.error('Error updating form infoType:', error);
-            }
-        } else if (type === 'extended') {
-            console.log(`Updating form with ID: ${formId}`); // Added line to log formId
-            try {
-                const response = await fetch(`http://localhost:5174/forms/${formId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        infoType: type,
-                    }),
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to update form infoType');
+                console.log(`infoType ${type} successfully written to the backend for formId: ${formId}`);
+                if (type === 'basic') {
+                    onNext();
                 }
             } catch (error) {
                 console.error('Error updating form infoType:', error);
             }
         }
-        // Update the global payload with infoType
-        updateGlobalPayloadState({
-            infoType: type,
-        });
     };
 
     {/* Adds Additional Fields to the Form and Pushes to next Sign Up Form */}
