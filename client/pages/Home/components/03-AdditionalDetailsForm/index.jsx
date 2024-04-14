@@ -74,6 +74,7 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
             if (!response.ok) {
                 throw new Error('Failed to update form');
             }
+            console.log('Successfully written to the backend');
             onNext(); // Assumes onNext navigates to the next form component
             updateGlobalPayloadState({
                 additionalFields: additionalFields,

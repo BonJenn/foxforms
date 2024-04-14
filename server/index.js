@@ -117,18 +117,19 @@ app.get('/forms/:id', async (req, res) => {
 app.put('/forms/:formId', async (req, res) => {
     console.log("Received infoType:", req.body.infoType); // Add this line
     const { formId } = req.params;
-    const updates = req.body; // This should include the structured payload with nested items and slots
+    const { additionalFields, infoType, ...updates } = req.body; // Destructure additionalFields and infoType from the updates
 
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        // Adjust this section to handle nested structure
-        // Example: Assuming 'updates' contains dates with nested timeSlots, which in turn contain nested items
-        const processedUpdates = processNestedStructure(updates); // You need to implement this function based on your data structure
+        let processedUpdates = processNestedStructure(updates); // Process the rest of the updates
 
-        if (updates.infoType) {
-            processedUpdates.infoType = updates.infoType;
-            console.log(`infoType ${updates.infoType} successfully written to the backend for formId: ${formId}`);
+        // Directly include additionalFields and infoType if present
+        if (additionalFields) {
+            processedUpdates.additionalFields = additionalFields;
+        }
+        if (infoType) {
+            processedUpdates.infoType = infoType;
         }
 
         const updateResult = await formsCollection.updateOne(
