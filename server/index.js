@@ -153,6 +153,8 @@ app.put('/forms/:formId/updateInfoType', async (req, res) => {
     const { formId } = req.params;
     const { infoType } = req.body;
 
+    const formsCollection = dbClient.db('FoxForms').collection('Forms');
+
     try {
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId) },
