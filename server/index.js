@@ -66,8 +66,6 @@ app.post('/forms', async (req, res) => {
             additionalFields,
             dates, // Add dates here
             hasTimeSlots, // Add this line
-            items, // Add items here
-            slots, // Add slots here
             createdAt: new Date(),
         };
 
@@ -117,61 +115,27 @@ app.get('/forms/:id', async (req, res) => {
 app.put('/forms/:formId', async (req, res) => {
     console.log("Received infoType:", req.body.infoType); // Add this line
     const { formId } = req.params;
-    const { additionalFields, infoType, ...updates } = req.body; // Destructure additionalFields and infoType from the updates
+    const { dates } = req.body; // Assuming the nested structure is under 'dates'
 
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        let processedUpdates = processNestedStructure(updates); // Process the rest of the updates
-
-        // Directly include additionalFields and infoType if present
-        if (additionalFields) {
-            processedUpdates.additionalFields = additionalFields;
-        }
-        if (infoType) {
-            processedUpdates.infoType = infoType;
-        }
-
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId) },
-            { $set: processedUpdates }
+            { $set: { "dates": dates } } // Update the 'dates' field with the nested structure
         );
 
         if (updateResult.matchedCount === 0) {
             return res.status(404).send('Form not found.');
         }
 
-        res.status(200).json({ message: 'Form updated successfully with nested items and slots.' });
+        res.status(200).json({ message: 'Form updated successfully.' });
     } catch (error) {
         console.error("Failed to update form:", error);
         res.status(500).json({ error: "An error occurred while updating the form." });
     }
 });
 
-// Testing Saving InfoType
-
-app.put('/forms/:formId/updateInfoType', async (req, res) => {
-    const { formId } = req.params;
-    const { infoType } = req.body;
-
-    const formsCollection = dbClient.db('FoxForms').collection('Forms');
-
-    try {
-        const updateResult = await formsCollection.updateOne(
-            { _id: new ObjectId(formId) },
-            { $set: { infoType } }
-        );
-
-        if (updateResult.matchedCount === 0) {
-            return res.status(404).send('Form not found.');
-        }
-
-        res.status(200).json({ message: 'infoType updated successfully.' });
-    } catch (error) {
-        console.error("Failed to update infoType:", error);
-        res.status(500).json({ error: "An error occurred while updating the infoType." });
-    }
-});
 
 app.put('/forms/:formId/items', async (req, res) => {
     const { formId } = req.params;
@@ -343,13 +307,13 @@ app.get('/time-slots', async (req, res) => {
 
 app.post('/forms/:formId/time-slots/items', async (req, res) => {
     const { formId } = req.params;
-    const { date, timeSlot, itemName, slots } = req.body;
+    const { date, timeSlot, item, slots } = req.body; // Adjusted to match the instructions
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId), [`dates.${date}.timeSlots.${timeSlot}`]: { $exists: true } },
-            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { name: itemName, slots: slots } } }
+            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { ...item, slots: slots } } }
         );
 
         if (updateResult.matchedCount === 0) {

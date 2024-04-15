@@ -53,9 +53,9 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
     }, [newItem]);
 
     const addItemToSlot = (date, slotIndex) => {
-        const newItemName = currentItem[`${date}-${slotIndex}`] || '';
+        const itemName = currentItem[`${date}-${slotIndex}`] || '';
         const slots = numberOfSlots[`${date}-${slotIndex}`] || 0;
-        if (!newItemName || slots <= 0) {
+        if (!itemName || slots <= 0) {
             console.error('Invalid item name or number of slots');
             return; // Early return if invalid input
         }
@@ -69,10 +69,11 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
             if (!updatedSlots[date][slotIndex]) {
                 updatedSlots[date][slotIndex] = { items: [], isSaved: false };
             }
-            updatedState.dates[date].timeSlots[slotIndex].items.push({ name: itemName, slots: numberOfSlots });
-            return updatedState;
+            updatedSlots[date][slotIndex].items.push({ name: itemName, slots: slots });
+            return updatedSlots;
         });
     };
+    
 
     const removeItemFromSlot = (date, slotIndex, itemIndex) => {
         setTimeSlotsForDates(prev => {
@@ -90,32 +91,41 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
     const saveItemsToBackend = async (date, slotIndex) => {
         let isMounted = true;
         try {
+            // Construct the payload in the expected format
+            const payload = {
+                dates: [
+                    {
+                        date: date,
+                        timeSlots: [
+                            {
+                                startTime: timeSlotsForDates[date][slotIndex].startTime, // Assuming startTime is available
+                                endTime: timeSlotsForDates[date][slotIndex].endTime, // Assuming endTime is available
+                                items: [
+                                    {
+                                        name: currentItem[`${date}-${slotIndex}`],
+                                        slots: numberOfSlots[`${date}-${slotIndex}`]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            };
+
             const response = await fetch(`http://localhost:5174/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ 
-                    items: [currentItem[`${date}-${slotIndex}`]],
-                    slots: [numberOfSlots[`${date}-${slotIndex}`]] 
-                }), // Adjusted to send newItem as an array of items
+                body: JSON.stringify(payload),
             });
+
             if (!response.ok) {
                 throw new Error('Failed to save items');
             }
             if (isMounted) {
                 console.log('Items saved to backend');
-                setTimeSlotsForDates(prev => {
-                    const updatedSlots = { ...prev };
-                    if (updatedSlots[date] && updatedSlots[date][slotIndex]) {
-                        updatedSlots[date][slotIndex].isSaved = true;
-                        updatedSlots[date][slotIndex].items = [{ name: currentItem[`${date}-${slotIndex}`], slots: numberOfSlots[`${date}-${slotIndex}`] }];
-                    }
-                    return updatedSlots;
-                });
-                setCurrentItem(prev => ({ ...prev, [`${date}-${slotIndex}`]: '' }));
-                setNumberOfSlots(prev => ({ ...prev, [`${date}-${slotIndex}`]: 0 }));
-                setIsEditMode(prev => ({ ...prev, [`${date}-${slotIndex}`]: false }));
+                // Update local state as necessary
             }
         } catch (error) {
             console.error('Error saving items:', error);
@@ -224,7 +234,7 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
                                 </td>
                                 <td>
                                     {!slot.isSaved && (
-                                        <button onClick={() => saveItemsToBackend(date, slotIndex)}>Save</button>
+                                        <button onClick={() => saveItemsToBackend(date, slotIndex)}>Save to Backend</button>
                                     )}
                                 </td>
                             </tr>
