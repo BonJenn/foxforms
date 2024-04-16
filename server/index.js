@@ -115,14 +115,22 @@ app.get('/forms/:id', async (req, res) => {
 app.put('/forms/:formId', async (req, res) => {
     console.log("Received infoType:", req.body.infoType); // Add this line
     const { formId } = req.params;
-    const { dates } = req.body; // Assuming the nested structure is under 'dates'
+    const { additionalFields, infoType, dates } = req.body; // Include additionalFields and infoType in the destructuring
 
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
+        const updateDoc = {
+            $set: {
+                ...(additionalFields && { additionalFields: additionalFields }),
+                ...(infoType && { infoType: infoType }),
+                ...(dates && { dates: dates })
+            }
+        };
+
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId) },
-            { $set: { "dates": dates } } // Update the 'dates' field with the nested structure
+            updateDoc
         );
 
         if (updateResult.matchedCount === 0) {
