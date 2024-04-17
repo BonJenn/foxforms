@@ -3,6 +3,7 @@ import { Analytics } from "@vercel/analytics/react"
 import Home from '../client/pages/Home/Home.jsx'
 import Onboarding from '../client/pages/Onboarding/Onboarding.jsx'
 import Dashboard from '../client/pages/Dashboard/Dashboard.jsx'
+import Header from '../client/pages/Home/Header.jsx';
 import { useCookies } from 'react-cookie';
 import './App.css';
 
@@ -17,6 +18,7 @@ function App() {
         <BrowserRouter>
       <>
         <Analytics />
+        <Header authToken={authToken} />
         <Routes>
           <Route path="/" element={<Home />} />
           {authToken && <Route path="/dashboard" element={<Dashboard />} />}
