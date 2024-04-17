@@ -12,23 +12,88 @@
   }
   
   .modalContent {
+    position: relative;
+    display: flex;
+    flex-direction: column; 
     background-color: white;
+    justify-content: center;
+    align-items: center;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    width: 90%;
+    width: 100%;
     max-width: 500px; /* Adjust based on your design */
     color: black; /* Make text color black */
+    padding-top: 20px; /* Add top padding to ensure content does not overlap with the button */
+    padding-right: 20px; /* Add right padding for symmetry */
+  }
+
+  .modalContent h2 {
+    font-size: 50px;
+    text-align: center;
+    color: #000;
+    margin-bottom: 20px;
+  }
+
+  .modalContent form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Ensure form takes full width of modalContent */
+  }
+
+  .modalContent form input {
+    margin: 10px 0; /* Increase spacing around inputs */
+    padding: 15px 20px; /* Increase padding for larger touch area */
+    font-size: 18px; /* Increase font size for better readability */
+    border: 2px solid #ccc; /* Define a border to make it stand out */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    width: 80%; /* Adjust width to ensure inputs are centered within the form */
+    box-sizing: border-box; /* Ensure padding doesn't affect the overall width */
+  }
+
+  .modalContent label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .modalContent form input:focus {
+    border-color: #007bff; /* Highlight focus with a different border color */
+    box-shadow: 0 0 0 2px rgba(0,123,255,0.5); /* Add a subtle focus glow */
+    outline: none; /* Remove default focus outline */
+  }
+
+  .modalContent form .signUpButton {
+    margin-top: 20px; /* Maintain spacing above the sign-up button */
+    padding: 15px 20px; /* Larger padding for a bigger button */
+    font-size: 24px !important; /* Increase font size for better readability, ensure it's applied */
+    border-radius: 8px; /* Rounded corners for the button */
+    width: auto; /* Adjust width as needed */
+    cursor: pointer; /* Ensure it's clear the button is clickable */
+    border: none; /* Remove default border */
+    background-color: #000; /* Button color is black */
+    color: white; /* Button text color is white for contrast */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+  }
+
+  .modalContent form .signUpButton:hover {
+    background-color: #333; /* Darken button on hover for feedback */
   }
 
   .closeButton {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 0;
+    right: 0;
+    margin-top: 5px; /* Adjust as needed */
+    margin-right: 5px; /* Adjust as needed */
+    z-index: 10; /* Ensure it's above other content */
     border: none;
     background: none;
     cursor: pointer;
     font-size: 1.5rem;
+    color: black;
   }
 
   @keyframes fadeIn {

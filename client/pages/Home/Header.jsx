@@ -7,6 +7,10 @@ import Login from '../Auth/Login';
 const Header = ({ authToken }) => {
     const [showComponent, setShowComponent] = useState('');
 
+    const handleCloseModal = () => {
+        setShowComponent('');
+    };
+
     console.log('Current showComponent state:', showComponent);
 
     return (
@@ -22,8 +26,8 @@ const Header = ({ authToken }) => {
                     <Link to="/logout">Logout</Link>
                 )}
             </div>
-            {showComponent === 'signup' && <SignUp onClose={() => setShowComponent('')} />}
-            {showComponent === 'login' && <Login onClose={() => setShowComponent('')} />}
+            {showComponent === 'signup' && <SignUp onClose={handleCloseModal} />}
+            {showComponent === 'login' && <Login onClose={handleCloseModal} />}
         </div>
     );
 }

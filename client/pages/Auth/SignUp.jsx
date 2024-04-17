@@ -50,18 +50,15 @@ const SignUp = ({ onClose }) => {
         {error && <p>{error}</p>}
         <form onSubmit={handleSignUp}>
           <label>
-            Email:
-            <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
           </label>
           <label>
-            Password:
-            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+            <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
           </label>
           <label>
-            Confirm Password:
-            <input type="password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
+            <input type="password" placeholder="Confirm Password" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} required />
           </label>
-          <button type="submit">Sign Up</button>
+          <button type="submit" className={styles.signUpButton}>Sign Up</button>
         </form>
       </div>
     </div>
