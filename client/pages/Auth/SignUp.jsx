@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './SignUp.module.css'; // Import your styles
 
 const SignUp = ({ onClose }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
@@ -27,7 +27,7 @@ const SignUp = ({ onClose }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ username, password }),
       });
 
       if (!response.ok) {
@@ -50,7 +50,7 @@ const SignUp = ({ onClose }) => {
         {error && <p>{error}</p>}
         <form onSubmit={handleSignUp}>
           <label>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
           </label>
           <label>
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />

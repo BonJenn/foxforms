@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './Login.module.css'; // Ensure styles match the necessary updates
 
 const Login = ({ onClose }) => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const modalRef = useRef(null);
@@ -29,22 +29,35 @@ const Login = ({ onClose }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     e.stopPropagation();
-  
-    const response = await fetch('http://localhost:5174/login', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
-  
-    const data = await response.json();
-    if (response.ok) {
-      console.log('Login was successful', data);
-      onClose();
-    } else {
-      console.error('Login failed', data.message);
-      setError(data.message || 'Unknown error occurred');
+
+    try {
+      const response = await fetch('http://localhost:5174/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log('Login was successful', data);
+        // Adjusting to check if data.username exists instead of data.user and data.user.username
+        if (data.username) {
+          localStorage.setItem('username', data.username);
+          onClose();
+        } else {
+          // Handle the case where username is not present in the response
+          console.error('Login successful, but the username is missing in the response');
+          setError('Login successful, but the username is missing in the response');
+        }
+      } else {
+        console.error('Login failed', data.message);
+        setError(data.message || 'Unknown error occurred');
+      }
+    } catch (error) {
+      console.error('An error occurred during login', error);
+      setError('An error occurred during login');
     }
   };
   
@@ -57,7 +70,7 @@ const Login = ({ onClose }) => {
         {error && <p>{error}</p>}
         <form onSubmit={handleLogin}>
           <label>
-            <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+            <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
           </label>
           <label>
             <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />

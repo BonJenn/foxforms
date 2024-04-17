@@ -12,7 +12,7 @@ const FormWizard = () => {
     const [formId, setFormId] = useState(null); 
     const [additionalFields, setAdditionalFields] = useState([]);
     const [infoType, setInfoType] = useState('');
-    const [email, setEmail] = useState(''); 
+    const [username, setUsername] = useState(''); 
     const [password, setPassword] = useState(''); 
     const [formName, setFormName] = useState(''); 
     const [customDomain, setCustomDomain] = useState(''); 
@@ -75,7 +75,7 @@ const FormWizard = () => {
                 if (hasSignedUp) {
                     return <AdditionalDetailsForm onNext={nextStep} onBack={() => setCurrentStep(1)} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
                 } else {
-                    return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} email={email} setEmail={setEmail} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
+                    return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} username={username} setUsername={setUsername} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
                 }
             case 3:
                 return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;

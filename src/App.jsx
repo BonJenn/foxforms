@@ -13,12 +13,15 @@ function App() {
   const [ cookies, setCookie, removeCookie ] = useCookies(['user'])
 
   const authToken = cookies.AuthToken
+  const userEmail = cookies.userEmail // Assuming the user's email is stored in a cookie named userEmail
+
+  console.log('authToken in App:', authToken);
 
   return (
         <BrowserRouter>
       <>
         <Analytics />
-        <Header authToken={authToken} />
+        <Header authToken={authToken} userEmail={userEmail} />
         <Routes>
           <Route path="/" element={<Home />} />
           {authToken && <Route path="/dashboard" element={<Dashboard />} />}

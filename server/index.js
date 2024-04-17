@@ -195,24 +195,24 @@ app.delete('/forms/:id', async (req, res) => {
 
 // User authentication endpoints
 app.post('/signup', async (req, res) => {
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
-        const existingUser = await usersCollection.findOne({ email: email.toLowerCase() });
+        const existingUser = await usersCollection.findOne({ username: username.toLowerCase() });
         if (existingUser) {
             return res.status(409).send('User already exists. Please login.');
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = {
-            email: email.toLowerCase(),
+            username: username.toLowerCase(),
             passwordHash: hashedPassword,
             createdAt: new Date(),
         };
 
         const result = await usersCollection.insertOne(newUser);
-        const token = jwt.sign({ userId: result.insertedId, email: newUser.email }, JWT_SECRET, { expiresIn: '24h' });
+        const token = jwt.sign({ userId: result.insertedId, username: newUser.username }, JWT_SECRET, { expiresIn: '24h' });
 
         res.status(201).json({ token, userId: result.insertedId });
     } catch (error) {
@@ -223,13 +223,13 @@ app.post('/signup', async (req, res) => {
 
 
 app.post('/login', async (req, res) => {
-    const { email, password } = req.body;
-    console.log('Attempting to log in with:', email); // Log the email attempting to log in
+    const { username, password } = req.body;
+    console.log('Attempting to log in with:', username); // Log the username attempting to log in
 
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
-        const user = await usersCollection.findOne({ email: email.toLowerCase() });
+        const user = await usersCollection.findOne({ username: username.toLowerCase() });
         console.log('User found:', !!user); // Log whether the user was found
 
         if (!user) {
@@ -243,8 +243,8 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials.' });
         }
 
-        const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
-        res.status(200).json({ token, userId: user._id });
+        const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
+        res.status(200).json({ token, userId: user._id, username: user.username });
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).json({ message: "Error logging in user." });
@@ -259,14 +259,14 @@ app.put('/user/:id', async (req, res) => {
     if (!/^[0-9a-fA-F]{24}$/.test(id)) {
         return res.status(400).send("Invalid ID format");
     }
-    const { email, password } = req.body;
+    const { username, password } = req.body;
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
         const updateDoc = {
             $set: {
-                ...(email && { email: email.toLowerCase() }),
+                ...(username && { username: username.toLowerCase() }),
                 ...(hashedPassword && { passwordHash: hashedPassword }),
             },
         };
