@@ -8,9 +8,9 @@ const Login = ({ onClose }) => {
   const modalRef = useRef(null);
 
   const handleClose = (e) => {
-    console.log('Document clicked');
+    console.log('Click detected at:', e.target);
     if (modalRef.current && !modalRef.current.contains(e.target)) {
-      console.log('Click outside modal detected');
+      console.log('Outside click detected');
       onClose();
     } else {
       console.log('Click inside modal or modalRef not set');
@@ -28,25 +28,27 @@ const Login = ({ onClose }) => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    try {
-      const response = await fetch('/api/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await response.json();
-      if (data.success) {
-        onClose();
-      } else {
-        setError(data.message);
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
+    e.stopPropagation();
+  
+    const response = await fetch('http://localhost:5174/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, password }),
+    });
+  
+    const data = await response.json();
+    if (response.ok) {
+      console.log('Login was successful', data);
+      onClose();
+    } else {
+      console.error('Login failed', data.message);
+      setError(data.message || 'Unknown error occurred');
     }
   };
-
+  
+  
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContent} ref={modalRef}>

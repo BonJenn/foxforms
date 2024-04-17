@@ -224,28 +224,34 @@ app.post('/signup', async (req, res) => {
 
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
+    console.log('Attempting to log in with:', email); // Log the email attempting to log in
+
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const user = await usersCollection.findOne({ email: email.toLowerCase() });
+        console.log('User found:', !!user); // Log whether the user was found
 
         if (!user) {
-            return res.status(401).send('User does not exist.');
+            return res.status(401).json({ message: 'User does not exist.' });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.passwordHash);
+        console.log('Password correct:', isPasswordCorrect); // Log the result of the password check
+
         if (!isPasswordCorrect) {
-            return res.status(400).send('Invalid credentials.');
+            return res.status(400).json({ message: 'Invalid credentials.' });
         }
 
         const token = jwt.sign({ userId: user._id, email: user.email }, JWT_SECRET, { expiresIn: '24h' });
-
         res.status(200).json({ token, userId: user._id });
     } catch (error) {
         console.error("Error logging in user:", error);
-        res.status(500).json({ error: "Error logging in user." });
+        res.status(500).json({ message: "Error logging in user." });
     }
 });
+
+
 
 app.put('/user/:id', async (req, res) => {
     const { id } = req.params;
