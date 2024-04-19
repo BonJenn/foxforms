@@ -3,10 +3,12 @@ import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
 import SignUp from '../Auth/SignUp';
 import Login from '../Auth/Login';
+import { useCookies } from 'react-cookie'; // Added for cookie management
 
 const Header = ({ authToken }) => { // Removed userEmail prop
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
+    const [cookies, setCookie, removeCookie] = useCookies(['authToken']); // Added for cookie management
 
     useEffect(() => {
         // This effect runs whenever authToken changes
@@ -14,7 +16,11 @@ const Header = ({ authToken }) => { // Removed userEmail prop
     }, [authToken]); // Dependency array, re-run effect when authToken changes
 
     useEffect(() => {
-        console.log('authToken:', authToken);
+        if (authToken) {
+            console.log('authToken:', authToken);
+        } else {
+            console.log('Warning: authToken is undefined.');
+        }
     }, [authToken]); // This effect will run whenever authToken changes
 
     useEffect(() => {
@@ -23,6 +29,11 @@ const Header = ({ authToken }) => { // Removed userEmail prop
 
     const handleCloseModal = () => {
         setShowComponent('');
+    };
+
+    const handleLogout = () => {
+        removeCookie('authToken', { path: '/' }); // Remove authToken cookie
+        // Redirect to home or update the state to reflect the logout
     };
 
     console.log('Current showComponent state:', showComponent);
@@ -39,7 +50,7 @@ const Header = ({ authToken }) => { // Removed userEmail prop
                 ) : (
                     <div style={{ float: 'right' }}> {/* Adjusted for username display */}
                         <span>{username}</span> {/* Display username */}
-                        <Link to="/logout">Logout</Link>
+                        <Link to="/logout" onClick={handleLogout}>Logout</Link>
                     </div>
                 )}
             </div>

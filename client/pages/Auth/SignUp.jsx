@@ -30,15 +30,21 @@ const SignUp = ({ onClose }) => {
         body: JSON.stringify({ username, password }),
       });
 
+      if (response.status === 409) {
+        setError('Username or email already exists. Please try another.');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Failed to sign up');
       }
 
       const data = await response.json();
       console.log('Signed up successfully:', data);
-      // Potentially call onClose() after successful sign-up
+      // Handle successful sign-up (e.g., redirect to login page or auto-login)
     } catch (error) {
       console.error('Error during sign-up:', error);
+      setError(error.message || 'An unexpected error occurred during sign-up.');
     }
   };
 

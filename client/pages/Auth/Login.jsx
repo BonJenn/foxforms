@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Login.module.css'; // Ensure styles match the necessary updates
+import { useCookies } from 'react-cookie';
 
 const Login = ({ onClose }) => {
+  const [cookies, setCookie] = useCookies(['authToken']);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -42,15 +44,9 @@ const Login = ({ onClose }) => {
       const data = await response.json();
       if (response.ok) {
         console.log('Login was successful', data);
-        // Adjusting to check if data.username exists instead of data.user and data.user.username
-        if (data.username) {
-          localStorage.setItem('username', data.username);
-          onClose();
-        } else {
-          // Handle the case where username is not present in the response
-          console.error('Login successful, but the username is missing in the response');
-          setError('Login successful, but the username is missing in the response');
-        }
+        console.log('authToken:', data.token); // Log the authToken here
+        setCookie('authToken', data.token, { path: '/' }); // Set authToken cookie
+        onClose();
       } else {
         console.error('Login failed', data.message);
         setError(data.message || 'Unknown error occurred');
