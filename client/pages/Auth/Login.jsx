@@ -44,14 +44,13 @@ const Login = ({ onClose }) => {
       const data = await response.json();
       if (response.ok) {
         console.log('Login was successful', data);
-        if (data.username) {
-          localStorage.setItem('username', data.username);
-          localStorage.setItem('token', data.token); // Assuming data.token is your token
-          dispatch({ type: 'SET_LOGIN_STATUS', payload: true }); // Dispatch login status action
+        if (data.authToken) { // Assuming the response contains an authToken
+          localStorage.setItem('token', data.authToken); // Make sure this key matches what you use elsewhere
+          dispatch({ type: 'SET_LOGIN_STATUS', payload: true });
           onClose();
         } else {
-          console.error('Login successful, but the username is missing in the response');
-          setError('Login successful, but the username is missing in the response');
+          console.error('Login successful, but the authToken is missing in the response');
+          setError('Login successful, but the authToken is missing in the response');
         }
       } else {
         console.error('Login failed', data.message);

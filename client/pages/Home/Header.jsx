@@ -3,15 +3,11 @@ import styles from './Header.module.css';
 import { Link } from 'react-router-dom';
 import SignUp from '../Auth/SignUp';
 import Login from '../Auth/Login';
-import { useCookies } from 'react-cookie'; // Added for cookie management
-import { useDispatch, useSelector } from 'react-redux'; // Import useDispatch and useSelector
 
 const Header = ({ authToken, userEmail }) => { // Add userEmail prop
     const [showComponent, setShowComponent] = useState('');
-    const [username, setUsername] = useState(''); // Initialize username as empty
-    const [cookies, setCookie, removeCookie] = useCookies(['authToken']); // Added for cookie management
-    const dispatch = useDispatch(); // Use useDispatch hook
-    const isLoggedIn = useSelector((state) => state.user.isLoggedIn); // Use useSelector to access login status
+    const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
+    const isLoggedIn = !!authToken; // Define isLoggedIn based on authToken
 
     useEffect(() => {
         // This effect runs whenever authToken changes
@@ -48,13 +44,6 @@ const Header = ({ authToken, userEmail }) => { // Add userEmail prop
         setShowComponent('');
     };
 
-    const handleLogout = () => {
-        removeCookie('authToken', { path: '/' }); // Remove authToken cookie
-        removeCookie('userEmail', { path: '/' }); // Remove userEmail cookie
-        dispatch({ type: 'SET_LOGIN_STATUS', payload: false }); // Dispatch logout action with correct action type and payload
-        // Redirect to home or update the state to reflect the logout
-    };
-
     console.log('Current showComponent state:', showComponent);
 
     const fetchUsername = async () => {
@@ -87,9 +76,9 @@ const Header = ({ authToken, userEmail }) => { // Add userEmail prop
                         <button onClick={(e) => { e.stopPropagation(); setShowComponent('login'); }}>Login</button>
                     </>
                 ) : (
-                    <div style={{ float: 'right' }}>
-                        <span>{username}</span> {/* Display username from state */}
-                        <Link to="/logout" onClick={handleLogout}>Logout</Link>
+                    <div style={{ float: 'right' }}> {/* Adjusted for username display */}
+                        <span>{username}</span> {/* Display username */}
+                        <Link to="/logout">Logout</Link>
                     </div>
                 )}
             </div>

@@ -212,9 +212,11 @@ app.post('/signup', async (req, res) => {
         };
 
         const result = await usersCollection.insertOne(newUser);
+        console.log("JWT_SECRET:", process.env.JWT_SECRET); // Verify JWT_SECRET is available
+        console.log("Generating token for user:", { userId: result.insertedId, username: newUser.username });
         const token = jwt.sign({ userId: result.insertedId, username: newUser.username }, JWT_SECRET, { expiresIn: '24h' });
-
-        res.status(201).json({ token, userId: result.insertedId, username: newUser.username }); // Include username in the response
+        console.log("Generated authToken for signup:", token); // Add this line
+        res.status(201).json({ authToken: token, userId: result.insertedId, username: newUser.username });
     } catch (error) {
         console.error("Error signing up user:", error);
         res.status(500).json({ error: "Error signing up user." });
@@ -243,8 +245,11 @@ app.post('/login', async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials.' });
         }
 
+        console.log("JWT_SECRET:", process.env.JWT_SECRET); // Verify JWT_SECRET is available
+        console.log("Generating token for user:", { userId: user._id, username: user.username });
         const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
-        res.status(200).json({ token, userId: user._id, username: user.username }); // Include username in the response
+        console.log("Generated authToken for login:", token); // Add this line
+        res.status(200).json({ authToken: token, userId: user._id, username: user.username });
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).json({ message: "Error logging in user." });

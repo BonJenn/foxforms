@@ -32,6 +32,11 @@ const SignUp = ({ onClose }) => {
         body: JSON.stringify({ username, password }),
       });
 
+      if (response.status === 409) {
+        setError('Username or email already exists. Please try another.');
+        return;
+      }
+
       if (!response.ok) {
         if (response.status === 409) {
           setError('User already exists. Please login.');
@@ -41,13 +46,16 @@ const SignUp = ({ onClose }) => {
       }
 
       const data = await response.json();
-      console.log('Signed up successfully:', data);
-      localStorage.setItem('authToken', data.token); // Assuming the token is returned from your API
-      localStorage.setItem('username', data.username); // Store username in localStorage
-      dispatch({ type: 'SET_LOGIN_STATUS', payload: true }); // Update login status
-      onClose(); // Call onClose() after successful sign-up
+      console.log('Response data:', data); // Log the entire response object
+      if (data.authToken) {
+        localStorage.setItem('token', data.authToken); // Store authToken in local storage
+        onClose(); // Call this after successful signup
+      } else {
+        console.error('SignUp successful, but the authToken is missing in the response');
+      }
     } catch (error) {
       console.error('Error during sign-up:', error);
+      setError(error.message || 'An unexpected error occurred during sign-up.');
     }
   };
 
