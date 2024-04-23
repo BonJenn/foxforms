@@ -49,6 +49,7 @@ const SignUp = ({ onClose }) => {
       console.log('Response data:', data); // Log the entire response object
       if (data.authToken) {
         localStorage.setItem('token', data.authToken); // Store authToken in local storage
+        dispatch({ type: 'SET_LOGIN_STATUS', payload: true }); // Update isLoggedIn state
         onClose(); // Call this after successful signup
       } else {
         console.error('SignUp successful, but the authToken is missing in the response');

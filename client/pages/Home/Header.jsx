@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from './Header.module.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import SignUp from '../Auth/SignUp';
 import Login from '../Auth/Login';
 
-const Header = ({ authToken, userEmail }) => { // Add userEmail prop
+const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
     const [isLoggedIn, setIsLoggedIn] = useState(false); // Define isLoggedIn state and its updater function setIsLoggedIn
+    const navigate = useNavigate();
 
     useEffect(() => {
         // This effect runs whenever authToken changes
@@ -35,7 +36,7 @@ const Header = ({ authToken, userEmail }) => { // Add userEmail prop
     useEffect(() => {
       const token = localStorage.getItem('token');
       setIsLoggedIn(!!token);
-    }, []);
+    }, [authToken]); // Add authToken as a dependency to re-run the effect when it changes
 
     useEffect(() => {
       if (isLoggedIn) {
@@ -71,6 +72,16 @@ const Header = ({ authToken, userEmail }) => { // Add userEmail prop
         }
     };
 
+    const handleLogout = () => {
+        console.log('Token before removal:', localStorage.getItem('token'));
+        localStorage.removeItem('token');
+        console.log('Token removed');
+        setIsLoggedIn(false); // Add this line to update isLoggedIn state
+        if (typeof onLogout === 'function') {
+            onLogout();
+        }
+        navigate('/');
+    };
     return (
         <div className={styles.headerStyle}>
             <h1>Fox<span>Forms</span></h1>
@@ -83,7 +94,7 @@ const Header = ({ authToken, userEmail }) => { // Add userEmail prop
                 ) : (
                     <div style={{ float: 'right' }}> {/* Adjusted for username display */}
                         <span>{username}</span> {/* Display username */}
-                        <Link to="/logout">Logout</Link>
+                        <button onClick={handleLogout}>Logout</button>
                     </div>
                 )}
             </div>
