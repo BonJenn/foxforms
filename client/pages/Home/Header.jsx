@@ -7,7 +7,7 @@ import Login from '../Auth/Login';
 const Header = ({ authToken, userEmail }) => { // Add userEmail prop
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
-    const isLoggedIn = !!authToken; // Define isLoggedIn based on authToken
+    const [isLoggedIn, setIsLoggedIn] = useState(false); // Define isLoggedIn state and its updater function setIsLoggedIn
 
     useEffect(() => {
         // This effect runs whenever authToken changes
@@ -31,6 +31,11 @@ const Header = ({ authToken, userEmail }) => { // Add userEmail prop
     useEffect(() => {
       console.log('isLoggedIn state:', isLoggedIn);
     }, [isLoggedIn]);
+
+    useEffect(() => {
+      const token = localStorage.getItem('token');
+      setIsLoggedIn(!!token);
+    }, []);
 
     useEffect(() => {
       if (isLoggedIn) {
