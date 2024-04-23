@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './SignUp.module.css'; // Import your styles
+import { useDispatch } from 'react-redux'; // Import useDispatch
 
 const SignUp = ({ onClose }) => {
   const [username, setUsername] = useState('');
@@ -7,6 +8,7 @@ const SignUp = ({ onClose }) => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const modalRef = useRef(null);
+  const dispatch = useDispatch(); // Initialize useDispatch
 
   const handleClose = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -31,12 +33,19 @@ const SignUp = ({ onClose }) => {
       });
 
       if (!response.ok) {
-        throw new Error('Failed to sign up');
+        if (response.status === 409) {
+          setError('User already exists. Please login.');
+        } else {
+          throw new Error('Failed to sign up');
+        }
       }
 
       const data = await response.json();
       console.log('Signed up successfully:', data);
-      // Potentially call onClose() after successful sign-up
+      localStorage.setItem('authToken', data.token); // Assuming the token is returned from your API
+      localStorage.setItem('username', data.username); // Store username in localStorage
+      dispatch({ type: 'SET_LOGIN_STATUS', payload: true }); // Update login status
+      onClose(); // Call onClose() after successful sign-up
     } catch (error) {
       console.error('Error during sign-up:', error);
     }

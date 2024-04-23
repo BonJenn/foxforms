@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Login.module.css'; // Ensure styles match the necessary updates
+import { useDispatch } from 'react-redux'; // Import useDispatch
 
 const Login = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const modalRef = useRef(null);
+  const dispatch = useDispatch(); // Use useDispatch hook
 
   const handleClose = (e) => {
     console.log('Click detected at:', e.target);
@@ -42,12 +44,12 @@ const Login = ({ onClose }) => {
       const data = await response.json();
       if (response.ok) {
         console.log('Login was successful', data);
-        // Adjusting to check if data.username exists instead of data.user and data.user.username
         if (data.username) {
           localStorage.setItem('username', data.username);
+          localStorage.setItem('token', data.token); // Assuming data.token is your token
+          dispatch({ type: 'SET_LOGIN_STATUS', payload: true }); // Dispatch login status action
           onClose();
         } else {
-          // Handle the case where username is not present in the response
           console.error('Login successful, but the username is missing in the response');
           setError('Login successful, but the username is missing in the response');
         }

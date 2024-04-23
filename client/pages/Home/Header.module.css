@@ -26,6 +26,10 @@
 .headerStyle button {
     margin: 10px;
 }
+
+.headerStyle span {
+    color: black;
+}
 /* iPad Screen */
 @media screen and (max-width: 1024px) {
     .headerStyle {

@@ -214,7 +214,7 @@ app.post('/signup', async (req, res) => {
         const result = await usersCollection.insertOne(newUser);
         const token = jwt.sign({ userId: result.insertedId, username: newUser.username }, JWT_SECRET, { expiresIn: '24h' });
 
-        res.status(201).json({ token, userId: result.insertedId });
+        res.status(201).json({ token, userId: result.insertedId, username: newUser.username }); // Include username in the response
     } catch (error) {
         console.error("Error signing up user:", error);
         res.status(500).json({ error: "Error signing up user." });
@@ -244,7 +244,7 @@ app.post('/login', async (req, res) => {
         }
 
         const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
-        res.status(200).json({ token, userId: user._id, username: user.username });
+        res.status(200).json({ token, userId: user._id, username: user.username }); // Include username in the response
     } catch (error) {
         console.error("Error logging in user:", error);
         res.status(500).json({ message: "Error logging in user." });
@@ -389,6 +389,34 @@ function processNestedStructure(updates) {
     return processedUpdates;
 }
 
+app.get('/get-username', async (req, res) => {
+    // Extract the token from the Authorization header
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).send('Unauthorized: No token provided');
+    }
+
+    const token = authHeader.split(' ')[1];
+    console.log("Token received:", token); // Add this line to log the received token
+    try {
+        // Assuming you have a function to verify the token and extract user information
+        // This could be a JWT token verification or a custom token validation logic
+        const decoded = jwt.verify(token, JWT_SECRET);
+        const userId = decoded.userId;
+
+        // Assuming you have a users collection and each user document has a username field
+        const user = await dbClient.db('FoxForms').collection('Users').findOne({ _id: new ObjectId(userId) });
+        if (!user) {
+            return res.status(404).send('User not found');
+        }
+
+        // Send back the username
+        res.json({ username: user.username });
+    } catch (error) {
+        console.error('Error fetching username:', error);
+        res.status(500).send('Internal server error');
+    }
+});
 
 // Error handling middleware
 app.use((err, req, res, next) => {

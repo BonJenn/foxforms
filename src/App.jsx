@@ -16,7 +16,6 @@ function App() {
   const userEmail = cookies.userEmail // Assuming the user's email is stored in a cookie named userEmail
 
   console.log('authToken in App:', authToken);
-
   return (
         <BrowserRouter>
       <>
