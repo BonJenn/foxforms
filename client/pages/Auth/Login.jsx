@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './Login.module.css'; // Ensure styles match the necessary updates
 import { useDispatch } from 'react-redux'; // Import useDispatch
 import { useAuth } from '../../../src/context/AuthContext.jsx'; // Import useAuth
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Login = ({ onClose }) => {
   const [username, setUsername] = useState('');
@@ -10,6 +11,7 @@ const Login = ({ onClose }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch(); // Use useDispatch hook
   const { login } = useAuth(); // Get login method from useAuth
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleClose = (e) => {
     console.log('Click detected at:', e.target);
@@ -49,6 +51,7 @@ const Login = ({ onClose }) => {
         if (data.authToken) { // Assuming the response contains an authToken
           localStorage.setItem('token', data.authToken); // Make sure this key matches what you use elsewhere
           login(); // Call login from useAuth
+          navigate('/dashboard'); // Navigate to the dashboard after successful login
           onClose();
         } else {
           console.error('Login successful, but the authToken is missing in the response');
