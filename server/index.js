@@ -433,3 +433,27 @@ app.use((err, req, res, next) => {
 connectToDatabase().then(() => {
     app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
 }).catch(console.error);
+
+// Dashboard specific route
+app.get('/dashboard/:authToken', async (req, res) => {
+    const { authToken } = req.params;
+
+    try {
+        // Verify the token
+        const decoded = jwt.verify(authToken, JWT_SECRET);
+        const userId = decoded.userId;
+
+        // Fetch user-specific data
+        const userData = await dbClient.db('FoxForms').collection('Users').findOne({ _id: new ObjectId(userId) });
+
+        if (!userData) {
+            return res.status(404).json({ message: 'User not found.' });
+        }
+
+        // Serve the dashboard content for the user
+        res.json({ message: 'Dashboard content', data: userData });
+    } catch (error) {
+        console.error('Error fetching dashboard data:', error);
+        res.status(500).json({ message: 'Failed to fetch dashboard data.' });
+    }
+});

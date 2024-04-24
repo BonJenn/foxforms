@@ -38,7 +38,10 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
     useEffect(() => {
       const token = localStorage.getItem('token');
       // setIsLoggedIn(!!token);
-      if (!!token) login(); // Adjusted to use login function from useAuth
+      if (!!token) {
+        login();
+        navigate('/dashboard'); // Redirect to dashboard after login
+      }
     }, [authToken]); // Add authToken as a dependency to re-run the effect when it changes
 
     useEffect(() => {

@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import styles from './SignUp.module.css'; // Import your styles
 import { useDispatch } from 'react-redux'; // Import useDispatch
 import { useAuth } from '../../../src/context/AuthContext.jsx'; // Adjust the import path as necessary
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const SignUp = ({ onClose }) => {
   const [username, setUsername] = useState('');
@@ -11,6 +12,7 @@ const SignUp = ({ onClose }) => {
   const modalRef = useRef(null);
   const dispatch = useDispatch(); // Initialize useDispatch
   const { login } = useAuth(); // Get login method from useAuth
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleClose = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -52,6 +54,7 @@ const SignUp = ({ onClose }) => {
       if (data.authToken) {
         localStorage.setItem('token', data.authToken); // Store authToken in local storage
         login(); // Call login from useAuth
+        navigate('/dashboard'); // Navigate to the dashboard after successful signup
         onClose(); // Call this after successful signup
       } else {
         console.error('SignUp successful, but the authToken is missing in the response');

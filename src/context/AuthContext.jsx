@@ -5,8 +5,15 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
     const [authState, setAuthState] = useState({
         isLoggedIn: false,
-        login: () => setAuthState((prevState) => ({ ...prevState, isLoggedIn: true })),
-        logout: () => setAuthState((prevState) => ({ ...prevState, isLoggedIn: false })),
+        authToken: null,
+        login: (token) => {
+            setAuthState((prevState) => ({ ...prevState, isLoggedIn: true, authToken: token }));
+            // Navigate to user-specific dashboard URL
+        },
+        logout: () => {
+            setAuthState((prevState) => ({ ...prevState, isLoggedIn: false, authToken: null }));
+            // Navigate to login or home page
+        },
     });
 
     return (
