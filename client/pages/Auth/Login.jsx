@@ -51,7 +51,7 @@ const Login = ({ onClose }) => {
         if (data.authToken) { // Assuming the response contains an authToken
           localStorage.setItem('token', data.authToken); // Make sure this key matches what you use elsewhere
           login(); // Call login from useAuth
-          navigate('/dashboard'); // Navigate to the dashboard after successful login
+          navigate(`/dashboard/${data.authToken}`); // Navigate to the dashboard after successful login with authToken
           onClose();
         } else {
           console.error('Login successful, but the authToken is missing in the response');

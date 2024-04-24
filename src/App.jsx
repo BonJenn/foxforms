@@ -24,7 +24,7 @@ function App() {
 
   const handleLogout = () => {
     removeCookie('AuthToken');
-    setLogoutMessage('You have been successfully logged out.');
+   
     // Add any additional logout logic here
   };
 
