@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './Login.module.css'; // Ensure styles match the necessary updates
 import { useDispatch } from 'react-redux'; // Import useDispatch
+import { useAuth } from '../../../src/context/AuthContext.jsx'; // Import useAuth
 
 const Login = ({ onClose }) => {
   const [username, setUsername] = useState('');
@@ -8,6 +9,7 @@ const Login = ({ onClose }) => {
   const [error, setError] = useState('');
   const modalRef = useRef(null);
   const dispatch = useDispatch(); // Use useDispatch hook
+  const { login } = useAuth(); // Get login method from useAuth
 
   const handleClose = (e) => {
     console.log('Click detected at:', e.target);
@@ -46,7 +48,7 @@ const Login = ({ onClose }) => {
         console.log('Login was successful', data);
         if (data.authToken) { // Assuming the response contains an authToken
           localStorage.setItem('token', data.authToken); // Make sure this key matches what you use elsewhere
-          dispatch({ type: 'SET_LOGIN_STATUS', payload: true });
+          login(); // Call login from useAuth
           onClose();
         } else {
           console.error('Login successful, but the authToken is missing in the response');

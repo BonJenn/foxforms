@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from './SignUp.module.css'; // Import your styles
 import { useDispatch } from 'react-redux'; // Import useDispatch
+import { useAuth } from '../../../src/context/AuthContext.jsx'; // Adjust the import path as necessary
 
 const SignUp = ({ onClose }) => {
   const [username, setUsername] = useState('');
@@ -9,6 +10,7 @@ const SignUp = ({ onClose }) => {
   const [error, setError] = useState('');
   const modalRef = useRef(null);
   const dispatch = useDispatch(); // Initialize useDispatch
+  const { login } = useAuth(); // Get login method from useAuth
 
   const handleClose = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
@@ -49,7 +51,7 @@ const SignUp = ({ onClose }) => {
       console.log('Response data:', data); // Log the entire response object
       if (data.authToken) {
         localStorage.setItem('token', data.authToken); // Store authToken in local storage
-        dispatch({ type: 'SET_LOGIN_STATUS', payload: true }); // Update isLoggedIn state
+        login(); // Call login from useAuth
         onClose(); // Call this after successful signup
       } else {
         console.error('SignUp successful, but the authToken is missing in the response');

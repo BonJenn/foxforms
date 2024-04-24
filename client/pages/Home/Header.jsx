@@ -3,12 +3,14 @@ import styles from './Header.module.css';
 import { Link, useNavigate } from 'react-router-dom';
 import SignUp from '../Auth/SignUp';
 import Login from '../Auth/Login';
+import { useAuth } from '../../../src/context/AuthContext.jsx'; // Corrected import path
 
 const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
-    const [isLoggedIn, setIsLoggedIn] = useState(false); // Define isLoggedIn state and its updater function setIsLoggedIn
+    // const [isLoggedIn, setIsLoggedIn] = useState('false'); // Define isLoggedIn state and its updater function setIsLoggedIn
     const navigate = useNavigate();
+    const { isLoggedIn, login, logout } = useAuth(); // Corrected useAuth usage
 
     useEffect(() => {
         // This effect runs whenever authToken changes
@@ -35,7 +37,8 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
 
     useEffect(() => {
       const token = localStorage.getItem('token');
-      setIsLoggedIn(!!token);
+      // setIsLoggedIn(!!token);
+      if (!!token) login(); // Adjusted to use login function from useAuth
     }, [authToken]); // Add authToken as a dependency to re-run the effect when it changes
 
     useEffect(() => {
@@ -76,7 +79,8 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
         console.log('Token before removal:', localStorage.getItem('token'));
         localStorage.removeItem('token');
         console.log('Token removed');
-        setIsLoggedIn(false); // Add this line to update isLoggedIn state
+        // setIsLoggedIn(false); // Add this line to update isLoggedIn state
+        logout(); // Adjusted to use logout function from useAuth
         if (typeof onLogout === 'function') {
             onLogout();
         }
