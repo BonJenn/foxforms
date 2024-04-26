@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import BasicInfoForm from '../01-BasicInfoForm';
-import AccountSetupForm from '../02-AccountSetupForm';
+import React, { useState, useEffect } from 'react';
+import AccountSetupForm from '../01-AccountSetupForm';
+import BasicInfoForm from '../02-BasicInfoForm';
 import AdditionalDetailsForm from '../03-AdditionalDetailsForm';
 import DateSelectionForm from '../04-DateSelectionForm';
 import TimeSlotForm from '../05-TimeSlotForm';
@@ -15,6 +15,7 @@ const FormWizard = () => {
     const [username, setUsername] = useState(''); 
     const [password, setPassword] = useState(''); 
     const [formName, setFormName] = useState(''); 
+    const [userId, setUserId] = useState('');
     const [customDomain, setCustomDomain] = useState(''); 
     const [lastStep, setLastStep] = useState(null); 
     const [hasSignedUp, setHasSignedUp] = useState(false); 
@@ -70,13 +71,10 @@ const FormWizard = () => {
         
         switch (currentStep) {
             case 1:
-                return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
+                return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} username={username} setUsername={setUsername} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 2:
-                if (hasSignedUp) {
-                    return <AdditionalDetailsForm onNext={nextStep} onBack={() => setCurrentStep(1)} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
-                } else {
-                    return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} username={username} setUsername={setUsername} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
-                }
+                console.log('Current userId:', userId);
+                return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} userId={userId} />;
             case 3:
                 return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 4:
@@ -94,6 +92,9 @@ const FormWizard = () => {
     
     };
 
+    useEffect(() => {
+        setUserId(globalPayload.userId); // Update userId from globalPayload when it changes
+    }, [globalPayload.userId]);
 
     return (
         <div>

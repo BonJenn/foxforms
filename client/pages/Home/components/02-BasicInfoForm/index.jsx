@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import styles from './BasicInfoForm.module.css';
 
-const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId, updateGlobalPayloadState }) => { // Modified to accept onBack, onNext props
+const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDomain, setCustomDomain, formId, updateGlobalPayloadState, userId }) => { // Modified to accept onBack, onNext props
     // Removed the useState for formData
     const [errorMessage, setErrorMessage] = useState('');
 
@@ -15,8 +15,10 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
         const url = formId ? `http://localhost:5174/forms/${formId}` : 'http://localhost:5174/forms';
         const method = formId ? 'PUT' : 'POST';
 
+        console.log('Sending form with userId:', userId); // Added to ensure userId is not empty before sending
+
         try {
-        
+            console.log('Form submission payload:', { title: formName, customDomain: customDomain, userId: userId }); // Added to log the payload before sending
             const response = await fetch(url, {
                 method: method,
                 headers: {
@@ -25,6 +27,7 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
                 body: JSON.stringify({
                     title: formName,
                     customDomain: customDomain,
+                    userId: userId, // Ensure this is correctly fetched and included
                 }),
             });
             if (!response.ok) {
@@ -43,6 +46,7 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
             updateGlobalPayloadState({
                 title: formName, // Assuming formName holds the title input
                 customDomain: customDomain, // Directly using the customDomain state
+                userId: userId
             });
 
         } catch (error) {

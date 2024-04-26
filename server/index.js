@@ -47,7 +47,12 @@ app.get('/', (req, res) => {
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots, items, slots } = req.body; // Include items and slots in the destructuring
+    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots, items, slots, userId } = req.body; // Include items and slots in the destructuring
+    console.log('Received userId:', userId); // Log the received userId
+    if (!userId) {
+        console.error("UserId is missing in the request");
+        return res.status(400).json({ error: "UserId is required" });
+    }
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -66,7 +71,9 @@ app.post('/forms', async (req, res) => {
             additionalFields,
             dates, // Add dates here
             hasTimeSlots, // Add this line
+            userId, // Add userId to the form object
             createdAt: new Date(),
+     
         };
 
         const result = await formsCollection.insertOne(newForm);

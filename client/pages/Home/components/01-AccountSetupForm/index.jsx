@@ -37,9 +37,10 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
 
             const data = await response.json();
             console.log('User signed up successfully:', data);
-            // Update the global payload with username
+            // Update the global payload with username and userId
             updateGlobalPayloadState({
                 username: username, // Directly using the username state
+                userId: data.userId // Ensure this is correctly received and set
             });
             onNext(); // Proceed to the next form or action
         } catch (error) {
