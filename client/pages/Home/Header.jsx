@@ -5,30 +5,52 @@ import SignUp from '../Auth/SignUp';
 import Login from '../Auth/Login';
 import { useAuth } from '../../../src/context/AuthContext.jsx'; // Corrected import path
 
-const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
+const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogin from props
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
     // const [isLoggedIn, setIsLoggedIn] = useState('false'); // Define isLoggedIn state and its updater function setIsLoggedIn
     const navigate = useNavigate();
     const { isLoggedIn, login, logout } = useAuth(); // Corrected useAuth usage
 
+    const onLogin = async (username, password) => {
+        try {
+            const response = await fetch('http://localhost:5174/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username, password }),
+            });
+            const data = await response.json();
+            if (response.ok) {
+                localStorage.setItem('authToken', data.authToken);
+                login(); // Assuming this updates your auth state
+                navigate('/dashboard');
+            } else {
+                console.error('Login failed:', data.message);
+            }
+        } catch (error) {
+            console.error('An error occurred during login:', error);
+        }
+    };
+
     useEffect(() => {
         // This effect runs whenever authToken changes
         if (isLoggedIn) {
             fetchUsername(); // Call fetchUsername when the component mounts if the user is logged in
         }
-    }, [authToken, isLoggedIn]); // Dependency array, re-run effect when authToken or isLoggedIn changes
+    }, [cookieAuthToken, isLoggedIn]); // Dependency array, re-run effect when authToken or isLoggedIn changes
 
     useEffect(() => {
-        if (authToken) {
-            console.log('authToken:', authToken);
+        if (cookieAuthToken) {
+            console.log('authToken:', cookieAuthToken);
         } else {
             console.log('Warning: authToken is undefined.');
         }
-    }, [authToken]); // This effect will run whenever authToken changes
+    }, [cookieAuthToken]); // This effect will run whenever authToken changes
 
     useEffect(() => {
-        console.log('Initial authToken:', authToken);
+        console.log('Initial authToken:', cookieAuthToken);
     }, []); // Empty dependency array, runs only on component mount
 
     useEffect(() => {
@@ -36,13 +58,15 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
     }, [isLoggedIn]);
 
     useEffect(() => {
-      const token = localStorage.getItem('token');
-      // setIsLoggedIn(!!token);
-      if (!!token) {
-        login();
+      const token = localStorage.getItem('authToken'); // Ensure this key matches what you've used in `setItem`
+      console.log('Retrieved token from localStorage:', token);
+      if (token) {
+        login(); // Assuming login updates the isLoggedIn state
         navigate('/dashboard'); // Redirect to dashboard after login
+      } else {
+        console.log('No authToken found in localStorage');
       }
-    }, [authToken]); // Add authToken as a dependency to re-run the effect when it changes
+    }, [cookieAuthToken]); // Consider if cookieAuthToken is necessary here or it should be another state
 
     useEffect(() => {
       if (isLoggedIn) {
@@ -59,7 +83,7 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
     console.log('Current showComponent state:', showComponent);
 
     const fetchUsername = async () => {
-        const token = localStorage.getItem('token'); // Ensure this matches how you set the token on login
+        const token = localStorage.getItem('authToken'); // Ensure this matches how you set the token on login
         if (!token) {
             console.log('No token found in localStorage');
             return;
@@ -79,8 +103,8 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
     };
 
     const handleLogout = () => {
-        console.log('Token before removal:', localStorage.getItem('token'));
-        localStorage.removeItem('token');
+        console.log('Token before removal:', localStorage.getItem('authToken'));
+        localStorage.removeItem('authToken');
         console.log('Token removed');
         // setIsLoggedIn(false); // Add this line to update isLoggedIn state
         logout(); // Adjusted to use logout function from useAuth
@@ -89,6 +113,7 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
         }
         navigate('/');
     };
+    console.log('onLogin function:', onLogin);
     return (
         <div className={styles.headerStyle}>
             <h1>Fox<span>Forms</span></h1>
@@ -106,7 +131,7 @@ const Header = ({ authToken, userEmail, onLogout }) => { // Add userEmail prop
                 )}
             </div>
             {showComponent === 'signup' && <SignUp onClose={handleCloseModal} />}
-            {showComponent === 'login' && <Login onClose={handleCloseModal} />}
+            {showComponent === 'login' && <Login onClose={handleCloseModal} handleLogin={onLogin} />}
         </div>
     );
 }

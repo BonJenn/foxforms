@@ -90,10 +90,11 @@ app.post('/forms', async (req, res) => {
 });
 
 app.get('/forms', async (req, res) => {
+    const { userId } = req.query; // Retrieve userId from query parameters
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        const allForms = await formsCollection.find({}).toArray();
+        const allForms = await formsCollection.find({ userId: userId }).toArray(); // Filter forms by userId
         res.json(allForms);
     } catch (error) {
         console.error("Failed to fetch forms:", error);
@@ -457,8 +458,11 @@ app.get('/dashboard/:authToken', async (req, res) => {
             return res.status(404).json({ message: 'User not found.' });
         }
 
+        // Fetch forms specific to the user
+        const userForms = await dbClient.db('FoxForms').collection('Forms').find({ userId: userId }).toArray();
+
         // Serve the dashboard content for the user
-        res.json({ message: 'Dashboard content', data: userData });
+        res.json({ message: 'Dashboard content', data: userData, forms: userForms });
     } catch (error) {
         console.error('Error fetching dashboard data:', error);
         res.status(500).json({ message: 'Failed to fetch dashboard data.' });

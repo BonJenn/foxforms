@@ -52,7 +52,7 @@ const SignUp = ({ onClose }) => {
       const data = await response.json();
       console.log('Response data:', data); // Log the entire response object
       if (data.authToken) {
-        localStorage.setItem('token', data.authToken); // Store authToken in local storage
+        localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
         login(); // Call login from useAuth
         navigate(`/dashboard/${data.authToken}`); // Navigate to the dashboard after successful signup
         onClose(); // Call this after successful signup

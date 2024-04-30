@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'; // Import useDispatch
 import { useAuth } from '../../../src/context/AuthContext.jsx'; // Import useAuth
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const Login = ({ onClose }) => {
+const Login = ({ onClose, handleLogin }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -31,42 +31,6 @@ const Login = ({ onClose }) => {
       document.removeEventListener('click', handleClose);
     };
   }, []);
-
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    try {
-      const response = await fetch('http://localhost:5174/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-      });
-
-      const data = await response.json();
-      if (response.ok) {
-        console.log('Login was successful', data);
-        if (data.authToken) { // Assuming the response contains an authToken
-          localStorage.setItem('token', data.authToken); // Make sure this key matches what you use elsewhere
-          login(); // Call login from useAuth
-          navigate(`/dashboard/${data.authToken}`); // Navigate to the dashboard after successful login with authToken
-          onClose();
-        } else {
-          console.error('Login successful, but the authToken is missing in the response');
-          setError('Login successful, but the authToken is missing in the response');
-        }
-      } else {
-        console.error('Login failed', data.message);
-        setError(data.message || 'Unknown error occurred');
-      }
-    } catch (error) {
-      console.error('An error occurred during login', error);
-      setError('An error occurred during login');
-    }
-  };
-  
   
   return (
     <div className={styles.modalBackground}>
@@ -74,7 +38,7 @@ const Login = ({ onClose }) => {
         <button onClick={onClose} className={styles.closeButton}>X</button>
         <h2>Login</h2>
         {error && <p>{error}</p>}
-        <form onSubmit={handleLogin}>
+        <form onSubmit={(e) => { e.preventDefault(); handleLogin(username, password); }}>
           <label>
             <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} required />
           </label>

@@ -1,46 +1,99 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom'
-import { Analytics } from "@vercel/analytics/react"
-import Home from '../client/pages/Home/Home.jsx'
-import Onboarding from '../client/pages/Onboarding/Onboarding.jsx'
-import Dashboard from '../client/pages/Dashboard/Dashboard.jsx'
+import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { Analytics } from "@vercel/analytics/react";
+import Home from '../client/pages/Home/Home.jsx';
+import Onboarding from '../client/pages/Onboarding/Onboarding.jsx';
+import Dashboard from '../client/pages/Dashboard/Dashboard.jsx';
 import Header from '../client/pages/Home/Header.jsx';
 import { useCookies } from 'react-cookie';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import FormWizard from '../client/pages/Home/components/FormWizard'; // Adjust the path as necessary
 
 function App() {
-  const [ cookies, setCookie, removeCookie ] = useCookies(['AuthToken'])
+  const [cookies, setCookie, removeCookie] = useCookies(['AuthToken']);
   const [logoutMessage, setLogoutMessage] = useState('');
+  const [cookieAuthToken, setCookieAuthToken] = useState(null);
   const navigate = useNavigate(); // Added useNavigate here
 
   React.useEffect(() => { // Added useEffect to check authToken and navigate
-    console.log('Cookies AuthToken:', cookies.AuthToken); // Check if `cookies.AuthToken` is defined
+    console.log('Cookies object:', cookies); // Log the entire cookies object for debugging
     if (cookies.AuthToken) {
-      console.log('Navigating to dashboard...'); // Confirm this line is reached
+      console.log('Navigating to dashboard...');
       navigate(`/dashboard/${cookies.AuthToken}`); // Navigate to a user-specific dashboard
+    } else {
+      console.log('AuthToken not available:', cookies.AuthToken); // Log when AuthToken is not available
     }
-  }, [cookies.AuthToken, navigate]);
+  }, [cookies.AuthToken, navigate]); // Dependencies that trigger the effect
+
+  useEffect(() => {
+    const token = localStorage.getItem('authToken');
+    if (token) {
+      setCookieAuthToken(token);
+      navigate(`/dashboard/${token}`);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cookieAuthToken) {
+      console.log('Navigating to dashboard...');
+      navigate(`/dashboard/${cookieAuthToken}`);
+    }
+  }, [cookieAuthToken, navigate]);
+
+  useEffect(() => {
+    if (cookieAuthToken) {
+      setLogoutMessage(''); // Clear logout message when authToken is present
+    }
+  }, [cookieAuthToken]);
 
   const handleLogout = () => {
+    console.log('Removing token from localStorage');
+    localStorage.removeItem('authToken');
+    setCookieAuthToken(null);
+    setLogoutMessage('You have been logged out.');
+    console.log('Navigating to home...');
+    navigate('/');
     removeCookie('AuthToken');
-   
     // Add any additional logout logic here
   };
 
-  const authToken = cookies.AuthToken
-  const userEmail = cookies.userEmail // Assuming the user's email is stored in a cookie named userEmail
+  const handleLogin = async (username, password) => {
+    console.log('Attempting login with:', username, password); // Added for debugging
+    try {
+      const response = await fetch('http://localhost:5174/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        localStorage.setItem('authToken', data.authToken);
+        setCookieAuthToken(data.authToken);
+        setLogoutMessage(''); // Ensure this is cleared here
+        navigate(`/dashboard/${data.authToken}`);
+        console.log('Youre in!');
+      } else {
+        console.error('Login failed:', data.message); // Improved error handling
+      }
+    } catch (error) {
+      console.error('An error occurred during login:', error); // Improved error handling
+    }
+  };
 
-  console.log('authToken in App:', authToken);
+  const userEmail = cookies.userEmail; // Assuming the user's email is stored in a cookie named userEmail
+
+  console.log('authToken in App:', cookieAuthToken); // Log authToken for debugging
   return (
       <>
         <Analytics />
-        <Header authToken={authToken} userEmail={userEmail} onLogout={handleLogout} />
+        <Header authToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} onLogin={handleLogin} />
         {logoutMessage && <div>{logoutMessage}</div>}
         <Routes>
           <Route path="/" element={<Home />} />
-          {authToken && <Route path="/dashboard/:authToken" element={<Dashboard />} />}
-          {authToken && <Route path="/onboarding" element={<Onboarding />} />}
+          {cookieAuthToken && <Route path={`/dashboard/${cookieAuthToken}`} element={<Dashboard />} />}
+          {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
           <Route path="/form-wizard" element={<FormWizard />} />
         </Routes>
       </>

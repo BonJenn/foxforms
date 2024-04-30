@@ -8,7 +8,8 @@ const Dashboard = () => {
 
     useEffect(() => {
         // Fetch the user's forms from the backend
-        fetch('http://localhost:5174/forms')
+        const userId = 'currentUserId'; // Replace 'currentUserId' with the actual current user's ID
+        fetch(`http://localhost:5174/forms?userId=${userId}`)
             .then(response => response.json())
             .then(data => setForms(data))
             .catch(error => console.error('Error fetching forms:', error));
