@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import AccountSetupForm from '../01-AccountSetupForm';
 import BasicInfoForm from '../02-BasicInfoForm';
 import AdditionalDetailsForm from '../03-AdditionalDetailsForm';
@@ -8,7 +9,9 @@ import AddItemsForm from '../06-AddItemsForm';
 import OptionsForm from '../07-OptionsForm';
 
 const FormWizard = () => {
-    const [currentStep, setCurrentStep] = useState(1);
+    const location = useLocation();
+    const skipAccountSetup = location.state?.skipAccountSetup || false;
+    const [currentStep, setCurrentStep] = useState(skipAccountSetup ? 2 : 1);
     const [formId, setFormId] = useState(null); 
     const [additionalFields, setAdditionalFields] = useState([]);
     const [infoType, setInfoType] = useState('');

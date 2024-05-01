@@ -6,6 +6,7 @@ const Dashboard = () => {
     const { userId } = useParams(); // Assuming 'userId' is a route parameter
     const [forms, setForms] = useState([]);
     const navigate = useNavigate();
+    const [showDashboard, setShowDashboard] = useState(true); // State to manage visibility of Dashboard
 
     useEffect(() => {
         // Fetch the user's forms from the backend
@@ -22,18 +23,20 @@ const Dashboard = () => {
 
     return (
         <div className={styles.dashboardContainer}>
-            <h3>DASHBOARD</h3>
-            <button className={styles.newFormButton} onClick={() => navigate(`/form-wizard/${userId}`)}>Make a New Form</button>
-            <div className={styles.formList}>
-         
-                {forms.map(form => (
-                    <div key={form._id} className={styles.formItem}>
-                        <h3>{form.title}</h3>
-                       
-                        {/* Display other form details as needed */}
+            {showDashboard ? (
+                <>
+                    <h3>DASHBOARD</h3>
+                    <button className={styles.newFormButton} onClick={() => { navigate(`/form-wizard/${userId}`, { state: { skipAccountSetup: true } }); setShowDashboard(false); }}>Make a New Form</button>
+                    <div className={styles.formList}>
+                        {forms.map(form => (
+                            <div key={form._id} className={styles.formItem}>
+                                <h3>{form.title}</h3>
+                                {/* Display other form details as needed */}
+                            </div>
+                        ))}
                     </div>
-                ))}
-            </div>
+                </>
+            ) : null}
         </div>
     );
 }
