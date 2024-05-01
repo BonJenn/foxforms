@@ -50,7 +50,7 @@ function App() {
     console.log('Removing token from localStorage');
     localStorage.removeItem('authToken');
     setCookieAuthToken(null);
-    setLogoutMessage('You have been logged out.');
+    setLogoutMessage('Logged out successfully.');
     console.log('Navigating to home...');
     navigate('/');
     removeCookie('AuthToken');
@@ -58,6 +58,7 @@ function App() {
   };
 
   const handleLogin = async (username, password) => {
+    setLogoutMessage(''); // Clear the logout message at the start of the login process
     console.log('Attempting login with:', username, password); // Added for debugging
     try {
       const response = await fetch('http://localhost:5174/login', {
@@ -68,11 +69,12 @@ function App() {
         body: JSON.stringify({ username, password }),
       });
       const data = await response.json();
+      console.log('Response status:', response.status, 'Data:', data); // Add this line for debugging
       if (response.ok) {
         localStorage.setItem('authToken', data.authToken);
-        setCookieAuthToken(data.authToken);
-        setLogoutMessage(''); // Ensure this is cleared here
-        navigate(`/dashboard/${data.authToken}`);
+        setCookieAuthToken(data.authToken, () => {
+          navigate(`/dashboard/${data.authToken}`);
+        });
         console.log('Youre in!');
       } else {
         console.error('Login failed:', data.message); // Improved error handling
@@ -94,7 +96,7 @@ function App() {
           <Route path="/" element={<Home />} />
           {cookieAuthToken && <Route path={`/dashboard/${cookieAuthToken}`} element={<Dashboard />} />}
           {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
-          <Route path="/form-wizard" element={<FormWizard />} />
+          <Route path="/form-wizard/:userId" element={<FormWizard />} />
         </Routes>
       </>
   );

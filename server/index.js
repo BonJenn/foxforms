@@ -462,7 +462,7 @@ app.get('/dashboard/:authToken', async (req, res) => {
         const userForms = await dbClient.db('FoxForms').collection('Forms').find({ userId: userId }).toArray();
 
         // Serve the dashboard content for the user
-        res.json({ message: 'Dashboard content', data: userData, forms: userForms });
+        res.json({ message: 'Dashboard content', data: userData, forms: userForms, formTitles: userForms.map(form => form.title) });
     } catch (error) {
         console.error('Error fetching dashboard data:', error);
         res.status(500).json({ message: 'Failed to fetch dashboard data.' });

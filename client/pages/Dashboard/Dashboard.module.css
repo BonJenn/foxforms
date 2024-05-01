@@ -1,12 +1,23 @@
 .dashboardContainer {
     display: flex;
+    width: 100vw;  /* Ensure it spans the full viewport width */
+    height: 100vh; /* Ensure it spans the full viewport height */
     flex-direction: column;
-    align-items: center;
+    justify-content: top; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
     padding: 20px;
-    background-color: #ff0000;
+    background-color: orange;
+    overflow: auto; /* Allows scrolling if content overflows */
+    padding-top: 200px;
+}
+
+.dashboardContainer h3 {
+    font-size: 50px;
+    color: black;
 }
 
 .formList {
+    background-color: green;
     width: 80%;
     margin-top: 20px;
     background: white;
@@ -17,6 +28,7 @@
 
 .formItem {
     border-bottom: 1px solid #e1e1e1;
+    color: black;
     padding: 10px;
     display: flex;
     justify-content: space-between;
