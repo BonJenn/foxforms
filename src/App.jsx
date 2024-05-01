@@ -96,7 +96,7 @@ function App() {
           <Route path="/" element={<Home />} />
           {cookieAuthToken && <Route path={`/dashboard/${cookieAuthToken}`} element={<Dashboard />} />}
           {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
-          <Route path="/form-wizard/:userId" element={<FormWizard />} />
+          <Route path="/form-wizard/:authToken" element={<FormWizard />} />
         </Routes>
       </>
   );

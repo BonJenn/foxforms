@@ -8,9 +8,8 @@ import TimeSlotForm from '../05-TimeSlotForm';
 import AddItemsForm from '../06-AddItemsForm';
 import OptionsForm from '../07-OptionsForm';
 
-const FormWizard = () => {
+const FormWizard = ({ userId, skipAccountSetup }) => {
     const location = useLocation();
-    const skipAccountSetup = location.state?.skipAccountSetup || false;
     const [currentStep, setCurrentStep] = useState(skipAccountSetup ? 2 : 1);
     const [formId, setFormId] = useState(null); 
     const [additionalFields, setAdditionalFields] = useState([]);
@@ -18,7 +17,7 @@ const FormWizard = () => {
     const [username, setUsername] = useState(''); 
     const [password, setPassword] = useState(''); 
     const [formName, setFormName] = useState(''); 
-    const [userId, setUserId] = useState('');
+    const [userIdState, setUserId] = useState(userId || '');
     const [customDomain, setCustomDomain] = useState(''); 
     const [lastStep, setLastStep] = useState(null); 
     const [hasSignedUp, setHasSignedUp] = useState(false); 
@@ -76,8 +75,8 @@ const FormWizard = () => {
             case 1:
                 return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} username={username} setUsername={setUsername} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 2:
-                console.log('Current userId:', userId);
-                return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} userId={userId} />;
+                console.log('Current userId:', userIdState);
+                return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} userId={userIdState} />;
             case 3:
                 return <AdditionalDetailsForm onNext={nextStep} onBack={() => { setLastStep(3); setCurrentStep(1); }} formId={formId} additionalFields={additionalFields} updateAdditionalFields={updateAdditionalFields} infoType={infoType} setInfoType={setInfoType} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 4:
