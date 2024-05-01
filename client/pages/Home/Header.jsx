@@ -24,8 +24,8 @@ const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogi
             const data = await response.json();
             if (response.ok) {
                 localStorage.setItem('authToken', data.authToken);
-                login(); // Assuming this updates your auth state
-                navigate('/dashboard');
+                login(data.authToken); // Pass authToken to login function
+                navigate(`/dashboard/${data.authToken}`); // Navigate with authToken in URL
             } else {
                 console.error('Login failed:', data.message);
             }
@@ -61,7 +61,7 @@ const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogi
       const token = localStorage.getItem('authToken'); // Ensure this key matches what you've used in `setItem`
       console.log('Retrieved token from localStorage:', token);
       if (token) {
-        login(); // Assuming login updates the isLoggedIn state
+        login(token); // Assuming login updates the isLoggedIn state
         navigate('/dashboard'); // Redirect to dashboard after login
       } else {
         console.log('No authToken found in localStorage');
