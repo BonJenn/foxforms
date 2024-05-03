@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { Analytics } from "@vercel/analytics/react";
 import Home from '../client/pages/Home/Home.jsx';
 import Onboarding from '../client/pages/Onboarding/Onboarding.jsx';
@@ -8,12 +8,15 @@ import { useCookies } from 'react-cookie';
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import FormWizard from '../client/pages/Home/components/FormWizard'; // Adjust the path as necessary
+import { AuthProvider, useAuth } from './context/AuthContext'; // Import AuthProvider and useAuth
+import ErrorBoundary from '../client/pages/Home/components/ErrorBoundary.jsx';
 
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['AuthToken']);
   const [logoutMessage, setLogoutMessage] = useState('');
   const [cookieAuthToken, setCookieAuthToken] = useState(null);
   const navigate = useNavigate(); // Added useNavigate here
+  const { userId } = useParams(); // Retrieve userId from URL
 
   React.useEffect(() => { // Added useEffect to check authToken and navigate
     console.log('Cookies object:', cookies); // Log the entire cookies object for debugging
@@ -89,15 +92,24 @@ function App() {
   console.log('authToken in App:', cookieAuthToken); // Log authToken for debugging
   return (
       <>
+        <AuthProvider>
         <Analytics />
+        
+        <ErrorBoundary>
         <Header authToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} onLogin={handleLogin} />
-        {logoutMessage && <div>{logoutMessage}</div>}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          {cookieAuthToken && <Route path={`/dashboard/${cookieAuthToken}`} element={<Dashboard />} />}
-          {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
-          <Route path="/form-wizard/:authToken" element={<FormWizard />} />
-        </Routes>
+          {logoutMessage && <div>{logoutMessage}</div>}
+          {/* Wrap the entire app with AuthProvider */}
+            <Routes>
+            
+              <Route path="/" element={<Home />} />
+              {cookieAuthToken && <Route path={`/dashboard/${cookieAuthToken}`} element={<Dashboard />} />}
+              {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
+              <Route path="/form-wizard/:authToken" element={<FormWizard />} />
+         
+            </Routes>
+          </ErrorBoundary>
+          
+        </AuthProvider>
       </>
   );
 }

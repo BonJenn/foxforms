@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAuth } from '../../../../../src/context/AuthContext.jsx'; // Import useAuth
 import AccountSetupForm from '../01-AccountSetupForm';
 import BasicInfoForm from '../02-BasicInfoForm';
 import AdditionalDetailsForm from '../03-AdditionalDetailsForm';
@@ -8,8 +9,11 @@ import TimeSlotForm from '../05-TimeSlotForm';
 import AddItemsForm from '../06-AddItemsForm';
 import OptionsForm from '../07-OptionsForm';
 
-const FormWizard = ({ userId, skipAccountSetup }) => {
+const FormWizard = ({ authToken, skipAccountSetup }) => {
     const location = useLocation();
+    const { authState } = useAuth(); // Use useAuth to access authState
+    console.log('Auth State:', authState); // Debugging line to check authState
+    const userId = authState.userId; // Access userId from authState
     const [currentStep, setCurrentStep] = useState(skipAccountSetup ? 2 : 1);
     const [formId, setFormId] = useState(null); 
     const [additionalFields, setAdditionalFields] = useState([]);

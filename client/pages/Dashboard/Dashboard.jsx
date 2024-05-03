@@ -2,9 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom'; // Assuming you're using react-router for navigation
 import styles from './Dashboard.module.css'; // Importing styles
 import FormWizard from '../Home/components/FormWizard'; // Import the FormWizard component
+import { useAuth } from '../../../src/context/AuthContext'; // Import useAuth
 
 const Dashboard = () => {
     const { authToken } = useParams(); // Assuming 'authToken' is a route parameter
+    const { authState } = useAuth(); // Use useAuth to access authState
+    console.log('Auth State:', authState); // Debugging line to check authState
+    const userId = authState ? authState.userId : null; // Safely access userId
     console.log("Captured authToken:", authToken); // This should log the actual authToken or undefined
     if (authToken === undefined) {
         console.log("authToken is undefined, check route configuration and parameter passing.");
@@ -30,7 +34,7 @@ const Dashboard = () => {
     return (
         <div className={styles.dashboardContainer}>
             {showFormWizard ? (
-                <FormWizard authToken={authToken} skipAccountSetup={true} />
+                <FormWizard authToken={authToken} userId={userId} skipAccountSetup={true} />
             ) : (
                 <>
                     <h3>DASHBOARD</h3>
