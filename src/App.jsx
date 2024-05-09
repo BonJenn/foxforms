@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, useNavigate, useParams } from 'react-router-dom';
+import { Routes, Route, useNavigate, useParams } from 'react-router-dom';
 import { Analytics } from "@vercel/analytics/react";
 import Home from '../client/pages/Home/Home.jsx';
 import Onboarding from '../client/pages/Onboarding/Onboarding.jsx';
@@ -17,6 +17,18 @@ function App() {
   const [cookieAuthToken, setCookieAuthToken] = useState(null);
   const navigate = useNavigate(); // Added useNavigate here
   const { userId } = useParams(); // Retrieve userId from URL
+
+  useEffect(() => {
+    const authToken = cookies.AuthToken || localStorage.getItem('authToken');
+    if (authToken) {
+      // Perform any setup or state initialization that depends on authToken
+      console.log('AuthToken found:', authToken);
+      navigate(`/dashboard/${authToken}`);
+    } else {
+      console.log('No AuthToken found, redirecting to login');
+      navigate('/');
+    }
+  }, [navigate, cookies.AuthToken]); // Depend on navigate and cookies.AuthToken to re-run on changes
 
   React.useEffect(() => { // Added useEffect to check authToken and navigate
     console.log('Cookies object:', cookies); // Log the entire cookies object for debugging
@@ -64,7 +76,7 @@ function App() {
     setLogoutMessage(''); // Clear the logout message at the start of the login process
     console.log('Attempting login with:', username, password); // Added for debugging
     try {
-      const response = await fetch('http://localhost:5173/login', {
+      const response = await fetch('http://localhost:3000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -92,24 +104,26 @@ function App() {
   console.log('authToken in App:', cookieAuthToken); // Log authToken for debugging
   return (
       <>
-        <AuthProvider>
-        <Analytics />
-        
-        <ErrorBoundary>
-        <Header authToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} />
-          {logoutMessage && <div>{logoutMessage}</div>}
-          {/* Wrap the entire app with AuthProvider */}
-            <Routes>
+
+          <AuthProvider>
+            <Analytics />
             
-              <Route path="/" element={<Home />} />
-              {cookieAuthToken && <Route path={`/dashboard/${cookieAuthToken}`} element={<Dashboard />} />}
-              {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
-              <Route path="/form-wizard/:authToken" element={<FormWizard />} />
-         
-            </Routes>
-          </ErrorBoundary>
-          
-        </AuthProvider>
+            <ErrorBoundary>
+              <Header cookieAuthToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} />
+              {logoutMessage && <div>{logoutMessage}</div>}
+              {/* Wrap the entire app with AuthProvider */}
+              <Routes>
+                
+                <Route path="/" element={<Home />} />
+                <Route path="/dashboard/:authToken" element={<Dashboard />} />
+                {cookieAuthToken && <Route path="/onboarding" element={<Onboarding />} />}
+                <Route path="/form-wizard/:authToken" element={<FormWizard />} />
+             
+              </Routes>
+            </ErrorBoundary>
+            
+          </AuthProvider>
+
       </>
   );
 }

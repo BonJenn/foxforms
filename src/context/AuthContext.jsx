@@ -13,8 +13,9 @@ export const AuthProvider = ({ children }) => {
         userId: null
     });
 
-    const login = (token, userId) => {
+    const login = (token, userId, navigate) => {
         setAuthState({ isLoggedIn: true, authToken: token, userId: userId });
+        navigate(`/dashboard/${token}`); // Navigate immediately after setting the auth state
     };
 
     const logout = () => {

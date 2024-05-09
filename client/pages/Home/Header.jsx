@@ -5,12 +5,14 @@ import SignUp from '../Auth/SignUp';
 import Login from '../Auth/Login';
 import { useAuth } from '../../../src/context/AuthContext.jsx'; // Corrected import path
 
-const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogin from props
+const Header = ({ cookieAuthToken }) => {
+    const navigate = useNavigate();
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
-    const navigate = useNavigate();
     const { authState, login, logout } = useAuth(); // Corrected useAuth usage, ensure logout is destructured here
     const { isLoggedIn } = authState; // Access isLoggedIn from authState
+
+    console.log('Header component prop:', cookieAuthToken); // Added console.log to trace prop changes
 
     useEffect(() => {
         // This effect runs whenever authToken changes

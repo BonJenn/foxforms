@@ -53,9 +53,9 @@ const SignUp = ({ onClose }) => {
       console.log('Response data:', data); // Log the entire response object
       if (data.authToken) {
         localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
-        login(); // Call login from useAuth
-        navigate(`/dashboard/${data.authToken}`); // Navigate to the dashboard after successful signup
-        onClose(); // Call this after successful signup
+        login(); // Update authentication state
+        navigate(`/dashboard/${data.authToken}`); // Navigate to the dashboard
+        onClose(); // Close the signup modal or form
       } else {
         console.error('SignUp successful, but the authToken is missing in the response');
       }

@@ -27,8 +27,7 @@ const Login = ({ onClose }) => {
       }
       const data = await response.json();
       localStorage.setItem('authToken', data.authToken);
-      login(data.authToken); // Assuming login is a context or global function
-      navigate(`/dashboard/${data.authToken}`);
+      login(data.authToken, data.userId, navigate); // Navigate immediately after setting the auth state
     } catch (error) {
       console.error('An error occurred during login:', error);
     }
