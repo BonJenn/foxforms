@@ -35,29 +35,14 @@ const SignUp = ({ onClose }) => {
         },
         body: JSON.stringify({ username, password }),
       });
-
-      if (response.status === 409) {
-        setError('Username or email already exists. Please try another.');
-        return;
-      }
-
-      if (!response.ok) {
-        if (response.status === 409) {
-          setError('User already exists. Please login.');
-        } else {
-          throw new Error('Failed to sign up');
-        }
-      }
-
-      const data = await response.json();
-      console.log('Response data:', data); // Log the entire response object
-      if (data.authToken) {
+      
+      const data = response.ok ? await response.json() : { message: await response.text() };
+      if (response.ok) {
         localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
-        login(); // Update authentication state
-        navigate(`/dashboard/${data.authToken}`); // Navigate to the dashboard
-        onClose(); // Close the signup modal or form
+        login(data.authToken, data.userId, navigate); // Update authentication state and navigate
+        onClose(); // Close the signup modal
       } else {
-        console.error('SignUp successful, but the authToken is missing in the response');
+        throw new Error(data.message || 'Failed to sign up');
       }
     } catch (error) {
       console.error('Error during sign-up:', error);
