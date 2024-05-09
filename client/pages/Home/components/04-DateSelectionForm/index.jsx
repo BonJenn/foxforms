@@ -52,7 +52,7 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
     const handleDateFormSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+            const response = await fetch(`http://localhost:5173/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

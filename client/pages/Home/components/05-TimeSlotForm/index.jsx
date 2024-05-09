@@ -22,7 +22,7 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId, 
     const handleYesClick = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+            const response = await fetch(`http://localhost:5173/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -44,7 +44,7 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId, 
     const handleNoClick = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+            const response = await fetch(`http://localhost:5173/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -112,7 +112,7 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId, 
       };
 
       try {
-        const response = await fetch(`http://localhost:5174/forms/${formId}`, {
+        const response = await fetch(`http://localhost:5173/forms/${formId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

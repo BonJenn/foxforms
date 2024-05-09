@@ -23,7 +23,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
         }
 
         try {
-            const response = await fetch('http://localhost:5174/signup', {
+            const response = await fetch('http://localhost:5173/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

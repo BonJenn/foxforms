@@ -11,7 +11,7 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 const uri = "mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const PORT = process.env.PORT || 5174;
+const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
 
 app.use(express.json());

@@ -10,19 +10,19 @@ export const AuthProvider = ({ children }) => {
     const [authState, setAuthState] = useState({
         isLoggedIn: false,
         authToken: null,
-        userId: null,  // Add userId to the state
-        login: (token, userId) => {  // Accept userId as a parameter
-            setAuthState((prevState) => ({ ...prevState, isLoggedIn: true, authToken: token, userId: userId }));
-            // Navigate to user-specific dashboard URL
-        },
-        logout: () => {
-            setAuthState((prevState) => ({ ...prevState, isLoggedIn: false, authToken: null, userId: null }));
-            // Navigate to login or home page
-        },
+        userId: null
     });
 
+    const login = (token, userId) => {
+        setAuthState({ isLoggedIn: true, authToken: token, userId: userId });
+    };
+
+    const logout = () => {
+        setAuthState({ isLoggedIn: false, authToken: null, userId: null });
+    };
+
     return (
-        <AuthContext.Provider value={{ authState, setAuthState }}>
+        <AuthContext.Provider value={{ authState, setAuthState, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

@@ -64,7 +64,7 @@ function App() {
     setLogoutMessage(''); // Clear the logout message at the start of the login process
     console.log('Attempting login with:', username, password); // Added for debugging
     try {
-      const response = await fetch('http://localhost:5174/login', {
+      const response = await fetch('http://localhost:5173/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -96,7 +96,7 @@ function App() {
         <Analytics />
         
         <ErrorBoundary>
-        <Header authToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} onLogin={handleLogin} />
+        <Header authToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} />
           {logoutMessage && <div>{logoutMessage}</div>}
           {/* Wrap the entire app with AuthProvider */}
             <Routes>

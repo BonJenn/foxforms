@@ -8,31 +8,9 @@ import { useAuth } from '../../../src/context/AuthContext.jsx'; // Corrected imp
 const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogin from props
     const [showComponent, setShowComponent] = useState('');
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
-    // const [isLoggedIn, setIsLoggedIn] = useState('false'); // Define isLoggedIn state and its updater function setIsLoggedIn
     const navigate = useNavigate();
-    const { isLoggedIn, login, logout } = useAuth(); // Corrected useAuth usage
-
-    const onLogin = async (username, password) => {
-        try {
-            const response = await fetch('http://localhost:5174/login', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ username, password }),
-            });
-            const data = await response.json();
-            if (response.ok) {
-                localStorage.setItem('authToken', data.authToken);
-                login(data.authToken); // Pass authToken to login function
-                navigate(`/dashboard/${data.authToken}`); // Navigate with authToken in URL
-            } else {
-                console.error('Login failed:', data.message);
-            }
-        } catch (error) {
-            console.error('An error occurred during login:', error);
-        }
-    };
+    const { authState, login, logout } = useAuth(); // Corrected useAuth usage, ensure logout is destructured here
+    const { isLoggedIn } = authState; // Access isLoggedIn from authState
 
     useEffect(() => {
         // This effect runs whenever authToken changes
@@ -54,12 +32,7 @@ const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogi
     }, []); // Empty dependency array, runs only on component mount
 
     useEffect(() => {
-      console.log('isLoggedIn state:', isLoggedIn);
-    }, [isLoggedIn]);
-
-    useEffect(() => {
-      const token = localStorage.getItem('authToken'); // Ensure this key matches what you've used in `setItem`
-      console.log('Retrieved token from localStorage:', token);
+      const token = localStorage.getItem('authToken');
       if (token) {
         login(token); // Assuming login updates the isLoggedIn state
         navigate('/dashboard'); // Redirect to dashboard after login
@@ -88,32 +61,30 @@ const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogi
             console.log('No token found in localStorage');
             return;
         }
-        const response = await fetch('http://localhost:5174/get-username', {
+        const response = await fetch('http://localhost:3000/get-username', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }
         });
-        if (response.ok) {
-            const data = await response.json();
-            console.log('Fetched username:', data.username);
-            setUsername(data.username);
-        } else {
-            console.error('Failed to fetch username');
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
         }
+        const data = await response.json();
+        console.log('Fetched username:', data.username);
+        setUsername(data.username);
     };
 
     const handleLogout = () => {
         console.log('Token before removal:', localStorage.getItem('authToken'));
         localStorage.removeItem('authToken');
         console.log('Token removed');
-        // setIsLoggedIn(false); // Add this line to update isLoggedIn state
-        logout(); // Adjusted to use logout function from useAuth
+        logout(); // Correctly call logout from useAuth
         if (typeof onLogout === 'function') {
             onLogout();
         }
         navigate('/');
     };
-    console.log('onLogin function:', onLogin);
+    console.log('login function:', login);
     return (
         <div className={styles.headerStyle}>
             <h1>Fox<span>Forms</span></h1>
@@ -131,7 +102,7 @@ const Header = ({ cookieAuthToken, userEmail, onLogout }) => { // Removed onLogi
                 )}
             </div>
             {showComponent === 'signup' && <SignUp onClose={handleCloseModal} />}
-            {showComponent === 'login' && <Login onClose={handleCloseModal} handleLogin={onLogin} />}
+            {showComponent === 'login' && <Login onClose={handleCloseModal} />}
         </div>
     );
 }

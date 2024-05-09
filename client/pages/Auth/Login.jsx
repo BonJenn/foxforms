@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'; // Import useDispatch
 import { useAuth } from '../../../src/context/AuthContext.jsx'; // Import useAuth
 import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
-const Login = ({ onClose, handleLogin }) => {
+const Login = ({ onClose }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -12,6 +12,27 @@ const Login = ({ onClose, handleLogin }) => {
   const dispatch = useDispatch(); // Use useDispatch hook
   const { login } = useAuth(); // Get login method from useAuth
   const navigate = useNavigate(); // Initialize useNavigate
+
+  const handleLogin = async (username, password) => {
+    try {
+      const response = await fetch('http://localhost:3000/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ username, password }),
+      });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      localStorage.setItem('authToken', data.authToken);
+      login(data.authToken); // Assuming login is a context or global function
+      navigate(`/dashboard/${data.authToken}`);
+    } catch (error) {
+      console.error('An error occurred during login:', error);
+    }
+  };
 
   const handleClose = (e) => {
     console.log('Click detected at:', e.target);
@@ -30,8 +51,8 @@ const Login = ({ onClose, handleLogin }) => {
       console.log('Removing click event listener');
       document.removeEventListener('click', handleClose);
     };
-  }, []);
-  
+  }, []); // Also added dependency array to ensure the effect runs only once after the initial render
+
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContent} ref={modalRef}>
