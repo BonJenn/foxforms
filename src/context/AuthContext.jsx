@@ -13,9 +13,11 @@ export const AuthProvider = ({ children }) => {
         userId: null
     });
 
-    const login = (token, userId, navigate) => {
+    const login = (token, userId, navigate) => { // Ensure navigate is passed here
         setAuthState({ isLoggedIn: true, authToken: token, userId: userId });
-        navigate(`/dashboard/${token}`); // Navigate immediately after setting the auth state
+        if (navigate) {
+            navigate(`/dashboard/${token}`); // Use navigate only if it's provided
+        }
     };
 
     const logout = () => {

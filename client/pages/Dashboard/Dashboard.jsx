@@ -22,8 +22,13 @@ const Dashboard = () => {
         // Fetch the user's forms from the backend
         console.log(`Fetching forms for authToken: ${authToken}`); // Log the fetch URL
         console.log('Current authToken:', authToken); // Add this line to log the authToken
-        fetch(`http://localhost:5173/forms?authToken=${authToken}`)
-            .then(response => response.json())
+        fetch(`http://localhost:3000/forms?authToken=${authToken}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
             .then(data => {
                 console.log('Fetched forms:', data); // Add this line to log fetched data
                 setForms(data);

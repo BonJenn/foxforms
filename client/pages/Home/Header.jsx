@@ -15,9 +15,13 @@ const Header = ({ cookieAuthToken }) => {
     console.log('Header component prop:', cookieAuthToken); // Added console.log to trace prop changes
 
     useEffect(() => {
-        // This effect runs whenever authToken changes
-        if (isLoggedIn) {
-            fetchUsername(); // Call fetchUsername when the component mounts if the user is logged in
+        try {
+            // This effect runs whenever authToken changes
+            if (isLoggedIn) {
+                fetchUsername(); // Call fetchUsername when the component mounts if the user is logged in
+            }
+        } catch (error) {
+            console.error('Error in Header component:', error);
         }
     }, [cookieAuthToken, isLoggedIn]); // Dependency array, re-run effect when authToken or isLoggedIn changes
 
@@ -36,8 +40,8 @@ const Header = ({ cookieAuthToken }) => {
     useEffect(() => {
       const token = localStorage.getItem('authToken');
       if (token) {
-        login(token); // Assuming login updates the isLoggedIn state
-        navigate('/dashboard'); // Redirect to dashboard after login
+        login(token, navigate); // Pass navigate here
+        navigate('/dashboard'); // This line might be redundant if handled inside login
       } else {
         console.log('No authToken found in localStorage');
       }
