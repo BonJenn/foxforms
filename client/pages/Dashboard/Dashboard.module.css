@@ -16,9 +16,66 @@
     color: black;
 }
 
+.innerDashboard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+}
+
+.innerUpperDashboard {
+    display: flex;
+    flex-direction: row;
+}
+
+.editProfileSection {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    margin: 10px;
+    padding: 50px;
+    border-radius: 40px;
+    width: 500px;
+}
+
+.profileSection .userProfilePic {
+    height: 100px;
+    width: 100px;
+    background-color: gray; /* Default background if no image */
+    border: 5px solid black;
+    border-radius: 50%; /* Makes the element circular */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profileSection .userProfilePic::before {
+    content: "?"; /* Default text if no image */
+    font-size: 10px;
+    color: black;
+}
+
+.profileSection {
+    display: flex;
+    flex-direction: column;
+    background-color: rgb(255, 255, 255);
+    color: black;
+    margin: 10px;
+    padding: 50px;
+    border-radius: 40px;
+    width: 500px;
+
+
+}
+
+.profileSection .usernameDisplay {
+    font-size: 40px;
+}
+
 .formList {
     background-color: green;
-    width: 80%;
+    width: 100%;
     margin-top: 20px;
     background: white;
     padding: 15px;
@@ -32,7 +89,7 @@
     padding: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: center; 
 }
 
 .formItem:last-child {
@@ -53,3 +110,4 @@
 .newFormButton:hover {
     background-color: #003d82;
 }
+

@@ -17,6 +17,30 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [showDashboard, setShowDashboard] = useState(true); // State to manage visibility of Dashboard
     const [showFormWizard, setShowFormWizard] = useState(false); // State to manage visibility of FormWizard
+    const [username, setUsername] = useState(''); // State to store the username
+
+    const fetchUsername = async () => {
+        try {
+            const response = await fetch('http://localhost:3000/get-username', {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch username');
+            }
+            const data = await response.json();
+            setUsername(data.username); // Update the username state
+        } catch (error) {
+            console.error('Error fetching username:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (authToken) {
+            fetchUsername();
+        }
+    }, [authToken]);
 
     useEffect(() => {
         // Fetch the user's forms from the backend
@@ -43,15 +67,42 @@ const Dashboard = () => {
             ) : (
                 <>
                     <h3>DASHBOARD</h3>
-                    <button className={styles.newFormButton} onClick={() => setShowFormWizard(true)}>Make a New Form</button>
-                    <div className={styles.formList}>
-                        {forms.map(form => (
+
+                    <div className={styles.innerDashboard}>
+
+                        <div className={styles.innerUpperDashboard}>
+
+                            <div className={styles.profileSection}>
+                                <img src={authState?.userProfilePic || 'default_profile_pic.png'} alt="Profile" className={styles.userProfilePic} />
+                                <p className={styles.usernameDisplay}>{username || 'Not available'}</p>
+                            </div>
+
+                            <div className={styles.editProfileSection}>
+                            <button className={styles.newFormButton} onClick={() => setShowFormWizard(true)}>Make a New Form</button>
+                            <button className={styles.editProfileButton} onClick={() => setShowFormWizard(true)}>Edit Profile</button>
+
+
+                            </div>
+
+                        </div>
+
+                        
+                
+                  
+                        <div className={styles.formList}>
+                                    {forms.map(form => (
                             <div key={form._id} className={styles.formItem}>
                                 <h3>{form.title}</h3>
                                 {/* Display other form details as needed */}
                             </div>
                         ))}
                     </div>
+
+
+
+                    </div>
+
+                   
                 </>
             )}
         </div>
