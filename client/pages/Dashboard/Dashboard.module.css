@@ -6,9 +6,16 @@
     justify-content: top; /* Center content vertically */
     align-items: center; /* Center content horizontally */
     padding: 20px;
-    background-color: orange;
+ 
     overflow: auto; /* Allows scrolling if content overflows */
     padding-top: 200px;
+
+    background-image: radial-gradient(circle, #f6b947, #f88800);
+    margin-top: 80px;
+    padding-top: 0;
+
+ 
+
 }
 
 .dashboardContainer h3 {
