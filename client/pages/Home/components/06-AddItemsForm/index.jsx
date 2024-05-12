@@ -28,7 +28,7 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
         const fetchFormData = async () => {
             if (!formId) return;
             try {
-                const response = await fetch(`http://localhost:5173/forms/${formId}`);
+                const response = await fetch(`http://localhost:3000/forms/${formId}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch form data');
                 }
@@ -112,7 +112,7 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
                 ]
             };
 
-            const response = await fetch(`http://localhost:5173/forms/${formId}`, {
+            const response = await fetch(`http://localhost:3000/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
 
     const displayData = async () => {
         try {
-            const response = await fetch(`http://localhost:5173/forms/${formId}`);
+            const response = await fetch(`http://localhost:3000/forms/${formId}`);
             if (!response.ok) {
                 throw new Error('Failed to fetch form data');
             }

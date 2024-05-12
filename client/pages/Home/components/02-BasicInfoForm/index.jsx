@@ -12,7 +12,7 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = formId ? `http://localhost:5173/forms/${formId}` : 'http://localhost:5173/forms';
+        const url = formId ? `http://localhost:3000/forms/${formId}` : 'http://localhost:3000/forms';
         const method = formId ? 'PUT' : 'POST';
 
         console.log('Sending form with userId:', userId); // Added to ensure userId is not empty before sending

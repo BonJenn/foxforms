@@ -37,7 +37,7 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
 
         if (type === 'basic' || type === 'extended') {
             try {
-                const response = await fetch(`http://localhost:5173/forms/${formId}`, {
+                const response = await fetch(`http://localhost:3000/forms/${formId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
     const handleSubmitAdditionalFields = async () => {
         console.log(additionalFields);
         try {
-            const response = await fetch(`http://localhost:5173/forms/${formId}`, {
+            const response = await fetch(`http://localhost:3000/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
