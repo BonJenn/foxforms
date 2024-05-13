@@ -8,8 +8,10 @@ import DateSelectionForm from '../04-DateSelectionForm';
 import TimeSlotForm from '../05-TimeSlotForm';
 import AddItemsForm from '../06-AddItemsForm';
 import OptionsForm from '../07-OptionsForm';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const FormWizard = ({ authToken, skipAccountSetup }) => {
+    const navigate = useNavigate(); // Move useNavigate to the top level of your component
     const location = useLocation();
     const { authState } = useAuth(); // Use useAuth to access authState
     console.log('Auth State:', authState); // Debugging line to check authState
@@ -34,6 +36,7 @@ const FormWizard = ({ authToken, skipAccountSetup }) => {
     const [usingDates, setUsingDates] = useState(false); 
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({}); 
     const [globalPayload, setGlobalPayload] = useState({});
+    const [isCompleted, setIsCompleted] = useState(false); // Added isCompleted state
 
     const updateGlobalPayloadState = (updates) => {
         setGlobalPayload(prevState => ({ ...prevState, ...updates }));
@@ -44,19 +47,8 @@ const FormWizard = ({ authToken, skipAccountSetup }) => {
     };
 
     const nextStep = () => {
-        console.log('Current Step:', currentStep, 'Using Dates:', usingDates);
-        if (currentStep === 4) { 
-            console.log('Before setting next step, Using Dates:', usingDates); 
-            if (usingDates === false) {
-                console.log('Skipping to AddItemsForm');
-                setCurrentStep(6); 
-            } else {
-                console.log('Proceeding to TimeSlotForm');
-                setCurrentStep(5); 
-            }
-        } else {
-            setCurrentStep(currentStep + 1);
-        }
+        console.log('Current Step:', currentStep);
+        setCurrentStep(currentStep + 1);
     };
     const prevStep = () => {
         if (currentStep > 2) {
@@ -90,13 +82,21 @@ const FormWizard = ({ authToken, skipAccountSetup }) => {
             case 6:
                 return <AddItemsForm onNext={nextStep} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} formId={formId} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 7:
-                return <OptionsForm onNext={nextStep} onBack={prevStep} formId={formId} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
-            default: 
-                return <div>Form Completed</div>;
+                return <OptionsForm onNext={() => setIsCompleted(true)} onBack={prevStep} selectedDates={selectedDates} timeSlotsForDates={timeSlotsForDates} formId={formId} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
+            default:
+                // Optionally handle the completion of the form wizard
+                navigate(`/dashboard/${authToken}`);
+                break;
 
         }
     
     };
+
+    useEffect(() => {
+        if (isCompleted) {
+            navigate(`/dashboard/${authToken}`);
+        }
+    }, [isCompleted, authToken, navigate]);
 
     useEffect(() => {
         setUserId(globalPayload.userId); // Update userId from globalPayload when it changes

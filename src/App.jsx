@@ -86,6 +86,7 @@ function App() {
       const data = await response.json();
       console.log('Response status:', response.status, 'Data:', data); // Add this line for debugging
       if (response.ok) {
+        console.log('Token received:', data.authToken); // Add this to check the token value
         localStorage.setItem('authToken', data.authToken);
         setCookieAuthToken(data.authToken, () => {
           navigate(`/dashboard/${data.authToken}`);

@@ -21,7 +21,6 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
             setPasswordError('Passwords do not match');
             return;
         }
-
         try {
             const response = await fetch('http://localhost:3000/signup', {
                 method: 'POST',
@@ -31,21 +30,21 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                 body: JSON.stringify({ username, password }),
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to sign up');
+            const data = response.ok ? await response.json() : { message: await response.text() };
+            if (response.ok) {
+                console.log('User signed up successfully:', data);
+                localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
+                updateGlobalPayloadState({
+                    username: username,
+                    userId: data.userId
+                });
+                onNext(); // Proceed to the next form or action
+            } else {
+                throw new Error(data.message || 'Failed to sign up');
             }
-
-            const data = await response.json();
-            console.log('User signed up successfully:', data);
-            // Update the global payload with username and userId
-            updateGlobalPayloadState({
-                username: username, // Directly using the username state
-                userId: data.userId // Ensure this is correctly received and set
-            });
-            onNext(); // Proceed to the next form or action
         } catch (error) {
             console.error('Signup error:', error);
-            setPasswordError('Failed to sign up. Please try again.');
+            setPasswordError(error.message || 'An unexpected error occurred during sign-up.');
         }
     };
 
