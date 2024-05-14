@@ -15,7 +15,7 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
         const url = formId ? `http://localhost:3000/forms/${formId}` : 'http://localhost:3000/forms';
         const method = formId ? 'PUT' : 'POST';
 
-        console.log('Sending form with userId:', userId); // Added to ensure userId is not empty before sending
+        console.log('Local Storage UserId:', localStorage.getItem('userId')); // Added to check if userId is in local storage
 
         try {
             console.log('Form submission payload:', { title: formName, customDomain: customDomain, userId: userId }); // Added to log the payload before sending
@@ -27,7 +27,7 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
                 body: JSON.stringify({
                     title: formName,
                     customDomain: customDomain,
-                    userId: userId, // Ensure this is correctly fetched and included
+                    userId: localStorage.getItem('userId') // Fetch from local storage directly if not passed as prop
                 }),
             });
             if (!response.ok) {

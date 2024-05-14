@@ -73,6 +73,7 @@ function App() {
     // Add any additional logout logic here
   };
 
+  /*
   const handleLogin = async (username, password) => {
     setLogoutMessage(''); // Clear the logout message at the start of the login process
     console.log('Attempting login with:', username, password); // Added for debugging
@@ -101,6 +102,7 @@ function App() {
       console.error('An error occurred during login:', error); // Improved error handling
     }
   };
+  */
 
   const userEmail = cookies.userEmail; // Assuming the user's email is stored in a cookie named userEmail
 
