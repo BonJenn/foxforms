@@ -39,6 +39,7 @@ const SignUp = ({ onClose }) => {
       const data = response.ok ? await response.json() : { message: await response.text() };
       if (response.ok) {
         localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
+        localStorage.setItem('userId', data.userId); // Ensure this line is correctly setting the userId
         login(data.authToken, data.userId, navigate); // Update authentication state and navigate
         onClose(); // Close the signup modal
       } else {

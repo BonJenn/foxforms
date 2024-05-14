@@ -64,6 +64,7 @@ function App() {
   const handleLogout = () => {
     console.log('Removing token from localStorage');
     localStorage.removeItem('authToken');
+    localStorage.removeItem('userId'); // Remove userId from localStorage on logout
     setCookieAuthToken(null);
     setLogoutMessage('Logged out successfully.');
     console.log('Navigating to home...');
@@ -88,6 +89,7 @@ function App() {
       if (response.ok) {
         console.log('Token received:', data.authToken); // Add this to check the token value
         localStorage.setItem('authToken', data.authToken);
+        localStorage.setItem('userId', data.userId); // Save userId in local storage
         setCookieAuthToken(data.authToken, () => {
           navigate(`/dashboard/${data.authToken}`);
         });

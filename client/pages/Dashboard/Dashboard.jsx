@@ -8,7 +8,7 @@ const Dashboard = () => {
     const { authToken } = useParams(); // Assuming 'authToken' is a route parameter
     const { authState } = useAuth(); // Use useAuth to access authState
     console.log('Auth State:', authState); // Debugging line to check authState
-    const userId = authState ? authState.userId : null; // Safely access userId
+    const userId = localStorage.getItem('userId'); // Get userId from local storage
     console.log("Captured authToken:", authToken); // This should log the actual authToken or undefined
     if (authToken === undefined) {
         console.log("authToken is undefined, check route configuration and parameter passing.");

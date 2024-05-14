@@ -27,6 +27,7 @@ const Login = ({ onClose }) => {
       }
       const data = await response.json();
       localStorage.setItem('authToken', data.authToken);
+      localStorage.setItem('userId', data.userId);
       login(data.authToken, data.userId, navigate); // Navigate immediately after setting the auth state
     } catch (error) {
       console.error('An error occurred during login:', error);
