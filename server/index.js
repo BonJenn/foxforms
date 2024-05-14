@@ -224,6 +224,7 @@ app.post('/signup', async (req, res) => {
         console.log("Generating token for user:", { userId: result.insertedId, username: newUser.username });
         const token = jwt.sign({ userId: result.insertedId, username: newUser.username }, JWT_SECRET, { expiresIn: '24h' });
         console.log("Generated authToken for signup:", token); // Add this line
+        res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 }); // 24 hours
         res.status(201).json({ authToken: token, userId: result.insertedId, username: newUser.username });
     } catch (error) {
         console.error("Error signing up user:", error);
@@ -257,6 +258,7 @@ app.post('/login', async (req, res) => {
         console.log("Generating token for user:", { userId: user._id, username: user.username });
         const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
         console.log("Generated authToken for login:", token); // Add this line
+        res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 }); // 24 hours
         res.status(200).json({ authToken: token, userId: user._id, username: user.username });
     } catch (error) {
         console.error("Error logging in user:", error);
