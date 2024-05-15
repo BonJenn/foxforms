@@ -1,22 +1,41 @@
-.signUpForm3 {
-    height: 100vh;
+.additionalDetailsForm {
+    margin-top: 0px;
+    height: 50vh;
     width: 100vh; /* Consider changing this to width: 100%; if you want it to span the full width of the viewport */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     max-width: auto;
-    margin-top: 0; /* Adjusted to remove additional top margin */
     border-radius: 10px;
     overflow: hidden; /* Prevents scrolling by hiding overflow */
+    background-color: #ffffff;
+    border-radius: 30px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.additionalDetailsForm h1 {
+    color: black;
 }
 
 .signUpForm3Buttons {
     display: flex;
     flex-direction: row;
+    align-items: center;
+    justify-self: center;
+    height: 150px;
+    margin: 30px;
+    
 }
 
-.signUpForm3 button {
+
+.additionalFieldBasicButton, .additionalFieldExtendedButton {
+    background-color: rgb(243, 176, 50);
+    border-color: black;
+    border-width: 3px;
+}
+
+.additionalDetailsForm button {
     margin: 50px;
     padding: 20px;
     font-size: 30px;
@@ -76,12 +95,15 @@
 }
 
 .buttonContainer {
+    width: 100%; /* Ensure it takes full width to center properly */
     display: flex;
-    justify-content: space-between;
+    justify-content: center; /* Center horizontally */
+    
+
 }
 /* Responsive adjustments for iPad (devices with width up to 768px) */
 @media (max-width: 768px) {
-    .signUpForm3 {
+    .additionalDetailsForm {
         width: 100%; /* Full width on smaller devices */
         height: 100vh; /* Adjust height to be auto for better flexibility */
         padding: 20px; /* Add some padding for smaller screens */
@@ -112,7 +134,7 @@
         height: 60px; /* Adjust height for a better fit */
     }
 
-    .signUpForm3 button {
+    .additionalDetailsForm button {
         font-size: 20px; /* Further reduce font size for buttons */
         padding: 10px; /* Reduce padding */
     }

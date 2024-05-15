@@ -17,8 +17,8 @@
 
 .buttonContainer {
     display: flex;
-    flex-direction: row;
-    justify-content: center; /* Center buttons horizontally */
+    flex-direction: row; /* Ensure buttons are side by side */
+    justify-content: space-between; /* Space buttons evenly */
     gap: 20px; /* Adjust the gap as needed for spacing between buttons */
 }
 

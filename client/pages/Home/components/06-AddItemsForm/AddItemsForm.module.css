@@ -41,3 +41,9 @@ th, td {
         padding: 10px; /* Add some padding */
     }
 }
+
+.buttonContainer {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
