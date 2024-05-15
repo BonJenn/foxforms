@@ -46,7 +46,7 @@ const Dashboard = () => {
         // Fetch the user's forms from the backend
         console.log(`Fetching forms for authToken: ${authToken}`); // Log the fetch URL
         console.log('Current authToken:', authToken); // Add this line to log the authToken
-        fetch(`http://localhost:3000/forms?authToken=${authToken}`)
+        fetch(`http://localhost:3000/forms?userId=${userId}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -55,10 +55,12 @@ const Dashboard = () => {
             })
             .then(data => {
                 console.log('Fetched forms:', data); // Add this line to log fetched data
-                setForms(data);
+                // Sort forms by 'createdAt' in descending order
+                const sortedForms = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setForms(sortedForms);
             })
             .catch(error => console.error('Error fetching forms:', error));
-    }, [authToken]); // Dependency array includes authToken
+    }, [authToken, userId]); // Dependency array includes authToken and userId
 
     return (
         <div className={styles.dashboardContainer}>
