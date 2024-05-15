@@ -94,25 +94,32 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
 
     return (
         <div className={styles.additionalDetailsForm}>
-            <h1>For each person who signs up, I want to capture - </h1>
             {showButtons && (
-                <div className={styles.signUpForm3Buttons}>
-                    <button type="button" className={styles.additionalFieldBasicButton} onClick={() => handleSubmit('basic')}>Just name and email</button>
-                    <button type="button" className={styles.additionalFieldExtendedButton} onClick={() => handleSubmit('extended')}>Name, email, and some additional fields</button>
-                </div>
-                
-               
+                <h1>For each person who signs up, I want to capture - </h1>
             )}
-
-          
+            {showButtons && (
+                <>
+                    <div className={styles.signUpForm3Buttons}>
+                        <button type="button" className={styles.additionalFieldBasicButton} onClick={() => handleSubmit('basic')}>Just name and email</button>
+                        <button type="button" className={styles.additionalFieldExtendedButton} onClick={() => handleSubmit('extended')}>Name, email, and some additional fields</button>
+                    </div>
+                </>
+            )}
+    
             {infoType === 'extended' && (
                 <div className={styles.signUpForm3Extended}>
                     <h1>What information do you want to capture?</h1>
                     <ul>
                         {additionalFields.map((field, index) => (
-                            <li key={index}>{field} <div className="remove-field-container"><button onClick={() => removeField(index)}>x</button></div></li>
+                            <li key={index} className={styles.listItem}>
+                                <div className={styles.fieldContainer}>
+                                    <span className={styles.fieldText}>{field}</span>
+                                    <button className={styles.removeButton} onClick={() => removeField(index)}>x</button>
+                                </div>
+                            </li>
                         ))}
                     </ul>
+    
                     <div className={styles.fieldAddContainer}>
                         <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} />
                         <button onClick={addField}>+</button>
@@ -122,16 +129,12 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
             <div className={styles.buttonContainer}>
                 <button type="button" onClick={onBack}>Back</button>
                 {!showButtons && infoType === 'extended' && (
-                    <div claassName={styles.buttonContainer}>
-                         <button onClick={handleSubmitAdditionalFields}>Next</button>
-                      
-
-                    </div>
-
+                    <button onClick={handleSubmitAdditionalFields}>Next</button>
                 )}
             </div>
         </div>
     );
+    
 };
 
 export default AdditionalDetailsForm;

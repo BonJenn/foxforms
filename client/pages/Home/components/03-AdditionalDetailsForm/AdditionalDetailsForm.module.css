@@ -1,7 +1,7 @@
 .additionalDetailsForm {
     margin-top: 0px;
-    height: 50vh;
-    width: 100vh; /* Consider changing this to width: 100%; if you want it to span the full width of the viewport */
+    height: auto;
+    width: 100%; /* Changed to 100% */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -16,6 +16,7 @@
 
 .additionalDetailsForm h1 {
     color: black;
+    margin: 50px;
 }
 
 .signUpForm3Buttons {
@@ -25,9 +26,7 @@
     justify-self: center;
     height: 150px;
     margin: 30px;
-    
 }
-
 
 .additionalFieldBasicButton, .additionalFieldExtendedButton {
     background-color: rgb(243, 176, 50);
@@ -49,63 +48,130 @@
     align-items: center;
     margin: 30px;
     padding: 30px;
-
 }
 
 .signUpForm3Extended ul {
     margin: 20px;
     padding: 20px;
+    list-style: none;
+    width: 100%; /* Ensure full width */
 }
 
 .signUpForm3Extended li {
     display: flex;
-    flex-direction: row;
-    justify-content: end;
+    justify-content: space-between; /* Align items with space between */
     align-items: center;
-    background-color: white; /* Sets the background color of the list element to white */
+    background-color: rgb(243, 176, 50);
     font-size: 40px;
     height: 100px;
+    width: 100%; /* Ensure full width */
+    border-color: black;
+    border-width: 10px;
     border-radius: 10px;
-    color: black; /* Sets the text color inside the list element to black */
-    font-weight: bold; /* Makes the text inside the list element bold */
-    padding: 20px; /* Adds padding inside the list element for spacing */
-    margin-bottom: 10px; /* Adds margin below each list element for spacing */
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.1); /* Adds a slight shadow for a "lifted" effect */
+    color: white;
+    font-weight: bold;
+    padding: 20px;
+    margin-bottom: 10px;
+    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+}
 
+.signUpForm3Extended li .field-container {
+    flex-grow: 1; /* Allows the field container to take up the remaining space */
+    margin-right: 20px; /* Adds spacing between the field and the remove button */
 }
 
 .signUpForm3Extended li .remove-field-container {
-    margin-left: auto;
+    margin-left: auto; /* Pushes the container to the end of the flex container */
 }
 
-.signUpForm3Extended input {
-    height: 100px;
-    width: 400px;
-    margin: 10px;
-    color: white;
+.fieldContainer {
+    display: flex;
+    justify-content: space-between; /* Pushes items to opposite sides */
+    align-items: center;
+    width: 100%; /* Full width */
+}
+
+.fieldText {
     font-size: 40px;
+    color: white;
+    font-weight: bold;
+}
+
+.removeButton {
+    background-color: rgb(0, 0, 0);
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50px; /* Adjust as needed */
+    width: 50px; /* Adjust as needed */
+    border-radius: 50%; /* Make it circular */
 }
 
 .fieldAddContainer {
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between; /* Space between items */
     align-items: center;
+    margin-top: 20px;
+    width: 100%; /* Full width */
+}
 
+.fieldAddContainer input {
+    height: 100px;
+    width: 85%; /* Adjust width to ensure full width */
+    margin-right: 10px;
+    padding: 10px 20px;
+    color: white;
+    font-size: 40px;
+    background-color: rgb(243, 176, 50);
+    border-color: black;
+    border-width: 3px;
+    border-radius: 30px;
+    font-weight: bold;
+}
+
+.fieldAddContainer button {
+    background-color: black;
+    border: none;
+    color: white;
+    font-size: 40px;
+    cursor: pointer;
+    height: 100px; /* Match input height */
+    width: 10%; /* Adjust as needed */
+    border-radius: 10px; /* Adjust as needed */
 }
 
 .buttonContainer {
-    width: 100%; /* Ensure it takes full width to center properly */
     display: flex;
-    justify-content: center; /* Center horizontally */
-    
+    justify-content: center; /* Center the buttons horizontally */
+    align-items: center; /* Center the buttons vertically */
+    width: 100%; /* Take the full width of the parent container */
+    margin-bottom: 20px; /* Add some margin at the top for spacing */
 
 }
+
+.buttonContainer button {
+    margin: 0 10px; /* Add horizontal margin between buttons */
+    padding: 10px 20px; /* Adjust padding as needed */
+    font-size: 20px; /* Adjust font size as needed */
+    font-weight: bold; /* Make the text bold */
+    background-color: rgb(0, 0, 0); /* Button background color */
+    border: none; /* Remove default border */
+    color: white; /* Button text color */
+    cursor: pointer; /* Change cursor to pointer on hover */
+    border-radius: 5px; /* Add border radius for rounded corners */
+}
+
+
 /* Responsive adjustments for iPad (devices with width up to 768px) */
 @media (max-width: 768px) {
     .additionalDetailsForm {
         width: 100%; /* Full width on smaller devices */
-        height: 100vh; /* Adjust height to be auto for better flexibility */
+        height: auto; /* Adjust height to be auto for better flexibility */
         padding: 20px; /* Add some padding for smaller screens */
     }
 
