@@ -1,5 +1,5 @@
 .headerStyle {
-    height: 150px;
+    height: 105px; /* Reduced the height by 30% */
     width: 100%;
     background-color: white;
     display: flex;
@@ -9,14 +9,12 @@
     align-self: flex-start;
     position: fixed;
     top: 0;
-
 }
 
 .headerStyle h1 {
-    font-size: 80px;
+    font-size: 56px; /* Reduced the font size by 30% */
     color: black;
     font-family: 'Protest Strike';
-    
 }
 
 .headerStyle h1 span {
@@ -24,28 +22,29 @@
 }
 
 .headerStyle button {
-    margin: 10px;
+    margin: 7px; /* Reduced the margin by 30% */
 }
 
 .headerStyle span {
     color: black;
 }
+
 /* iPad Screen */
 @media screen and (max-width: 1024px) {
     .headerStyle {
-        height: 120px; /* Smaller height */
+        height: 84px; /* Reduced the height by 30% */
     }
     .headerStyle h1 {
-        font-size: 60px; /* Smaller font size */
+        font-size: 42px; /* Reduced the font size by 30% */
     }
 }
 
 /* iPhone Screen */
 @media screen and (max-width: 768px) {
     .headerStyle {
-        height: 100px; /* Even smaller height */
+        height: 70px; /* Reduced the height by 30% */
     }
     .headerStyle h1 {
-        font-size: 40px; /* Even smaller font size */
+        font-size: 28px; /* Reduced the font size by 30% */
     }
 }

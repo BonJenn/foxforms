@@ -1,5 +1,5 @@
 .additionalDetailsForm {
-    margin-top: 0px;
+    padding-top: 35px; /* Reduced the padding at the top by 30% */
     height: auto;
     width: 100%; /* Changed to 100% */
     display: flex;
@@ -7,16 +7,18 @@
     justify-content: center;
     align-items: center;
     max-width: auto;
-    border-radius: 10px;
+    border-radius: 7px; /* Reduced the border radius by 30% */
     overflow: hidden; /* Prevents scrolling by hiding overflow */
     background-color: #ffffff;
-    border-radius: 30px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    border-radius: 21px; /* Reduced the border radius by 30% */
+    box-shadow: 0 5.6px 11.2px rgba(0, 0, 0, 0.2); /* Reduced the box shadow by 30% */
+ 
+    overflow-y: auto; /* Enables vertical scrolling */
 }
 
 .additionalDetailsForm h1 {
     color: black;
-    margin: 50px;
+    font-size: 40px; /* Reduced the font size by 30% */
 }
 
 .signUpForm3Buttons {
@@ -24,20 +26,22 @@
     flex-direction: row;
     align-items: center;
     justify-self: center;
-    height: 150px;
-    margin: 30px;
+    height: 105px; /* Reduced the height by 30% */
+    margin: 21px; /* Reduced the margin by 30% */
 }
 
 .additionalFieldBasicButton, .additionalFieldExtendedButton {
     background-color: rgb(243, 176, 50);
     border-color: black;
-    border-width: 3px;
+    border-width: 2.1px; /* Reduced the border width by 30% */
+    font-size: 21px; /* Reduced the font size by 30% */
+    padding: 14px; /* Reduced the padding by 30% */
 }
 
 .additionalDetailsForm button {
-    margin: 50px;
-    padding: 20px;
-    font-size: 30px;
+    margin: 35px; /* Reduced the margin by 30% */
+    padding: 14px; /* Reduced the padding by 30% */
+    font-size: 21px; /* Reduced the font size by 30% */
     font-weight: bold;
 }
 
@@ -46,13 +50,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 30px;
-    padding: 30px;
+    margin: 21px; /* Reduced the margin by 30% */
+    padding: 21px; /* Reduced the padding by 30% */
 }
 
 .signUpForm3Extended ul {
-    margin: 20px;
-    padding: 20px;
+    margin: 14px; /* Reduced the margin by 30% */
+    padding: 14px; /* Reduced the padding by 30% */
     list-style: none;
     width: 100%; /* Ensure full width */
 }
@@ -62,26 +66,17 @@
     justify-content: space-between; /* Align items with space between */
     align-items: center;
     background-color: rgb(243, 176, 50);
-    font-size: 40px;
-    height: 100px;
+    font-size: 28px; /* Reduced the font size by 30% */
+    height: 70px; /* Reduced the height by 30% */
     width: 100%; /* Ensure full width */
     border-color: black;
-    border-width: 10px;
-    border-radius: 10px;
+    border-width: 7px; /* Reduced the border width by 30% */
+    border-radius: 7px; /* Reduced the border radius by 30% */
     color: white;
     font-weight: bold;
-    padding: 20px;
-    margin-bottom: 10px;
-    box-shadow: 0px 2px 4px rgba(0,0,0,0.1);
-}
-
-.signUpForm3Extended li .field-container {
-    flex-grow: 1; /* Allows the field container to take up the remaining space */
-    margin-right: 20px; /* Adds spacing between the field and the remove button */
-}
-
-.signUpForm3Extended li .remove-field-container {
-    margin-left: auto; /* Pushes the container to the end of the flex container */
+    padding: 14px; /* Reduced the padding by 30% */
+    margin-bottom: 7px; /* Reduced the margin-bottom by 30% */
+    box-shadow: 0px 1.4px 2.8px rgba(0,0,0,0.1); /* Reduced the box shadow by 30% */
 }
 
 .fieldContainer {
@@ -92,7 +87,7 @@
 }
 
 .fieldText {
-    font-size: 40px;
+    font-size: 28px; /* Reduced the font size by 30% */
     color: white;
     font-weight: bold;
 }
@@ -101,14 +96,14 @@
     background-color: rgb(0, 0, 0);
     border: none;
     color: white;
-    font-size: 20px;
+    font-size: 14px; /* Reduced the font size by 30% */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 50px; /* Adjust as needed */
-    width: 50px; /* Adjust as needed */
-    border-radius: 50%; /* Make it circular */
+    height: 35px; /* Reduced the height by 30% */
+    width: 35px; /* Reduced the width by 30% */
+    border-radius: 35%; /* Adjust as needed */
 }
 
 .fieldAddContainer {
@@ -116,21 +111,20 @@
     flex-direction: row;
     justify-content: space-between; /* Space between items */
     align-items: center;
-    margin-top: 20px;
+    margin-top: 14px; /* Reduced the margin-top by 30% */
     width: 100%; /* Full width */
 }
 
 .fieldAddContainer input {
-    height: 100px;
-    width: 85%; /* Adjust width to ensure full width */
-    margin-right: 10px;
-    padding: 10px 20px;
+    height: 70px; /* Reduced the height by 30% */
+    width: 100%; /* Adjust width to ensure full width */
+    padding: 7px 14px; /* Reduced the padding by 30% */
     color: white;
-    font-size: 40px;
+    font-size: 28px; /* Reduced the font size by 30% */
     background-color: rgb(243, 176, 50);
     border-color: black;
-    border-width: 3px;
-    border-radius: 30px;
+    border-width: 2.1px; /* Reduced the border width by 30% */
+    border-radius: 21px; /* Reduced the border radius by 30% */
     font-weight: bold;
 }
 
@@ -138,11 +132,11 @@
     background-color: black;
     border: none;
     color: white;
-    font-size: 40px;
+    font-size: 28px; /* Reduced the font size by 30% */
     cursor: pointer;
-    height: 100px; /* Match input height */
-    width: 10%; /* Adjust as needed */
-    border-radius: 10px; /* Adjust as needed */
+    height: 70px; /* Reduced the height by 30% */
+    width: 20%; /* Adjust as needed */
+    border-radius: 7px; /* Reduced the border radius by 30% */
 }
 
 .buttonContainer {
@@ -150,62 +144,60 @@
     justify-content: center; /* Center the buttons horizontally */
     align-items: center; /* Center the buttons vertically */
     width: 100%; /* Take the full width of the parent container */
-    margin-bottom: 20px; /* Add some margin at the top for spacing */
-
+    margin-bottom: 14px; /* Reduced the margin-bottom by 30% */
 }
 
 .buttonContainer button {
-    margin: 0 10px; /* Add horizontal margin between buttons */
-    padding: 10px 20px; /* Adjust padding as needed */
-    font-size: 20px; /* Adjust font size as needed */
+    margin: 0 7px; /* Reduced the margin by 30% */
+    padding: 7px 14px; /* Reduced the padding by 30% */
+    font-size: 14px; /* Reduced the font size by 30% */
     font-weight: bold; /* Make the text bold */
     background-color: rgb(0, 0, 0); /* Button background color */
     border: none; /* Remove default border */
     color: white; /* Button text color */
     cursor: pointer; /* Change cursor to pointer on hover */
-    border-radius: 5px; /* Add border radius for rounded corners */
+    border-radius: 3.5px; /* Reduced the border radius by 30% */
 }
-
 
 /* Responsive adjustments for iPad (devices with width up to 768px) */
 @media (max-width: 768px) {
     .additionalDetailsForm {
         width: 100%; /* Full width on smaller devices */
         height: auto; /* Adjust height to be auto for better flexibility */
-        padding: 20px; /* Add some padding for smaller screens */
+        padding: 14px; /* Reduced the padding by 30% */
     }
 
     .signUpForm3Extended input, .signUpForm3Extended li {
         width: 100%; /* Make input and list items take full width */
-        font-size: 30px; /* Adjust font size for better readability */
-        height: 80px; /* Adjust height for a better fit */
+        font-size: 21px; /* Reduced the font size by 30% */
+        height: 56px; /* Reduced the height by 30% */
     }
 
     .signUpForm3 button {
-        margin: 20px 0; /* Reduce margin for buttons */
-        padding: 15px; /* Adjust padding */
-        font-size: 25px; /* Adjust font size */
+        margin: 14px 0; /* Reduced the margin by 30% */
+        padding: 10.5px; /* Reduced the padding by 30% */
+        font-size: 17.5px; /* Reduced the font size by 30% */
     }
 
     .signUpForm3Extended li {
         flex-direction: column; /* Stack elements vertically in list items */
-        padding: 15px; /* Adjust padding */
+        padding: 10.5px; /* Reduced the padding by 30% */
     }
 }
 
 /* Responsive adjustments for iPhone (devices with width up to 480px) */
 @media (max-width: 480px) {
     .signUpForm3Extended input, .signUpForm3Extended li {
-        font-size: 20px; /* Further reduce font size for very small screens */
-        height: 60px; /* Adjust height for a better fit */
+        font-size: 14px; /* Reduced the font size by 30% */
+        height: 42px; /* Reduced the height by 30% */
     }
 
     .additionalDetailsForm button {
-        font-size: 20px; /* Further reduce font size for buttons */
-        padding: 10px; /* Reduce padding */
+        font-size: 14px; /* Reduced the font size by 30% */
+        padding: 7px; /* Reduced the padding by 30% */
     }
 
     .signUpForm3Extended li {
-        padding: 10px; /* Reduce padding for list items */
+        padding: 7px; /* Reduced the padding by 30% */
     }
 }
