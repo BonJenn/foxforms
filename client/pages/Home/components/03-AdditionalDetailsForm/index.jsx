@@ -109,33 +109,38 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
             {infoType === 'extended' && (
                 <div className={styles.signUpForm3Extended}>
                     <h1>What information do you want to capture?</h1>
-                    <ul>
-                        {additionalFields.map((field, index) => (
-                            <li key={index} className={styles.listItem}>
-                                <div className={styles.fieldContainer}>
-                                    <span className={styles.fieldText}>{field}</span>
-                                    <button className={styles.removeButton} onClick={() => removeField(index)}>x</button>
-                                </div>
-                            </li>
-                        ))}
-                    </ul>
-    
-                    <div className={styles.fieldAddContainer}>
-                        <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} onKeyPress={(e) => {
-                            if (e.key === 'Enter' && newField.trim()) {
-                                addField();
-                            }
-                        }} />
-                        <button onClick={addField}>+</button>
+                   
+                    <div className={styles.fieldsListContainer}>
+                        <ul>
+                            {additionalFields.map((field, index) => (
+                                <li key={index} className={styles.listItem}>
+                                    <div className={styles.fieldContainer}>
+                                        <span className={styles.fieldText}>{field}</span>
+                                        <button className={styles.removeButton} onClick={() => removeField(index)}>x</button>
+                                    </div>
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div className={styles.inputAndButtons}>
+                        <div className={styles.fieldAddContainer}>
+                            <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} onKeyPress={(e) => {
+                                if (e.key === 'Enter' && newField.trim()) {
+                                    addField();
+                                }
+                            }} />
+                            <button onClick={addField}>+</button>
+                        </div>
+                      
+                    </div>
+                    <div className={styles.buttonContainer}>
+                            <button type="button" onClick={onBack}>Back</button>
+                            {!showButtons && infoType === 'extended' && (
+                                <button onClick={handleSubmitAdditionalFields}>Next</button>
+                            )}
                     </div>
                 </div>
             )}
-            <div className={styles.buttonContainer}>
-                <button type="button" onClick={onBack}>Back</button>
-                {!showButtons && infoType === 'extended' && (
-                    <button onClick={handleSubmitAdditionalFields}>Next</button>
-                )}
-            </div>
         </div>
     );
     

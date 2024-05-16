@@ -14,7 +14,7 @@
     border-radius: 21px; /* Reduced the border radius by 30% */
     box-shadow: 0 5.6px 11.2px rgba(0, 0, 0, 0.2); /* Reduced the box shadow by 30% */
     margin-top: 105px; /* Ensure it doesn't go under the header */
-    overflow-y: auto; /* Enables vertical scrolling */
+
 }
 
 .additionalDetailsForm h1 {
@@ -128,13 +128,89 @@
     border-radius: 35%; /* Adjust as needed */
 }
 
+.inputAndButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.fieldsListContainer {
+
+ 
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: auto; 
+    min-height: 300px;
+    max-height: 800px; /* Adjusted for 4 items */
+    overflow-y: auto; /* Enables vertical scrolling */
+    width: 100%;
+    margin-bottom: 20px; /* Space below the list */
+    padding: 0; /* Ensure no padding is pushing content out */
+    margin: 0; /* Ensure no margin is applied */
+    position: relative;
+}
+
+/* Styles for the scrollbar track */
+.fieldsListContainer::-webkit-scrollbar {
+    width: 8px; /* Adjust the width of the scrollbar */
+}
+
+/* Styles for the scrollbar handle */
+.fieldsListContainer::-webkit-scrollbar-thumb {
+    background-color: rgb(243, 176, 50); /* Orange color */
+    border-radius: 4px; /* Optional: adds rounded corners to the scrollbar handle */
+}
+
+/* Styles for the scrollbar track */
+.fieldsListContainer::-webkit-scrollbar-track {
+    background: #f0f0f0; /* Light grey, or choose another color that fits the design */
+}
+
+
+/*Fading at top and bottom of container */
+.fieldsListContainer::before, .fieldsListContainer::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 20px; /* Adjust height based on fade effect requirement */
+    z-index: 1;
+    pointer-events: none; /* Prevents interference with scrolling */
+}
+
+.fieldsListContainer::before {
+    top: 0;
+    background: linear-gradient(to bottom, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.fieldsListContainer::after {
+    bottom: 0;
+    background: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.fieldsListContainer ul {
+    padding: 0; /* Remove padding */
+    margin: 0; /* Remove margin */
+    width: auto;
+}
+
+.fieldsListContainer li {
+    margin: 10px; /* Remove margin */
+    padding: 0; /* Adjust padding if necessary */
+
+}
+
 .fieldAddContainer {
     display: flex;
-    flex-direction: row;
     justify-content: space-between; /* Space between items */
     align-items: center;
-    margin-top: 14px; /* Reduced the margin-top by 30% */
-    width: 100%; /* Full width */
+    margin-top: 4px; /* Reduced the margin-top by 30% */
+    width: 90%; /* Full width */
+    margin-bottom: 20px; /* Space between input and list */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
 }
 
 .fieldAddContainer input {
@@ -167,6 +243,7 @@
     align-items: center; /* Center the buttons vertically */
     width: 100%; /* Take the full width of the parent container */
     margin-bottom: 14px; /* Reduced the margin-bottom by 30% */
+    margin-top: 20px; /* Space above buttons */
 }
 
 .buttonContainer button {
