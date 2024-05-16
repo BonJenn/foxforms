@@ -136,21 +136,22 @@
 }
 
 .fieldsListContainer {
-
- 
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: auto; 
-    min-height: 300px;
     max-height: 800px; /* Adjusted for 4 items */
+    min-height: 300px; /* Default minimum height */
     overflow-y: auto; /* Enables vertical scrolling */
     width: 100%;
     margin-bottom: 20px; /* Space below the list */
     padding: 0; /* Ensure no padding is pushing content out */
     margin: 0; /* Ensure no margin is applied */
     position: relative;
+}
+
+.fieldsListContainer.emptyList {
+    min-height: 50px; /* Smaller height when list is empty */
 }
 
 /* Styles for the scrollbar track */

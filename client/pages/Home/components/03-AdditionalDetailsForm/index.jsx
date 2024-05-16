@@ -110,7 +110,7 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                 <div className={styles.signUpForm3Extended}>
                     <h1>What information do you want to capture?</h1>
                    
-                    <div className={styles.fieldsListContainer}>
+                    <div className={`${styles.fieldsListContainer} ${additionalFields.length === 0 ? styles.emptyList : ''}`}>
                         <ul>
                             {additionalFields.map((field, index) => (
                                 <li key={index} className={styles.listItem}>
