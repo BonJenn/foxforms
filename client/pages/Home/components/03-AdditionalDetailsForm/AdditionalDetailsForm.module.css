@@ -1,5 +1,6 @@
 .additionalDetailsForm {
     padding-top: 35px; /* Reduced the padding at the top by 30% */
+    padding: 20px;
     height: auto;
     width: 100%; /* Changed to 100% */
     display: flex;
@@ -12,7 +13,7 @@
     background-color: #ffffff;
     border-radius: 21px; /* Reduced the border radius by 30% */
     box-shadow: 0 5.6px 11.2px rgba(0, 0, 0, 0.2); /* Reduced the box shadow by 30% */
- 
+    margin-top: 105px; /* Ensure it doesn't go under the header */
     overflow-y: auto; /* Enables vertical scrolling */
 }
 
@@ -52,10 +53,12 @@
     align-items: center;
     margin: 21px; /* Reduced the margin by 30% */
     padding: 21px; /* Reduced the padding by 30% */
+    max-height: 560px; /* Adjust based on the total height of 8 containers */
+
 }
 
 .signUpForm3Extended ul {
-    margin: 14px; /* Reduced the margin by 30% */
+    margin: 50px; /* Reduced the margin by 30% */
     padding: 14px; /* Reduced the padding by 30% */
     list-style: none;
     width: 100%; /* Ensure full width */
@@ -65,25 +68,44 @@
     display: flex;
     justify-content: space-between; /* Align items with space between */
     align-items: center;
-    background-color: rgb(243, 176, 50);
+    margin-bottom: 20px;
     font-size: 28px; /* Reduced the font size by 30% */
     height: 70px; /* Reduced the height by 30% */
     width: 100%; /* Ensure full width */
     border-color: black;
+}
+
+.fieldContainer {
+    height: 70px;
+    display: flex;
+    justify-content: space-between; /* Pushes items to opposite sides */
+    align-items: center;
+    width: 100%; /* Full width */
+    background-color: rgb(243, 176, 50); /* Ensure this is the orange color */
+    animation: fadeIn 0.5s ease-out;
+    margin-bottom: 50px; /* Adds space below each fieldContainer */
     border-width: 7px; /* Reduced the border width by 30% */
     border-radius: 7px; /* Reduced the border radius by 30% */
     color: white;
     font-weight: bold;
     padding: 14px; /* Reduced the padding by 30% */
-    margin-bottom: 7px; /* Reduced the margin-bottom by 30% */
     box-shadow: 0px 1.4px 2.8px rgba(0,0,0,0.1); /* Reduced the box shadow by 30% */
 }
 
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .fieldContainer {
-    display: flex;
-    justify-content: space-between; /* Pushes items to opposite sides */
-    align-items: center;
-    width: 100%; /* Full width */
+    animation: fadeIn 0.5s ease-out;
 }
 
 .fieldText {

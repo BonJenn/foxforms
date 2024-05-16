@@ -121,7 +121,11 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                     </ul>
     
                     <div className={styles.fieldAddContainer}>
-                        <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} />
+                        <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} onKeyPress={(e) => {
+                            if (e.key === 'Enter' && newField.trim()) {
+                                addField();
+                            }
+                        }} />
                         <button onClick={addField}>+</button>
                     </div>
                 </div>
