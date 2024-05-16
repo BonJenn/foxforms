@@ -1,60 +1,48 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './AdditionalDetailsForm.module.css';
 
 const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initialAdditionalFields, infoType, setInfoType, updateAdditionalFields, updateGlobalPayloadState }) => {
     const [additionalFields, setAdditionalFields] = useState(initialAdditionalFields);
     const [newField, setNewField] = useState('');
-    const [showButtons, setShowButtons] = useState(true);
-    const infoTypeSetRef = useRef(false);
+    const [showButtons, setShowButtons] = useState(!infoType);
 
-    // Set infoType when the conditions are met and mark as set with a ref to avoid repeat setting
     useEffect(() => {
-        if (additionalFields.length > 0 && !infoType && !infoTypeSetRef.current) {
-            setInfoType('extended');
-            infoTypeSetRef.current = true;
-        }
-    }, [additionalFields.length, infoType]); // Only depend on the length to avoid unnecessary updates
+        updateAdditionalFields(additionalFields);
+    }, [additionalFields, updateAdditionalFields]);
 
-    // Handles updates to additionalFields when the component unmounts or additionalFields changes
-    useEffect(() => {
-        return () => {
-            updateAdditionalFields(additionalFields);
-        };
-    }, [additionalFields]); // Removed updateAdditionalFields from dependencies to avoid potential loop
-
-    // Update global state when infoType changes
     useEffect(() => {
         if (infoType) {
-            updateGlobalPayloadState({
-                infoType: infoType,
-            });
+            updateGlobalPayloadState({ infoType });
         }
-    }, [infoType]); // Kept dependency array simple
+    }, [infoType, updateGlobalPayloadState]);
+
+    const handleBack = () => {
+        if (infoType === 'extended') {
+            setInfoType(null);
+            setShowButtons(true);
+        } else {
+            onBack();
+        }
+    };
 
     const handleSubmit = async (type) => {
         setInfoType(type);
         setShowButtons(false);
 
-        if (type === 'basic' || type === 'extended') {
-            try {
-                const response = await fetch(`http://localhost:3000/forms/${formId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        infoType: type,
-                    }),
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to update form infoType');
-                }
-                if (type === 'basic') {
-                    onNext();
-                }
-            } catch (error) {
-                console.error('Error updating form infoType:', error);
+        try {
+            const response = await fetch(`http://localhost:3000/forms/${formId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ infoType: type }),
+            });
+            if (!response.ok) {
+                throw new Error('Failed to update form infoType');
             }
+            if (type === 'basic') {
+                onNext();
+            }
+        } catch (error) {
+            console.error('Error updating form infoType:', error);
         }
     };
 
@@ -62,20 +50,14 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
         try {
             const response = await fetch(`http://localhost:3000/forms/${formId}`, {
                 method: 'PUT',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    additionalFields: additionalFields,
-                }),
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ additionalFields }),
             });
             if (!response.ok) {
                 throw new Error('Failed to update form');
             }
-            onNext(); // Assumes onNext navigates to the next form component
-            updateGlobalPayloadState({
-                additionalFields: additionalFields,
-            });
+            onNext();
+            updateGlobalPayloadState({ additionalFields });
         } catch (error) {
             console.error('Error updating form:', error);
         }
@@ -94,22 +76,17 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
 
     return (
         <div className={styles.additionalDetailsForm}>
+            {showButtons && <h1>For each person who signs up, I want to capture - </h1>}
             {showButtons && (
-                <h1>For each person who signs up, I want to capture - </h1>
+                <div className={styles.signUpForm3Buttons}>
+                    <button type="button" className={styles.additionalFieldBasicButton} onClick={() => handleSubmit('basic')}>Just name and email</button>
+                    <button type="button" className={styles.additionalFieldExtendedButton} onClick={() => handleSubmit('extended')}>Name, email, and some additional fields</button>
+                </div>
             )}
-            {showButtons && (
-                <>
-                    <div className={styles.signUpForm3Buttons}>
-                        <button type="button" className={styles.additionalFieldBasicButton} onClick={() => handleSubmit('basic')}>Just name and email</button>
-                        <button type="button" className={styles.additionalFieldExtendedButton} onClick={() => handleSubmit('extended')}>Name, email, and some additional fields</button>
-                    </div>
-                </>
-            )}
-    
-            {infoType === 'extended' && (
+
+            {infoType === 'extended' && !showButtons && (
                 <div className={styles.signUpForm3Extended}>
                     <h1>What information do you want to capture?</h1>
-                   
                     <div className={`${styles.fieldsListContainer} ${additionalFields.length === 0 ? styles.emptyList : ''}`}>
                         <ul>
                             {additionalFields.map((field, index) => (
@@ -131,19 +108,15 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                             }} />
                             <button onClick={addField}>+</button>
                         </div>
-                      
                     </div>
                     <div className={styles.buttonContainer}>
-                            <button type="button" onClick={onBack}>Back</button>
-                            {!showButtons && infoType === 'extended' && (
-                                <button onClick={handleSubmitAdditionalFields}>Next</button>
-                            )}
+                        <button type="button" onClick={handleBack}>Back</button>
+                        <button onClick={handleSubmitAdditionalFields}>Next</button>
                     </div>
                 </div>
             )}
         </div>
     );
-    
 };
 
 export default AdditionalDetailsForm;

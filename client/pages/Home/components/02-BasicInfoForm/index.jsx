@@ -14,11 +14,17 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
         e.preventDefault();
         const url = formId ? `http://localhost:3000/forms/${formId}` : 'http://localhost:3000/forms';
         const method = formId ? 'PUT' : 'POST';
+        const userId = localStorage.getItem('userId');
 
-        console.log('Local Storage UserId:', localStorage.getItem('userId')); // Added to check if userId is in local storage
+        if (!userId) {
+            console.error('User ID is missing from local storage.');
+            setErrorMessage('User authentication failed. Please log in again.');
+            return; // Stop the form submission if userId is not found
+        }
+
+        console.log('Form submission payload:', { title: formName, customDomain: customDomain, userId: userId });
 
         try {
-            console.log('Form submission payload:', { title: formName, customDomain: customDomain, userId: userId }); // Added to log the payload before sending
             const response = await fetch(url, {
                 method: method,
                 headers: {
@@ -27,20 +33,18 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
                 body: JSON.stringify({
                     title: formName,
                     customDomain: customDomain,
-                    userId: localStorage.getItem('userId') // Fetch from local storage directly if not passed as prop
+                    userId: userId
                 }),
             });
+
             if (!response.ok) {
-                if (response.status === 409) {
-                    throw new Error('Custom domain is already taken. Please choose another one.');
-                } else {
-                    throw new Error('Network response was not ok');
-                }
+                throw new Error('Network response was not ok');
             }
+
             const data = await response.json();
             console.log('Form data saved', data);
-            if (!formId) updateFormId(data._id); // Only update formId if it's a new form
-            onNext(); // Proceed to the next step
+            if (!formId) updateFormId(data._id);
+            onNext();
 
             // Update the global payload with title and customDomain
             updateGlobalPayloadState({
