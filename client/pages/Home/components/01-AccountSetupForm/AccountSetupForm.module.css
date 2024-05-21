@@ -90,14 +90,39 @@
 }
 
 @media (max-width: 768px) {
+    .AccountSetupForm {
+        flex-direction: column;
+    }
+
+    .signUpForm2 {
+        order: -1; /* This will place signUpForm2 above AccountSetupFormHero */
+    }
+
+    .AccountSetupFormHero {
+        order: 1; /* Optional, as it will naturally follow signUpForm2 */
+    }
+
     .AccountSetupFormSect1 {
         flex-direction: column;
     }
 
     .AccountSetupFormHero {
+        width: auto;
         font-size: 15px;
-        margin-left: 20px;
-        margin-right: 20px;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+
+    .signUpForm2 {
+        width: 90%;
+        margin-left: 50px;
+        margin-right: 50px;
+    }
+}
+
+@media (max-width: 425px) {
+    .AccountSetupFormSect1 {
+        flex-direction: column;
     }
 }
 
