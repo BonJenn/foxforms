@@ -6,7 +6,7 @@
     align-items: center;
     margin-top: 150px;
     width: 100%;
-
+    min-height: 100vh;  
 }
 
 .AccountSetupFormSect1 {
