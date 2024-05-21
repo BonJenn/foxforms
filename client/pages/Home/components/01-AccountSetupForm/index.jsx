@@ -51,22 +51,37 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
     return (
         <>
             <div className={styles.AccountSetupForm}>
-                <div className={styles.AccountSetupFormHero}>
-                    <h1><span className={styles.gradientText}>Effortless</span> form building.</h1>
-                    <h1><span className={styles.gradientText}>Seamless</span> data collection.</h1>
+                <div className={styles.AccountSetupFormSect1}>
+                    <div className={styles.AccountSetupFormHero}>
+                        <h1><span className={styles.gradientText}>Effortless</span> form building.</h1>
+                        <h1><span className={styles.gradientText}>Seamless</span> data collection.</h1>
+                    </div>
 
-
+                    <div className={styles.signUpForm2}>
+                        <h1>Sign Up</h1>
+                        <form onSubmit={handleSubmit}>
+                            <input type="email" id="username" name="username" value={username} required onChange={handleChange} placeholder="Username" />
+                            <input type="password" id="password" name="password" value={password} required onChange={handleChange} placeholder="Password" />
+                            <input type="password" id="confirmPassword" name="confirmPassword" required onChange={handleChange} placeholder="Confirm Password" />
+                            {passwordError && <div className={styles.passwordError}>{passwordError}</div>}
+                            <button type="submit">Sign Up</button>
+                            <button type="button" onClick={onBack}>Back</button>
+                        </form>
+                    </div>
                 </div>
-                <div className={styles.signUpForm2}>
-                    <h1>Sign Up</h1>
-                    <form onSubmit={handleSubmit}>
-                        <input type="email" id="username" name="username" value={username} required onChange={handleChange} placeholder="Username" />
-                        <input type="password" id="password" name="password" value={password} required onChange={handleChange} placeholder="Password" />
-                        <input type="password" id="confirmPassword" name="confirmPassword" required onChange={handleChange} placeholder="Confirm Password" />
-                        {passwordError && <div className={styles.passwordError}>{passwordError}</div>}
-                        <button type="submit">Sign Up</button>
-                        <button type="button" onClick={onBack}>Back</button>
-                    </form>
+
+                <div className={styles.accountSetupFormSect2}>
+                    <div className={styles.formExamples}>
+                        <div className={styles.formExample}>
+                            <h1>Forms Galore!</h1>
+                            <h2>Contact Forms</h2>
+                            <h2>Survey Forms</h2>
+                            <h2>Order Forms</h2>
+                            <h2>Feedback Forms</h2>
+                            <h2>And more!</h2>
+                            
+                        </div>
+                    </div>
                 </div>
             </div> 
         </>
