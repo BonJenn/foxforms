@@ -136,6 +136,7 @@
 }
 
 .fieldsListContainer {
+    position: relative; /* Ensures that the pseudo-elements are positioned relative to this container */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -146,8 +147,6 @@
     width: 100%;
     margin-bottom: 20px; /* Space below the list */
     padding: 0; /* Ensure no padding is pushing content out */
-    margin: 0; /* Ensure no margin is applied */
-    position: relative;
 }
 
 .fieldsListContainer.emptyList {
@@ -170,8 +169,6 @@
     background: #f0f0f0; /* Light grey, or choose another color that fits the design */
 }
 
-
-/*Fading at top and bottom of container */
 .fieldsListContainer::before, .fieldsListContainer::after {
     content: "";
     position: absolute;

@@ -52,7 +52,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
         <>
             <div className={styles.AccountSetupForm}>
                 <div className={styles.AccountSetupFormHero}>
-                    <h1><span className={styles.gradientText}>Effortless</span> form builing.</h1>
+                    <h1><span className={styles.gradientText}>Effortless</span> form building.</h1>
                     <h1><span className={styles.gradientText}>Seamless</span> data collection.</h1>
 
 

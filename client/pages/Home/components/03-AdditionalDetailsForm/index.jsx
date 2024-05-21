@@ -29,20 +29,22 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
         setInfoType(type);
         setShowButtons(false);
 
-        try {
-            const response = await fetch(`http://localhost:3000/forms/${formId}`, {
-                method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ infoType: type }),
-            });
-            if (!response.ok) {
-                throw new Error('Failed to update form infoType');
+        if (type === 'basic') {
+            setAdditionalFields([]); // Clear additional fields when switching back to basic
+            onNext();
+        } else {
+            try {
+                const response = await fetch(`http://localhost:3000/forms/${formId}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ infoType: type }),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to update form infoType');
+                }
+            } catch (error) {
+                console.error('Error updating form infoType:', error);
             }
-            if (type === 'basic') {
-                onNext();
-            }
-        } catch (error) {
-            console.error('Error updating form infoType:', error);
         }
     };
 
