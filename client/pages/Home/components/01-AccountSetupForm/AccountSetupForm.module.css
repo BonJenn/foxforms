@@ -4,6 +4,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 150px;
+    width: 100%;
+
 }
 
 .AccountSetupFormSect1 {
@@ -13,14 +16,17 @@
     align-items: center;
 }
 
+
+
 .AccountSetupFormHero {
     font-family: 'Protest Strike';
     padding: 30px;
     border-radius: 30px;
     font-size: 25px;
-    margin-top: 73.5px;
-    margin-right: 10px;
-    margin-left: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
     width: 100%;
     height: 100%;
     min-width: 250px; /* Minimum width to prevent too much compression */
@@ -36,27 +42,27 @@
 }
 
 .signUpForm2 {
-    border-radius: 30px;
+    border-radius: 21px; /* 30% smaller */
     height: 100%; /* 30% smaller */
-    width: 100%; /* 30% smaller */
-    min-width: 320px; /* Minimum width to prevent too much compression */
+    width: 70%; /* 30% smaller */
+    min-width: 224px; /* 30% smaller */
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: auto;
-    margin-top: 0;
-    margin-right: 10px;
-    margin-left: 10px;
-    overflow: hidden;
+
+   
+  
+    margin-left: 10px; /* 30% smaller */
+    margin-right: 20px;
+
     background-color: #ffffff;
-    box-shadow: 0 3.92px 7.84px rgba(0, 0, 0, 0.2); /* 30% smaller */
-    margin-top: 73.5px; /* 30% smaller */
+    box-shadow: 0 2.744px 5.488px rgba(0, 0, 0, 0.2); /* 30% smaller */
 }
 
 .signUpForm2 h1 {
     color: black;
-    margin-top: 40px;
+    margin-top: 20px; /* 30% smaller */
 }
 
 .signUpForm2 form {
@@ -64,23 +70,35 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    margin: 70px; /* 30% smaller */
+    margin: 30px; /* 30% smaller */
 }
 
 .signUpForm2 input {
-    height: 56px; /* 30% smaller */
+    height: 39.2px; /* 30% smaller */
     width: 100%; /* 30% smaller */
-    border-radius: 14px; /* 30% smaller */
-    font-size: 28px; /* 30% smaller */
-    padding: 21px; /* 30% smaller */
-    margin-bottom: 14px; /* 30% smaller */
+    border-radius: 9.8px; /* 30% smaller */
+    font-size: 19.6px; /* 30% smaller */
+    padding: 14.7px; /* 30% smaller */
+    margin-bottom: 9.8px; /* 30% smaller */
 }
 
 .signUpForm2 button {
-    margin: 7px; /* 30% smaller */
-    padding: 14px; /* 30% smaller */
-    font-size: 21px; /* 30% smaller */
-    width: 140px; /* 30% smaller */
+    margin: 4.9px; /* 30% smaller */
+    padding: 9.8px; /* 30% smaller */
+    font-size: 14.7px; /* 30% smaller */
+    width: 98px; /* 30% smaller */
+}
+
+@media (max-width: 768px) {
+    .AccountSetupFormSect1 {
+        flex-direction: column;
+    }
+
+    .AccountSetupFormHero {
+        font-size: 15px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 }
 
 /* Second Section of 01-AccountSetupForm */
@@ -106,49 +124,4 @@
     font-size: 80px;
 }
 
-/* Media queries for responsiveness */
-/* Media queries for responsiveness */
-@media (max-width: 980px) { /* For iPads */
-    .signUpForm2 {
-        width: 100%; /* 30% smaller */
-        margin-top: 10px;
-    }
 
-    .signUpForm2 input, .signUpForm2 button {
-        width: 63%; /* 30% smaller */
-        font-size: 14px; /* 30% smaller */
-        padding: 10.5px; /* 30% smaller */
-    }
-
-    .signUpForm2 form {
-        margin: 35px; /* 30% smaller */
-    }
-
-    .AccountSetupForm {
-        flex-direction: column;
-       
-    }
-  
-    .AccountSetupFormHero {
-        width: 100%; /* Adjust width to full container */
-        margin-bottom: 20px; /* Add space between the hero and the form */
-        font-size: 15px;
-        margin-top: 150px;
-    }
-}
-
-@media (max-width: 480px) { /* For iPhones */
-    .signUpForm2 {
-        width: 70%; /* 30% smaller */
-    }
-
-    .signUpForm2 input, .signUpForm2 button {
-        width: 63%; /* 30% smaller */
-        font-size: 12.6px; /* 30% smaller */
-        padding: 7px; /* 30% smaller */
-    }
-
-    .signUpForm2 form {
-        margin: 14px; /* 30% smaller */
-    }
-}

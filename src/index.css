@@ -26,11 +26,13 @@ a:hover {
 }
 
 body {
+
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   margin: 0;
-  display: flex;
-  place-items: center;
-  width: 100%;
-  min-height: 100%;
+
 }
 
 @media (max-width: 420px) {

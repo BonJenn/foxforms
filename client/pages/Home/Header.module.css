@@ -1,6 +1,10 @@
 .headerStyle {
     height: 105px; /* Reduced the height by 30% */
     width: 100%;
+    max-width: 100%;
+    margin: 0; /* Reset any default margin */
+    padding: 0; /* Reset any default padding */
+    box-sizing: border-box; /* Include padding and border in the element's width */
     background-color: white;
     display: flex;
     flex-direction: column;
@@ -9,6 +13,7 @@
     align-self: flex-start;
     position: fixed;
     top: 0;
+  
 }
 
 .headerStyle h1 {
