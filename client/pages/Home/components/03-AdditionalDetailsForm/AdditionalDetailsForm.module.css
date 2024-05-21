@@ -1,7 +1,7 @@
 .additionalDetailsForm {
     padding-top: 35px; /* Reduced the padding at the top by 30% */
     padding: 20px;
-    height: auto;
+    height: 100%;
     width: 100%; /* Changed to 100% */
     display: flex;
     flex-direction: column;
@@ -14,7 +14,6 @@
     border-radius: 21px; /* Reduced the border radius by 30% */
     box-shadow: 0 5.6px 11.2px rgba(0, 0, 0, 0.2); /* Reduced the box shadow by 30% */
     margin-top: 105px; /* Ensure it doesn't go under the header */
-
 }
 
 .additionalDetailsForm h1 {
@@ -24,26 +23,49 @@
 
 .signUpForm3Buttons {
     display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-self: center;
-    height: 105px; /* Reduced the height by 30% */
+    flex-direction: column; /* Stack buttons vertically */
+    align-items: center; /* Center the buttons horizontally */
+    justify-content: center; /* Center the buttons vertically */
+    width: 100%; /* Full width */
     margin: 21px; /* Reduced the margin by 30% */
 }
 
 .additionalFieldBasicButton, .additionalFieldExtendedButton {
-    background-color: rgb(243, 176, 50);
-    border-color: black;
-    border-width: 2.1px; /* Reduced the border width by 30% */
-    font-size: 21px; /* Reduced the font size by 30% */
-    padding: 14px; /* Reduced the padding by 30% */
+    background: linear-gradient(to right, #f6b947, #f88800); /* Apply orange gradient */
+
+    padding: 20px; /* Increase padding */
+    width: 100%; /* Full width */
+    display: block; /* Stack buttons vertically */
+    height: 150px;
+    margin-bottom: 5px; /* Reduced space between buttons */
+    transition: transform 0.3s ease, background 0.3s ease; /* Smooth transition for hover effect and background */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Add shadow */
+}
+
+.additionalFieldBasicButton:last-child, .additionalFieldExtendedButton:last-child {
+    margin-bottom: 0; /* Remove margin from the last button */
+}
+
+.additionalFieldBasicButton:hover, .additionalFieldExtendedButton:hover {
+    transform: scale(1.01); /* Slightly increase size on hover */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+
+    background: linear-gradient(to right, #e6a537, #d87800); /* Darker gradient on hover */
 }
 
 .additionalDetailsForm button {
     margin: 35px; /* Reduced the margin by 30% */
     padding: 14px; /* Reduced the padding by 30% */
-    font-size: 21px; /* Reduced the font size by 30% */
+    font-size: 40px; /* Reduced the font size by 30% */
     font-weight: bold;
+    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth transition for hover effects */
+}
+
+.additionalDetailsForm button:hover {
+    background-color: #f88800; /* Change background color on hover */
+    color: white; /* Change text color on hover */
+    cursor: pointer; /* Change cursor to pointer to indicate it's clickable */
+
 }
 
 .signUpForm3Extended {
@@ -54,7 +76,6 @@
     margin: 21px; /* Reduced the margin by 30% */
     padding: 21px; /* Reduced the padding by 30% */
     max-height: 560px; /* Adjust based on the total height of 8 containers */
-
 }
 
 .signUpForm3Extended ul {
@@ -92,7 +113,6 @@
     box-shadow: 0px 1.4px 2.8px rgba(0,0,0,0.1); /* Reduced the box shadow by 30% */
 }
 
-
 @keyframes fadeIn {
     from {
         opacity: 0;
@@ -102,10 +122,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-.fieldContainer {
-    animation: fadeIn 0.5s ease-out;
 }
 
 .fieldText {
@@ -198,7 +214,6 @@
 .fieldsListContainer li {
     margin: 10px; /* Remove margin */
     padding: 0; /* Adjust padding if necessary */
-
 }
 
 .fieldAddContainer {
