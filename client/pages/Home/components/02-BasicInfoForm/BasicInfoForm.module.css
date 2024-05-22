@@ -3,26 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    max-width: auto; 
     border-radius: 30px;
-    height: 100%; /* 30% smaller */
-    width: 100%; /* 30% smaller */
-    min-width: 320px; /* Minimum width to prevent too much compression */
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    max-width: auto;
-    overflow: hidden;
+    height: 70vh; 
+    min-width: 320px; /* Minimum width to prevent too much compression */ 
+    margin-top: 200px;
+    margin-bottom: 200px;
     background-color: #ffffff;
     box-shadow: 0 3.92px 7.84px rgba(0, 0, 0, 0.2); /* 30% smaller */
-}
-
-.signUpForm1 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin: 100px;
 }
 
 .signUpForm1 h1 {
@@ -31,6 +18,13 @@
     margin-top: 80px;
 }
 
+.signUpForm1 form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin: 100px;
+
+}
 
 .signUpForm1 input {
     height: 80px;
@@ -79,7 +73,7 @@
 }
 
 .error {
-    color: white; /* Change text color to white */
+    color: rgb(255, 170, 0); /* Change text color to white */
     font-weight: bold;
     margin-top: 20px; /* Adjust as needed */
     text-align: center; /* Center the text */
