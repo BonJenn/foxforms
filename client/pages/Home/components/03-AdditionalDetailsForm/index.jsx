@@ -8,7 +8,7 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
 
     useEffect(() => {
         updateAdditionalFields(additionalFields);
-    }, [additionalFields, updateAdditionalFields]);
+    }, [additionalFields]); // Removed updateAdditionalFields from dependencies
 
     useEffect(() => {
         if (infoType) {
@@ -103,7 +103,7 @@ const AdditionalDetailsForm = ({ onBack, onNext, formId, additionalFields: initi
                     </div>
                     <div className={styles.inputAndButtons}>
                         <div className={styles.fieldAddContainer}>
-                            <input type="text" value={newField} onChange={(e) => setNewField(e.target.value)} onKeyPress={(e) => {
+                            <input type="text" value={newField} placeholder='Phone Number' onChange={(e) => setNewField(e.target.value)} onKeyPress={(e) => {
                                 if (e.key === 'Enter' && newField.trim()) {
                                     addField();
                                 }
