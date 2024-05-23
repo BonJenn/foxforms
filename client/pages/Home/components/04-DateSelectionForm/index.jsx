@@ -86,6 +86,7 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
                 <span className={styles.checkboxLabel}>
                     <input
                         type="checkbox"
+                        className={styles.checkbox} // Add this line
                         checked={showDateForm}
                         onChange={handleCheckboxChange}
                     />
@@ -96,6 +97,7 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
                 <span className={styles.checkboxLabel}>
                     <input
                         type="checkbox"
+                        className={styles.checkbox} // Add this line to apply the same styling
                         checked={!usingDates}
                         onChange={handleNotUsingDatesChange}
                     />
@@ -111,11 +113,11 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
                                 value={date} 
                                 onChange={(e) => {
                                     const newDates = [...dates];
-                                                                       newDates[index] = e.target.value;
-                                                                       setDates(newDates);
+                                    newDates[index] = e.target.value;
+                                    setDates(newDates);
                                 }} 
                             />
-                            <button type="button" onClick={() => removeDate(index)}>x</button>
+                            <button type="button" className="deleteDateButton" onClick={() => removeDate(index)}>x</button>
                         </div>
                     ))}
                     <button type="button" className={styles.moreDatesButton} onClick={addDate}>+</button>

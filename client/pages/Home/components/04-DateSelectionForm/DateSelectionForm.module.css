@@ -5,13 +5,49 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh; /* Adjust based on your needs */
-    width: 100vh; /* Adjust based on your needs */
-    max-width: auto; /* or whatever max width you prefer */
-    margin-top: 100px; /* Adjusted from 300px to 100px */
-    /*border: solid red 10px;*/ 
-    border-radius: 10px;
-  
+    height: 50vh; 
+    width: 50vh; 
+    max-width: auto; 
+    margin-top: 100px; 
+    border-radius: 30px;
+    padding: 20px;
+    background-color: #ffffff;
+    box-shadow: 0 2.8px 5.6px rgba(0, 0, 0, 0.2); /* 50% smaller */
+}
+
+.signUpForm4 h1, h2, h3 {
+    color: black;
+}
+
+.signUpForm4 h3 {
+    font-size: 25px; /* 50px * 0.5 */
+}
+
+.checkbox {
+    appearance: none;
+    background-color: #f0f0f0;
+    margin: 5px;
+    font-size: 8px; /* 16px * 0.5 */
+    width: 15px; /* 30px * 0.5 */
+    height: 15px; /* 30px * 0.5 */
+    border: 1px solid #555; /* 2px * 0.5 */
+    border-radius: 2px; /* 4px * 0.5 */
+    position: relative; /* Needed for positioning the pseudo-element */
+}
+
+.checkbox:checked {
+    background-color: #ffc020;
+    border: solid 2.5px #000000; /* 5px * 0.5 */
+}
+
+.checkbox:checked::before {
+    content: '✔'; /* Unicode character for a checkmark */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: red; /* Checkmark color */
+    font-size: 10px; /* Adjust size as needed */
 }
 
 .signUpForm4Buttons {
@@ -21,45 +57,55 @@
 }
 
 .signUpForm4 button {
-    margin: 30px;
-    padding: 10px;
-    font-size: 20px;
+    margin: 15px; /* 30px * 0.5 */
+    padding: 5px; /* 10px * 0.5 */
+    font-size: 10px; /* 20px * 0.5 */
     font-weight: bold;
 }
 
 .signUpForm4 .moreDatesButton {
-    height: 50px;
-    width: 50px;
+    height: 25px; /* 50px * 0.5 */
+    width: 25px; /* 50px * 0.5 */
 } 
 
 .signUpForm4Extended {
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 30px;
-    padding: 30px;
+  
+    width: 100%;
+    margin: 15px; /* 30px * 0.5 */
+    padding: 15px; /* 30px * 0.5 */
 }
 
-.signUpForm4Extended input {
-    height: 50px;
-    width: 300px;
-    margin: 10px;
+
+.datePicker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    width: 100%;
 }
 
 .datePicker input {
     font-family: 'Helvetica Neue';
     font-weight: bold;
-    height: 50px;
-    width: 200px;
+    height: 50px; /* 50px * 0.5 */
+    width: 300px; /* 200px * 0.5 */
     color: black;
     background-color: white;
-    padding: 10px;
-    border-radius: 10px;
+    padding: 5px; /* 10px * 0.5 */
+    border-radius: 5px; /* 10px * 0.5 */
 }
 
 .datePicker button {
     justify-content: center;
-    height: 70px;
+    height: 35px; /* 70px * 0.5 */
+    width: 100px;
+}
+
+.deleteDateDateButton {
+    height: 35px;
+    width: 35px
 }
 
 .checkboxLabel {
@@ -67,7 +113,6 @@
     align-items: center;
 }
 
-/* Add responsive adjustments below */
 
 /* iPad responsiveness */
 @media screen and (max-width: 1024px) {
@@ -82,9 +127,9 @@
     }
 
     .signUpForm4 button {
-        margin: 20px; /* Reduce margin */
-        padding: 15px; /* Adjust padding */
-        font-size: 25px; /* Adjust font size */
+        margin: 10px; /* Reduce margin */
+        padding: 7.5px; /* Adjust padding */
+        font-size: 12.5px; /* Adjust font size */
     }
 }
 
@@ -101,13 +146,13 @@
     }
 
     .signUpForm4 button, .datePicker button {
-        margin: 10px auto; /* Center buttons with automatic horizontal margins */
-        padding: 10px; /* Adjust padding */
-        font-size: 20px; /* Adjust font size for smaller screens */
+        margin: 5px auto; /* Center buttons with automatic horizontal margins */
+        padding: 5px; /* Adjust padding */
+        font-size: 10px; /* Adjust font size for smaller screens */
     }
 
     .signUpForm4Extended input, .datePicker input {
         width: 90%; /* Make input fields wider to fill form */
-        margin: 5px; /* Reduce margin */
+        margin: 2.5px; /* Reduce margin */
     }
 }
