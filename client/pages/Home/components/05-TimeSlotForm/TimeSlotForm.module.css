@@ -174,7 +174,7 @@ input:checked + .slider:before {
 }
 
 .timeSlotPickerContainer {
-  background-color: orange;
+  background-color: rgb(255, 198, 92);
   margin: 40px;
   padding: 40px;
   border-radius: 30px;

@@ -222,11 +222,13 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
                                             <input 
                                                 value={currentItem[`${date}-${slotIndex}`] || ''} 
                                                 onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, true)} 
+                                                placeholder='Item Name'
                                             />
                                             <input 
                                                 type="number"
                                                 value={numberOfSlots[`${date}-${slotIndex}`] || ''} 
                                                 onChange={(e) => handleInputChange(e, `${date}-${slotIndex}`, false)} 
+                                                placeholder='Number of Slots'
                                             />
                                             <button onClick={() => { addItemToSlot(date, slotIndex); toggleEditMode(date, slotIndex); }}>Save</button>
                                         </>
@@ -242,8 +244,10 @@ const AddItemsForm = ({ onNext, onBack, formId, updateGlobalPayloadState }) => {
                     )}
                 </tbody>
             </table>
-            <button onClick={onBack}>Back</button>
-            <button onClick={onNext}>Next</button>
+            <div className={styles.buttonContainer}>
+                <button onClick={onBack}>Back</button>
+                <button onClick={onNext}>Next</button>
+            </div>
         </div>
     );
 };
