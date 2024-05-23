@@ -178,7 +178,8 @@ const TimeSlotForm = ({ onBack, onNext, setHasTimeSlots, selectedDates, formId, 
                 if (datesWithTimeSlots.has(date)) {
                     return (
                         <div key={index} className={styles.timeSlotPickerContainer}>
-                            <h3>Time slots for {date}</h3>
+                            <h3>Time slots for <span className={styles.date}>{date}</span></h3>
+                            <p>Add Another Date</p>
                             {timeSlotsForDates[date] && timeSlotsForDates[date].map((slot, slotIndex) => (
                                 <div key={slotIndex}>
                                     <input type="time" value={slot.startTime} onChange={(e) => handleStartTimeChange(date, slotIndex, e.target.value)} className={styles.timeInput} /> to 
