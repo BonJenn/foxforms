@@ -5,17 +5,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 50vh; 
-    width: 50vh; 
+    height: auto; 
+    width: auto; 
     max-width: auto; 
     margin-top: 100px; 
     border-radius: 30px;
-    padding: 20px;
+    padding: 50px;
     background-color: #ffffff;
     box-shadow: 0 2.8px 5.6px rgba(0, 0, 0, 0.2); /* 50% smaller */
 }
 
-.signUpForm4 h1, h2, h3 {
+.signUpForm4 h1, h3 {
     color: black;
 }
 
@@ -56,17 +56,7 @@
     justify-content: space-between;
 }
 
-.signUpForm4 button {
-    margin: 15px; /* 30px * 0.5 */
-    padding: 5px; /* 10px * 0.5 */
-    font-size: 10px; /* 20px * 0.5 */
-    font-weight: bold;
-}
 
-.signUpForm4 .moreDatesButton {
-    height: 25px; /* 50px * 0.5 */
-    width: 25px; /* 50px * 0.5 */
-} 
 
 .signUpForm4Extended {
     flex-direction: column;
@@ -76,31 +66,53 @@
     padding: 15px; /* 30px * 0.5 */
 }
 
+.datePickerBox {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  
+    padding: 10px;
+    margin: 10px;
+}
+
 
 .datePicker {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-color: red;
+
     width: 100%;
 }
 
 .datePicker input {
     font-family: 'Helvetica Neue';
     font-weight: bold;
+    font-size: 20px;
     height: 50px; /* 50px * 0.5 */
-    width: 300px; /* 200px * 0.5 */
+    width: 200px; /* 200px * 0.5 */
     color: black;
     background-color: white;
     padding: 5px; /* 10px * 0.5 */
-    border-radius: 5px; /* 10px * 0.5 */
+    margin: 10px;
+    border-radius: 15px; /* 10px * 0.5 */
 }
 
-.datePicker button {
-    justify-content: center;
-    height: 35px; /* 70px * 0.5 */
-    width: 100px;
+.moreDatesButton, .doneAddingDatesButton {
+  
+    font-size: 15px;
+    height: 75px;
+    width: 200px;
+    background-color: rgb(247, 177, 0);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.moreDatesButton:hover, .doneAddingDatesButton:hover {
+    background-color: black;
+    color: white;
 }
 
 .deleteDateDateButton {
@@ -156,3 +168,4 @@
         margin: 2.5px; /* Reduce margin */
     }
 }
+

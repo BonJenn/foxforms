@@ -107,7 +107,7 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
             {showDateForm && (
                 <div className={styles.datePicker}>
                     {dates.map((date, index) => (
-                        <div key={index}>
+                        <div key={index} className={styles.datePickerBox}>
                             <input 
                                 type="date" 
                                 value={date} 
@@ -117,11 +117,15 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
                                     setDates(newDates);
                                 }} 
                             />
-                            <button type="button" className="deleteDateButton" onClick={() => removeDate(index)}>x</button>
+                            <button type="button" className={styles.deleteDateButton} onClick={() => removeDate(index)}>x</button>
                         </div>
                     ))}
-                    <button type="button" className={styles.moreDatesButton} onClick={addDate}>+</button>
-                    <button type="button" onClick={handleDateFormSubmit}>Done Adding Dates</button>
+
+                    <div className={styles.submitDateSection}>
+                        <button type="button" className={styles.moreDatesButton} onClick={addDate}><h2>Add Another Date</h2></button>
+                        <button type="button" className={styles.doneAddingDatesButton} onClick={handleDateFormSubmit}><h2>Done Adding Dates</h2></button>
+                    </div>
+                    
                 </div>
             )}
             <div className={styles.buttonContainer}>
