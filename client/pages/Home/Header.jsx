@@ -94,19 +94,26 @@ const Header = ({ cookieAuthToken }) => {
     return (
         <div className={styles.headerStyle}>
             <h1>Fox<span>Forms</span></h1>
-            <div className={styles.authButtons}>
-                {!isLoggedIn ? (
-                    <>
-                        <button onClick={(e) => { e.stopPropagation(); setShowComponent('signup'); }}>Sign Up</button>
-                        <button onClick={(e) => { e.stopPropagation(); setShowComponent('login'); }}>Login</button>
-                    </>
-                ) : (
-                    <div style={{ float: 'right' }}> {/* Adjusted for username display */}
-                        <span>{username}</span> {/* Display username */}
-                        <button onClick={handleLogout}>Logout</button>
-                    </div>
-                )}
-            </div>
+            <div className={styles.headerRightSide}> {/* Added container div */}
+                <ul className={styles.navList}>
+                    <li><Link to="/about">About</Link></li>
+                    <li><Link to="/features">Features</Link></li>
+                    <li><Link to="/pricing">Pricing</Link></li>
+                </ul>
+                <div className={styles.authButtons}>
+                    {!isLoggedIn ? (
+                        <>
+                            <button onClick={(e) => { e.stopPropagation(); setShowComponent('login'); }}>Login</button>
+                        </>
+                    ) : (
+                        <div style={{ float: 'right' }}> {/* Adjusted for username display */}
+                            <span>{username}</span> {/* Display username */}
+                            <button onClick={handleLogout}>Logout</button>
+                        </div>
+                    )}
+                </div>
+            </div> {/* Closing container div */}
+           
             {showComponent === 'signup' && <SignUp onClose={handleCloseModal} />}
             {showComponent === 'login' && <Login onClose={handleCloseModal} />}
         </div>

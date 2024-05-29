@@ -9,6 +9,14 @@
     left: 0;
 }
 
+.footer .navList {
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
 .footer a {
     color: #f6b947;
     text-decoration: none;
