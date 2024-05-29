@@ -1,0 +1,27 @@
+.footer {
+    width: 100%;
+    padding: 20px 0;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+}
+
+.footer a {
+    color: #f6b947;
+    text-decoration: none;
+    margin: 0 10px;
+}
+
+.footer a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        padding: 10px 0;
+        font-size: 14px;
+    }
+}

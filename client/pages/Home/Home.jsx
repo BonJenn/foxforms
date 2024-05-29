@@ -1,5 +1,6 @@
 import styles from './Home.module.css'
 import Header from './Header.jsx'
+import Footer from './Footer/index.jsx'
 import FormWizard from './components/FormWizard/index.jsx'; // Import FormWizard
 import { useState } from 'react'
 
@@ -10,6 +11,7 @@ const Home = () => {
      
             <Header />
             <FormWizard />  
+            <Footer />
         
         </div>
     )
