@@ -115,7 +115,7 @@ function App() {
             
             <ErrorBoundary>
               <Header cookieAuthToken={cookieAuthToken} userEmail={userEmail} onLogout={handleLogout} />
-              {logoutMessage && <div>{logoutMessage}</div>}
+              {logoutMessage && <div>{logoutMessage}</div>} 
               {/* Wrap the entire app with AuthProvider */}
               <Routes>
                 

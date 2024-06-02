@@ -4,10 +4,26 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 250px;
+    justify-content: center;
+    margin-top: 130px;
     width: 100%;
     min-height: 100vh;  
-    background-color: red;
+    background-color: white;
+}
+
+.AccountSetupFormIllustration {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+.AccountSetupForm img {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    height: auto;
 }
 
 .AccountSetupFormSect1 {
@@ -17,25 +33,31 @@
     align-items: center;
 }
 
-.AccountSetupFormSect1 h1 {
+.AccountSetupFormHero h1 {
     color: black;
+    font-size: 50px;
+}
+
+.AccountSetupFormSect1 h3 {
+    font-size: 20px;
+    color: grey;
+    font-weight: 500;
 }
 
 .AccountSetupFormHero {
-    font-family: 'Arial';
-    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter';
     border-radius: 30px;
     font-size: 25px;
     margin-left: 20px;
     margin-right: 20px;
-    margin-top: 20px;
     margin-bottom: 20px;
     width: 100%;
     height: 100%;
     min-width: 250px; /* Minimum width to prevent too much compression */
-    background: white;
-
-    box-shadow: 0 3.92px 7.84px rgba(0, 0, 0, 0.2); /* 30% smaller */
 }
 
 .AccountSetupFormHero .gradientText {
@@ -53,12 +75,9 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
-   
-  
     margin-left: 10px; /* 30% smaller */
     margin-right: 20px;
-    background-color: #ffffff;
+    background-color: red;
     box-shadow: 0 2.744px 5.488px rgba(0, 0, 0, 0.2); /* 30% smaller */
 }
 
@@ -67,13 +86,6 @@
     margin-top: 20px; /* 30% smaller */
 }
 
-.signUpForm2 form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: 30px; /* 30% smaller */
-}
 
 .signUpForm2 input {
     height: 39.2px; /* 30% smaller */
@@ -91,42 +103,6 @@
     width: 98px; /* 30% smaller */
 }
 
-@media (max-width: 768px) {
-    .AccountSetupForm {
-        flex-direction: column;
-    }
-
-    .signUpForm2 {
-        order: -1; /* This will place signUpForm2 above AccountSetupFormHero */
-    }
-
-    .AccountSetupFormHero {
-        order: 1; /* Optional, as it will naturally follow signUpForm2 */
-    }
-
-    .AccountSetupFormSect1 {
-        flex-direction: column;
-    }
-
-    .AccountSetupFormHero {
-        width: auto;
-        font-size: 15px;
-        margin-left: 50px;
-        margin-right: 50px;
-    }
-
-    .signUpForm2 {
-        width: 90%;
-        margin-left: 50px;
-        margin-right: 50px;
-    }
-}
-
-@media (max-width: 425px) {
-    .AccountSetupFormSect1 {
-        flex-direction: column;
-    }
-}
 
 /* Second Section of 01-AccountSetupForm */
 
@@ -137,7 +113,7 @@
     align-items: center;
     height: 100%;
     width: 90%;
-    margin-top: 50px;
+
     background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(33, 33, 33)); /* Black to dark gray gradient */
     padding: 20px;
     margin: 20px;

@@ -26,7 +26,7 @@ const Header = ({ cookieAuthToken }) => {
     }, [cookieAuthToken, isLoggedIn]); // Dependency array, re-run effect when authToken or isLoggedIn changes
 
     useEffect(() => {
-        if (cookieAuthToken) {
+        if (cookieAuthToken) { 
             console.log('authToken:', cookieAuthToken);
         } else {
             console.log('Warning: authToken is undefined.');
@@ -114,8 +114,8 @@ const Header = ({ cookieAuthToken }) => {
                 </div>
             </div> {/* Closing container div */}
            
-            {showComponent === 'signup' && <SignUp onClose={handleCloseModal} />}
-            {showComponent === 'login' && <Login onClose={handleCloseModal} />}
+            {showComponent === 'signup' && <SignUp onClose={handleCloseModal} setShowComponent={setShowComponent} />}
+            {showComponent === 'login' && <Login onClose={handleCloseModal} setShowComponent={setShowComponent} />}
         </div>
     );
 }

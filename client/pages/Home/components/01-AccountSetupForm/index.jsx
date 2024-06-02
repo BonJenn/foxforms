@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import styles from './AccountSetupForm.module.css';
+import formIllustration from '../../../../images/forms-concept-illustration/FoxForms_illustration.png';
 
 {/* User Sign Up */}
-const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState }) => {
+const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState, setShowComponent }) => {
     const [formData, setFormData] = useState({
         confirmPassword: '',
     });
@@ -48,6 +49,12 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
         }
     };
 
+    const handleSignUpClick = () => {
+        console.log('Before setting showComponent');
+        setShowComponent('signup');
+        console.log('After setting showComponent:', showComponent);
+    };
+
     return (
         <>
             <div className={styles.AccountSetupForm}>
@@ -58,8 +65,25 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                         <h3> Gather customer insights with precision and ease.</h3>
                     </div>
 
-                   
+                    <div className={styles.AccountSetupFormIllustration}>
+                        <img src={formIllustration} alt="FoxForms Illustration" />
+                    </div>
+
+                <button 
+                    className={styles.signUpButton} 
+                    onClick={() => setShowComponent('signup')}
+                    style={{ backgroundColor: 'black', color: 'white', padding: '10px 20px', fontSize: '16px', borderRadius: '5px', cursor: 'pointer' }}
+                >
+                    Sign Up
+                </button>
                 </div>
+
+
+
+                   
+             
+
+     
 
                 <div className={styles.accountSetupFormSect2}>
                     <div className={styles.formExamples}>

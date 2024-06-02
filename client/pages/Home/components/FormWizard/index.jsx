@@ -37,6 +37,7 @@ const FormWizard = ({ authToken, skipAccountSetup }) => {
     const [timeSlotsForDates, setTimeSlotsForDates] = useState({}); 
     const [globalPayload, setGlobalPayload] = useState({});
     const [isCompleted, setIsCompleted] = useState(false); // Added isCompleted state
+    const [showComponent, setShowComponent] = useState(''); // Added showComponent state
 
     const updateGlobalPayloadState = (updates) => {
         setGlobalPayload(prevState => ({ ...prevState, ...updates }));
@@ -69,7 +70,7 @@ const FormWizard = ({ authToken, skipAccountSetup }) => {
         
         switch (currentStep) {
             case 1:
-                return <AccountSetupForm onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} username={username} setUsername={setUsername} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
+                return <AccountSetupForm setShowComponent={setShowComponent} onNext={() => { setHasSignedUp(true); nextStep(); }} onBack={prevStep} username={username} setUsername={setUsername} password={password} setPassword={setPassword} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} />;
             case 2:
                 console.log('Current userId:', userIdState);
                 return <BasicInfoForm onNext={nextStep} updateFormId={updateFormId} formId={formId} formName={formName} setFormName={setFormName} customDomain={customDomain} setCustomDomain={setCustomDomain} globalPayload={globalPayload} updateGlobalPayloadState={updateGlobalPayloadState} userId={userIdState} />;

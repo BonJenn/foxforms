@@ -40,10 +40,11 @@
 }
 
 .headerStyle h1 {
-    font-size: 56px; /* Reduced the font size by 30% */
+    font-size: 40px; /* Reduced the font size by 30% */
     color: black;
     font-family: 'Protest Strike';
     margin: 10px;
+    margin-left: 20px;
 }
 
 .headerStyle h1 span {
