@@ -13,7 +13,7 @@ const Home = () => {
 
     return (
         <div className={styles.home}>
-            <Header setShowComponent={setShowComponent} />
+             {/* <Header setShowComponent={setShowComponent} /> */}
             <FormWizard setShowComponent={setShowComponent} />
             {showComponent === 'signup' && <SignUp />}
             {showComponent === 'login' && <Login />}

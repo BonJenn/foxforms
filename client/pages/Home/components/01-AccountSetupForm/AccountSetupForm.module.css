@@ -200,6 +200,7 @@
     flex-direction: column;
     align-items: center;
     margin: 20px;
+    font-size: 20px;
 }
 
 .formExamplesRow {
