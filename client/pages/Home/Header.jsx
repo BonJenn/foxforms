@@ -11,6 +11,7 @@ const Header = ({ cookieAuthToken }) => {
     const [username, setUsername] = useState(localStorage.getItem('username')); // Use state for username
     const { authState, login, logout } = useAuth(); // Corrected useAuth usage, ensure logout is destructured here
     const { isLoggedIn } = authState; // Access isLoggedIn from authState
+    const [isNavVisible, setIsNavVisible] = useState(false); // Added state for menu toggle
 
     console.log('Header component prop:', cookieAuthToken); // Added console.log to trace prop changes
 
@@ -91,15 +92,24 @@ const Header = ({ cookieAuthToken }) => {
         navigate('/');
     };
     console.log('login function:', login);
+
+    const toggleNav = () => {
+        if (window.innerWidth <= 768) {
+            setIsNavVisible(!isNavVisible); // Toggle only on small screens
+        }
+    };
+
     return (
         <div className={styles.headerStyle}>
             <h1>Fox<span>Forms</span></h1>
             <div className={styles.headerRightSide}> {/* Added container div */}
-                <ul className={styles.navList}>
-                    <li><Link to="/about">About</Link></li>
-                    <li><Link to="/features">Features</Link></li>
-                    <li><Link to="/pricing">Pricing</Link></li>
-                </ul>
+                {(isNavVisible || window.innerWidth > 768) && (
+                    <ul className={styles.navList}>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/features">Features</Link></li>
+                        <li><Link to="/pricing">Pricing</Link></li>
+                    </ul>
+                )}
                 <div className={styles.authButtons}>
                     {!isLoggedIn ? (
                         <>
@@ -111,6 +121,9 @@ const Header = ({ cookieAuthToken }) => {
                             <button onClick={handleLogout}>Logout</button>
                         </div>
                     )}
+                </div>
+                <div className={styles.hamburger} onClick={toggleNav}>
+                    {/* Icon or Hamburger Menu */}
                 </div>
             </div> {/* Closing container div */}
            

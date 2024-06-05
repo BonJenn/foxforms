@@ -149,9 +149,7 @@
     border-radius: 30px !important;
     color: black !important;
     margin-top: 20px;
- 
 }
-
 
 .accountSetupFormSect2 .userTestimonials {
     display: flex;
@@ -205,6 +203,10 @@
     .accountSetupFormSect2 .userTestimonials {
         flex-direction: column;
         margin: 20px;
+    }
+
+    .accountSetupFormSect2 h1 {
+        text-align: center;
     }
 }
 
