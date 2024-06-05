@@ -114,9 +114,14 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
 
                        <div className={styles.userTestimonial_2}>
                             <div className={styles.userReview}>
-                                <h2>
-                                    "The data visualization features of FoxForms are a game-changer! 
-                                </h2> 
+                                <div className={styles.profilePicContainer}>
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User Testimonial Picture" />
+
+                                    <h2>
+                                        "The data visualization features of FoxForms are a game-changer! 
+                                    </h2> 
+                                </div>
+                              
                                 <br></br>
                                 <h4>
                                     Each form provides detailed analytics that help us understand customer behavior better. 
@@ -125,16 +130,21 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                                 </h4>
                             </div>
                             <div className={styles.userReviewName}>
-                                 <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User Testimonial Picture" />
                                 <h4>Michael Jackson</h4>
                             </div>
                         </div>
 
                         <div className={styles.userTestimonial_3}>
                             <div className={styles.userReview}>
-                                <h2>
+                                <div className={styles.profilePicContainer}>
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User Testimonial Picture" />
+
+                                    <h2>
                                     "Before using FoxForms, our customer engagement was lackluster at best. 
-                                </h2>
+                                    </h2>
+                                </div>
+                                
+                              
                                 <br></br>
                                 <h4>
                                     Now, with their intuitive and visually appealing forms, we've seen a dramatic improvement. 
@@ -143,7 +153,6 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                                 </h4>
                             </div>
                             <div className={styles.userReviewName}>
-                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User Testimonial Picture" />
                                 <h4>Michael Jackson</h4>
                             </div>
                         </div>
