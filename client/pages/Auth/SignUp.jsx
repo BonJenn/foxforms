@@ -1,22 +1,22 @@
 import React, { useState, useRef, useEffect } from 'react';
-import styles from './SignUp.module.css'; // Import your styles
-import { useDispatch } from 'react-redux'; // Import useDispatch
-import { useAuth } from '../../../src/context/AuthContext.jsx'; // Adjust the import path as necessary
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import styles from './SignUp.module.css';
+import { useDispatch } from 'react-redux';
+import { useAuth } from '../../../src/context/AuthContext.jsx';
+import { useNavigate } from 'react-router-dom';
 
-const SignUp = ({ onClose }) => {
+const SignUp = ({ setShowComponent }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const modalRef = useRef(null);
-  const dispatch = useDispatch(); // Initialize useDispatch
-  const { login } = useAuth(); // Get login method from useAuth
-  const navigate = useNavigate(); // Initialize useNavigate
+  const dispatch = useDispatch();
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
   const handleClose = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
+      setShowComponent('');
     }
   };
 
@@ -27,6 +27,10 @@ const SignUp = ({ onClose }) => {
 
   const handleSignUp = async (e) => {
     e.preventDefault();
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
     try {
       const response = await fetch('http://localhost:3000/signup', {
         method: 'POST',
@@ -35,13 +39,13 @@ const SignUp = ({ onClose }) => {
         },
         body: JSON.stringify({ username, password }),
       });
-      
+
       const data = response.ok ? await response.json() : { message: await response.text() };
       if (response.ok) {
-        localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
-        localStorage.setItem('userId', data.userId); // Ensure this line is correctly setting the userId
-        login(data.authToken, data.userId, navigate); // Update authentication state and navigate
-        onClose(); // Close the signup modal
+        localStorage.setItem('authToken', data.authToken);
+        localStorage.setItem('userId', data.userId);
+        login(data.authToken, data.userId, navigate);
+        setShowComponent('');
       } else {
         throw new Error(data.message || 'Failed to sign up');
       }
@@ -54,7 +58,7 @@ const SignUp = ({ onClose }) => {
   return (
     <div className={styles.modalBackground}>
       <div className={styles.modalContent} ref={modalRef}>
-        <button onClick={onClose} className={styles.closeButton}>X</button>
+        <button onClick={() => setShowComponent('')} className={styles.closeButton}>X</button>
         <h2>Sign Up</h2>
         {error && <p>{error}</p>}
         <form onSubmit={handleSignUp}>

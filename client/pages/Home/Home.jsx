@@ -4,7 +4,7 @@ import Footer from './Footer/index.jsx'
 import FormWizard from './components/FormWizard/index.jsx' // Import FormWizard
 import { useState } from 'react'
 import SignUp from '../Auth/SignUp.jsx';
-import Login from '..//Auth/Login.jsx';
+import Login from '../Auth/Login.jsx';
 
 
 
@@ -15,8 +15,8 @@ const Home = () => {
         <div className={styles.home}>
              {/* <Header setShowComponent={setShowComponent} /> */}
             <FormWizard setShowComponent={setShowComponent} />
-            {showComponent === 'signup' && <SignUp />}
-            {showComponent === 'login' && <Login />}
+            {showComponent === 'signup' && <SignUp showComponent={showComponent} setShowComponent={setShowComponent} />}
+            {showComponent === 'login' && <Login setShowComponent={setShowComponent} />}
             <Footer />
         </div>
     )

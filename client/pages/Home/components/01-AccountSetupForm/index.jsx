@@ -5,9 +5,11 @@ import formExampleIcon01 from '../../../../images/forms-concept-illustration/Acc
 import formExampleIcon02 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon02.png';
 import formExampleIcon03 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon03.png';
 import formExampleIcon04 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon04.png';
+import SignUp from '../../../Auth/SignUp.jsx';
 
-// User Sign Up
-const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState, setShowComponent }) => {
+const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState }) => {
+
+    const [showComponent, setShowComponent] = useState('');
     const [formData, setFormData] = useState({
         confirmPassword: '',
     });
@@ -16,7 +18,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'username') setUsername(value);
-        else if (name === 'password') setPassword(value); // Add this line to update password
+        else if (name === 'password') setPassword(value); 
         else setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
@@ -38,12 +40,12 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
             const data = response.ok ? await response.json() : { message: await response.text() };
             if (response.ok) {
                 console.log('User signed up successfully:', data);
-                localStorage.setItem('authToken', data.authToken); // Store authToken in local storage
+                localStorage.setItem('authToken', data.authToken); 
                 updateGlobalPayloadState({
                     username: username,
                     userId: data.userId
                 });
-                onNext(); // Proceed to the next form or action
+                onNext(); 
             } else {
                 throw new Error(data.message || 'Failed to sign up');
             }
@@ -54,9 +56,9 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
     };
 
     const handleSignUpClick = () => {
-        console.log('Before setting showComponent');
+        console.log('Sign Up button clicked');
         setShowComponent('signup');
-        console.log('After setting showComponent:', showComponent);
+        console.log('setShowComponent called with signup');
     };
 
     return (
@@ -71,11 +73,15 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
 
                     <button 
                         className={styles.signUpButton} 
-                        onClick={() => setShowComponent('signup')}
+                        onClick={handleSignUpClick}
                         style={{ backgroundColor: 'black', color: 'white', padding: '10px 20px', fontSize: '16px', borderRadius: '5px', cursor: 'pointer' }}
                     >
                         Sign Up
                     </button>
+
+                    {showComponent === 'signup' && <SignUp />}
+
+                   
 
                     <div className={styles.AccountSetupFormIllustration}>
                         <img src={formIllustration} alt="FoxForms Illustration" />
@@ -106,7 +112,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                                     <p>Streamline your ordering process with our efficient and user-friendly order forms.</p>
                                 </div>
                                 <div className={styles.formType}>
-                                     <img src={formExampleIcon04} alt="Feedback Form Icon" />
+                                    <img src={formExampleIcon04} alt="Feedback Form Icon" />
                                     <h2>Feedback Forms</h2>
                                     <p>Get detailed feedback from your customers to improve your products and services.</p>
                                 </div>
@@ -195,7 +201,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                         </div>
                     </div>
                 </div>
-            </div> {/* Ensure this div is properly closed */}
+            </div>
         </>
     );
 };
