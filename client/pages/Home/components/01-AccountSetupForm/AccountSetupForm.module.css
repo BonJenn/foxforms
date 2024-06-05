@@ -103,28 +103,73 @@
     width: 98px; /* 30% smaller */
 }
 
+@media (max-width: 768px) {
+    .AccountSetupFormHero {
+        text-align: center;
+    }
+}
 
 /* Second Section of 01-AccountSetupForm */
 
 .accountSetupFormSect2 {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    align-items: center !important;
+    height: 100% !important;
+    width: 100% !important;
+    padding: 20px !important;
+    margin: 30px !important;
+    border-radius: 30px !important;
+    color: black !important;
+}
+
+
+.accountSetupFormSect2 .userTestimonials {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+}
+
+.userTestimonials .userReview {
+    margin-bottom: 30px;
+}
+
+
+.userTestimonials .userReview h4 {
+    font-weight: 500;
+}
+
+.userTestimonials .userReviewName {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    height: 100%;
-    width: 90%;
+    justify-content: space-between;
+}
 
-    background: linear-gradient(to bottom, rgb(0, 0, 0), rgb(33, 33, 33)); /* Black to dark gray gradient */
-    padding: 20px;
-    margin: 20px;
+.userTestimonial_1, .userTestimonial_2, .userTestimonial_3 {
+    width: 100%;
+    background-color: #FFD9AA;
+    margin: 10px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3) !important; /* Drop shadow */
+
+}
+
+.userTestimonial_1 img, .userTestimonial_2 img, .userTestimonial_3 img {
+    width: 50px;
     border-radius: 30px;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Drop shadow */
+
 }
 
-.accountSetupFormSect2 h1 {
-    font-family: 'Protest Strike';
-    color: white;
-    font-size: 80px;
+@media (max-width: 768px) {
+    .accountSetupFormSect2 .userTestimonials {
+        flex-direction: column;
+    }
 }
+
+
+/* Third Section of 01-AccountSetupForm */
+
 
 
