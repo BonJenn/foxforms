@@ -33,6 +33,8 @@
     gap: 20px;
     margin: 20px;
     background-color: #FFD9AA;
+    border-radius: 0; /* No border-radius by default */
+    padding: 10px;
 }
 
 .headerStyle .navList a {
@@ -82,6 +84,8 @@
 @media screen and (max-width: 768px) {
     .headerStyle {
         height: 70px; /* Reduced the height by 30% */
+        padding: 0; /* Ensure no padding is affecting child elements */
+        margin: 0; /* Ensure no margin is affecting child elements */
     }
     .headerStyle h1 {
         font-size: 28px; /* Reduced the font size by 30% */
@@ -94,11 +98,20 @@
         flex-direction: column; /* Stack items vertically */
         position: absolute;
         width: 100%;
-        top: 60px; /* Adjust based on your header's height */
+        top: 70px; /* Adjust based on your header's height */
         left: 0;
+        justify-content: center; /* Center items vertically */
+        margin: 0; /* Remove any default margins */
+        padding: 0; /* Remove any default padding */
     }
     .headerStyle .hamburger {
         display: block; /* Show hamburger icon */
         cursor: pointer;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .headerStyle .navList {
+        border-radius: 30px; /* Apply border-radius for larger screens */
     }
 }
