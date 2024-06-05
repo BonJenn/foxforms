@@ -95,7 +95,7 @@ const Header = ({ cookieAuthToken }) => {
 
     const toggleNav = () => {
         if (window.innerWidth <= 768) {
-            setIsNavVisible(!isNavVisible); // Toggle only on small screens
+            setIsNavVisible(prev => !prev); // Correctly toggle visibility
         }
     };
 
@@ -104,7 +104,7 @@ const Header = ({ cookieAuthToken }) => {
             <h1>Fox<span>Forms</span></h1>
             <div className={styles.headerRightSide}> {/* Added container div */}
                 {(isNavVisible || window.innerWidth > 768) && (
-                    <ul className={styles.navList}>
+                    <ul className={`${styles.navList} ${isNavVisible ? styles.visible : ''}`}>
                         <li><Link to="/about">About</Link></li>
                         <li><Link to="/features">Features</Link></li>
                         <li><Link to="/pricing">Pricing</Link></li>

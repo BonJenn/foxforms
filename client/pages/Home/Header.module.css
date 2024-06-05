@@ -90,7 +90,7 @@
         display: none; /* Initially hidden on small screens */
     }
     .headerStyle .navList.visible {
-        display: flex; /* Shown when toggled */
+        display: flex; /* Ensure it is visible when toggled */
         flex-direction: column; /* Stack items vertically */
         position: absolute;
         width: 100%;
