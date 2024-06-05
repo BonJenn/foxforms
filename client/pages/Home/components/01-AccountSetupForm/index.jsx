@@ -85,9 +85,9 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                     <div className={styles.userTestimonials}>
                         <div className={styles.userTestimonial_1}>
                             <div className={styles.userReview}>
-                                <h3>
+                                <h2>
                                     "FoxForms completely transformed our customer conversion rates!
-                                </h3>
+                                </h2>
                                 <br></br>
                                 <h4> 
                                     Since implementing their user-friendly forms, we've seen a 40% increase in sign-ups. 
@@ -103,9 +103,9 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
 
                        <div className={styles.userTestimonial_2}>
                             <div className={styles.userReview}>
-                                <h3>
+                                <h2>
                                     "The data visualization features of FoxForms are a game-changer! 
-                                </h3> 
+                                </h2> 
                                 <br></br>
                                 <h4>
                                     Each form provides detailed analytics that help us understand customer behavior better. 
@@ -121,9 +121,9 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
 
                         <div className={styles.userTestimonial_3}>
                             <div className={styles.userReview}>
-                                <h3>
+                                <h2>
                                     "Before using FoxForms, our customer engagement was lackluster at best. 
-                                </h3>
+                                </h2>
                                 <br></br>
                                 <h4>
                                     Now, with their intuitive and visually appealing forms, we've seen a dramatic improvement. 
