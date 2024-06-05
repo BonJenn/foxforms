@@ -6,9 +6,6 @@ import formExampleIcon02 from '../../../../images/forms-concept-illustration/Acc
 import formExampleIcon03 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon03.png';
 import formExampleIcon04 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon04.png';
 
-
-
-
 // User Sign Up
 const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState, setShowComponent }) => {
     const [formData, setFormData] = useState({
@@ -79,10 +76,50 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                     >
                         Sign Up
                     </button>
+
+                    <div className={styles.AccountSetupFormIllustration}>
+                        <img src={formIllustration} alt="FoxForms Illustration" />
+                    </div>
                 </div>
 
-                <div className={styles.AccountSetupFormIllustration}>
-                    <img src={formIllustration} alt="FoxForms Illustration" />
+                <div className={styles.accountSetupFormSect3}>
+                    <div className={styles.formExamples}>
+                        <div className={styles.formExample}>
+                            <h1>Forms Galore!</h1>
+                            <div className={styles.formExamplesRow}>
+                                <div className={styles.formType}>
+                                    <img src={formExampleIcon01} alt="Contact Form Icon" />
+                                    <h2>Contact Forms</h2>
+                                    <p>Effortlessly gather contact information from your users with our customizable contact forms.</p>
+                                </div>
+                                <div className={styles.formType}>
+                                    <img src={formExampleIcon02} alt="Survey Form Icon" />
+                                    <h2>Survey Forms</h2>
+                                    <p>Collect valuable feedback and insights with our easy-to-use survey forms.</p>
+                                </div>
+                            </div>
+
+                            <div className={styles.formExamplesRow}>
+                                <div className={styles.formType}>
+                                    <img src={formExampleIcon03} alt="Order Form Icon" />
+                                    <h2>Order Forms</h2>
+                                    <p>Streamline your ordering process with our efficient and user-friendly order forms.</p>
+                                </div>
+                                <div className={styles.formType}>
+                                     <img src={formExampleIcon04} alt="Feedback Form Icon" />
+                                    <h2>Feedback Forms</h2>
+                                    <p>Get detailed feedback from your customers to improve your products and services.</p>
+                                </div>
+                            </div>
+
+                            <div className={styles.formExamplesRow}>
+                                <div className={styles.formType}>
+                                    <h2>And more!</h2>
+                                    <p>Explore a variety of other form types to meet all your data collection needs.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className={styles.accountSetupFormSect2}>
@@ -158,47 +195,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                         </div>
                     </div>
                 </div>
-
-                <div className={styles.accountSetupFormSect3}>
-                    <div className={styles.formExamples}>
-                        <div className={styles.formExample}>
-                            <h1>Forms Galore!</h1>
-                            <div className={styles.formExamplesRow}>
-                                <div className={styles.formType}>
-                                    <img src={formExampleIcon01} alt="Contact Form Icon" />
-                                    <h2>Contact Forms</h2>
-                                    <p>Effortlessly gather contact information from your users with our customizable contact forms.</p>
-                                </div>
-                                <div className={styles.formType}>
-                                    <img src={formExampleIcon02} alt="Survey Form Icon" />
-                                    <h2>Survey Forms</h2>
-                                    <p>Collect valuable feedback and insights with our easy-to-use survey forms.</p>
-                                </div>
-                            </div>
-
-                            <div className={styles.formExamplesRow}>
-                                <div className={styles.formType}>
-                                    <img src={formExampleIcon03} alt="Order Form Icon" />
-                                    <h2>Order Forms</h2>
-                                    <p>Streamline your ordering process with our efficient and user-friendly order forms.</p>
-                                </div>
-                                <div className={styles.formType}>
-                                     <img src={formExampleIcon04} alt="Feedback Form Icon" />
-                                    <h2>Feedback Forms</h2>
-                                    <p>Get detailed feedback from your customers to improve your products and services.</p>
-                                </div>
-                            </div>
-
-                            <div className={styles.formExamplesRow}>
-                                <div className={styles.formType}>
-                                    <h2>And more!</h2>
-                                    <p>Explore a variety of other form types to meet all your data collection needs.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> 
-            </div> 
+            </div> {/* Ensure this div is properly closed */}
         </>
     );
 };

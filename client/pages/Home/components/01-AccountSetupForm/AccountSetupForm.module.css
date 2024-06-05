@@ -221,7 +221,11 @@
 }
 
 .formExamplesRow img {
-    width: 50px;
+    width: 200px;
     margin: 10px;
+    background-color: #FFB577;
+    padding: 30px;
+    border-radius: 50px;
+    box-shadow: 0 2.744px 5.488px rgba(0, 0, 0, 0.2); /* 30% smaller */
  
 }
