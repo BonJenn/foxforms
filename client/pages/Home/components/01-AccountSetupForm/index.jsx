@@ -1,6 +1,13 @@
 import { useState } from 'react';
 import styles from './AccountSetupForm.module.css';
 import formIllustration from '../../../../images/forms-concept-illustration/FoxForms_illustration.png';
+import formExampleIcon01 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon01.png';
+import formExampleIcon02 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon02.png';
+import formExampleIcon03 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon03.png';
+import formExampleIcon04 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon04.png';
+
+
+
 
 // User Sign Up
 const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState, setShowComponent }) => {
@@ -83,11 +90,16 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                     <br></br>
 
                     <div className={styles.userTestimonials}>
+                        
                         <div className={styles.userTestimonial_1}>
                             <div className={styles.userReview}>
-                                <h2>
-                                    "FoxForms completely transformed our customer conversion rates!
-                                </h2>
+                                <div className={styles.profilePicContainer}>
+                                    <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User Testimonial Picture" />
+
+                                    <h2>
+                                        "FoxForms completely transformed our customer conversion rates!
+                                    </h2>
+                                </div>
                                 <br></br>
                                 <h4> 
                                     Since implementing their user-friendly forms, we've seen a 40% increase in sign-ups. 
@@ -96,7 +108,6 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                                 </h4>
                             </div>
                             <div className={styles.userReviewName}>
-                                <img src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png" alt="User Testimonial Picture" />
                                 <h4>Michael Jackson</h4>
                             </div>
                         </div>
@@ -145,10 +156,12 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                             <h1>Forms Galore!</h1>
                             <div className={styles.formExamplesRow}>
                                 <div className={styles.formType}>
+                                    <img src={formExampleIcon01} alt="Contact Form Icon" />
                                     <h2>Contact Forms</h2>
                                     <p>Effortlessly gather contact information from your users with our customizable contact forms.</p>
                                 </div>
                                 <div className={styles.formType}>
+                                    <img src={formExampleIcon02} alt="Survey Form Icon" />
                                     <h2>Survey Forms</h2>
                                     <p>Collect valuable feedback and insights with our easy-to-use survey forms.</p>
                                 </div>
@@ -156,10 +169,12 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
 
                             <div className={styles.formExamplesRow}>
                                 <div className={styles.formType}>
+                                    <img src={formExampleIcon03} alt="Order Form Icon" />
                                     <h2>Order Forms</h2>
                                     <p>Streamline your ordering process with our efficient and user-friendly order forms.</p>
                                 </div>
                                 <div className={styles.formType}>
+                                     <img src={formExampleIcon04} alt="Feedback Form Icon" />
                                     <h2>Feedback Forms</h2>
                                     <p>Get detailed feedback from your customers to improve your products and services.</p>
                                 </div>

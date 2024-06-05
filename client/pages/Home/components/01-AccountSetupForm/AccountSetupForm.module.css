@@ -134,6 +134,12 @@
     margin-bottom: 30px;
 }
 
+.userTestimonials .userReview .profilePicContainer {
+    display: flex;
+    flex-direction: row;
+    background-color: pink;
+}
+
 
 .userTestimonials .userReview h4 {
     font-weight: 500;
@@ -180,8 +186,16 @@
 
 .formExamples {
     display: flex;
+    align-items: center;
     flex-direction: column;
     width: 100%; /* Ensure the container takes full width */
+}
+
+.formType {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
 }
 
 .formExamplesRow {
@@ -196,4 +210,14 @@
     box-sizing: border-box;
     padding: 10px; /* Adds some padding to each item */
     text-align: center; /* Centers the text inside each form type */
+}
+
+.formExamplesRow h2 {
+    margin-bottom: 20px;
+}
+
+.formExamplesRow img {
+    width: 50px;
+    margin: 10px;
+ 
 }
