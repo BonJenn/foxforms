@@ -1,13 +1,37 @@
 .footer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
     padding: 20px 0;
     background-color: #333;
     color: white;
-    text-align: center;
     position: fixed;
     bottom: 0;
     left: 0;
-    position: fixed;
+    text-align: right;
+}
+
+.footerLeftSide, .footerRightSide {
+    padding: 10px;
+    
+}
+
+.footerLeftSide {
+    margin-left: 40px;
+}
+
+.footerLeftSide span {
+    font-weight: bold;
+}
+
+.footerRightSide {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    margin-right: 40px;
+
 }
 
 .footer .navList {
