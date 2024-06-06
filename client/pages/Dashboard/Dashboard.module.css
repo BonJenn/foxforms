@@ -1,120 +1,122 @@
 .dashboardContainer {
     display: flex;
-    width: 100vw;  /* Ensure it spans the full viewport width */
+    width: 100%;  /* Ensure it spans the full viewport width */
     height: 100vh; /* Ensure it spans the full viewport height */
     flex-direction: column;
     justify-content: top; /* Center content vertically */
     align-items: center; /* Center content horizontally */
-    padding: 20px;
- 
+    padding: 50px 0 0; /* Adjust padding to only apply vertically */
+
+
     overflow: auto; /* Allows scrolling if content overflows */
-    padding-top: 200px;
 
-    background-image: radial-gradient(circle, #f6b947, #f88800);
-    margin-top: 80px;
-    padding-top: 0;
 
- 
-
+    background-color: white;
+    
 }
 
 .dashboardContainer h3 {
     font-size: 50px;
-    color: black;
+    
+
 }
 
-.innerDashboard {
+
+/* Dashboard Section 1 */
+
+.dashboardSect1 {
+    display: flex;
+    flex-direction: row;
+    color: #828282;
+ 
+    width: 100%;
+}
+
+.dashboardProfile {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: flex-start;
+    margin: 20px;
+    padding: 20px;
+    width: 100%;
+}
+
+.dashboardProfile .userInfo {
     display: flex;
     flex-direction: column;
     justify-content: center;
-
+    align-items: flex-start;
 }
 
-.innerUpperDashboard {
-    display: flex;
-    flex-direction: row;
-}
-
-.editProfileSection {
-    display: flex;
-    flex-direction: column;
-    background-color: rgb(255, 255, 255);
-    color: black;
-    margin: 10px;
-    padding: 50px;
-    border-radius: 40px;
-    width: 500px;
-}
-
-.profileSection .userProfilePic {
-    height: 100px;
-    width: 100px;
-    background-color: gray; /* Default background if no image */
-    border: 5px solid black;
-    border-radius: 50%; /* Makes the element circular */
+.dashboardProfile img {
+    height: 200px;
+    width: 200px;
+    min-width: 200px;
+    background-color: lightblue; /* Change background color to light blue */
+    border-radius: 15px; /* Adjust border-radius to make it a rounded square */
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-right: 20px;
+    margin-left: 20px;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
-.profileSection .userProfilePic::before {
-    content: "?"; /* Default text if no image */
-    font-size: 10px;
-    color: black;
-}
 
-.profileSection {
+
+/* Dashboard Section 2 */
+
+.dashboardSect2 {
     display: flex;
-    flex-direction: column;
-    background-color: rgb(255, 255, 255);
-    color: black;
-    margin: 10px;
-    padding: 50px;
-    border-radius: 40px;
-    width: 500px;
-
-
-}
-
-.profileSection .usernameDisplay {
-    font-size: 40px;
-}
-
-.formList {
-    background-color: green;
+    flex-direction: column; 
     width: 100%;
-    margin-top: 20px;
-    background: white;
-    padding: 15px;
-    border-radius: 8px;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    padding: 20px;
 }
 
-.formItem {
-    border-bottom: 1px solid #e1e1e1;
-    color: black;
-    padding: 10px;
+.dashboardSect2 h2 {
+    font-size: 30px;
+    margin-left: 40px;
+    color: #828282;
+}
+
+.dashboardFormButtons {
     display: flex;
-    justify-content: space-between;
-    align-items: center; 
+    flex-direction: row;
+    width: 100%;
+    padding: 20px;
 }
 
-.formItem:last-child {
-    border-bottom: none;
+.dashboardFormButtons .newSignUpFormButton {    
+    background-color: #FFD9AA;
+    color: black;
+    padding: 20px;
+    font-size: 40px;
+    width: 200px;
+    margin: 20px;
+    text-align: left;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
-.newFormButton {
-    background-color: #0056b3;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 20px;
+.dashboardFormButtons .newSignUpFormButton span {
+    color: black;
+    font-weight: bold;
 }
 
-.newFormButton:hover {
-    background-color: #003d82;
+.dashboardFormButtons .newBasicFormButton {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #FFB577;
+    color: black;
+    padding: 20px;
+    font-size: 40px;
+    width: 200px;
+    margin: 20px;
+    text-align: left;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dashboardFormButtons .newBasicFormButton span {
+    color: black;
+    font-weight: bold;
 }
 

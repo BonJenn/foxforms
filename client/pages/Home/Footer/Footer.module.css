@@ -7,12 +7,10 @@
     padding: 20px 0;
     background-color: #333;
     color: white;
-
-    bottom: 0;
+    position: fixed;  /* Added to position footer at the bottom */
+    bottom: 0;           /* Ensures footer stays at the bottom */
     left: 0;
     text-align: right;
-
-  
 }
 
 .footerLeftSide, .footerRightSide {

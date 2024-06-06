@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom'; // Assuming you're us
 import styles from './Dashboard.module.css'; // Importing styles
 import FormWizard from '../Home/components/FormWizard'; // Import the FormWizard component
 import { useAuth } from '../../../src/context/AuthContext'; // Import useAuth
+import Footer from '../Home/Footer';
 
 const Dashboard = () => {
     const { authToken } = useParams(); // Assuming 'authToken' is a route parameter
@@ -68,46 +69,43 @@ const Dashboard = () => {
                 <FormWizard authToken={authToken} userId={userId} skipAccountSetup={true} />
             ) : (
                 <>
-                    <h3>DASHBOARD</h3>
 
-                    <div className={styles.innerDashboard}>
 
-                        <div className={styles.innerUpperDashboard}>
-
-                            <div className={styles.profileSection}>
+                {/* Dashboard Section 2 */}
+                    <div className={styles.dashboardSect1}>
+                            <div className={styles.dashboardProfile}>
                                 <img src={authState?.userProfilePic || 'default_profile_pic.png'} alt="Profile" className={styles.userProfilePic} />
-                                <p className={styles.usernameDisplay}>{username || 'Not available'}</p>
+                                <div className={styles.userInfo}>
+                                    <h1 className={styles.usernameDisplay}>{username || 'Not available'}'s Forms</h1>
+                                    <p className={styles.userEmail}>{username || 'Not available'}</p>
+                                </div>
                             </div>
-
-                            <div className={styles.editProfileSection}>
-                            <button className={styles.newFormButton} onClick={() => setShowFormWizard(true)}>Make a New Form</button>
-                            <button className={styles.editProfileButton} onClick={() => setShowFormWizard(true)}>Edit Profile</button>
+                     
+                    </div>
 
 
-                            </div>
-
+                {/* Dashboard Section 2 */}
+                    <div className={styles.dashboardSect2}> 
+                        <h2>Create a new form</h2>
+                        <div className={styles.dashboardFormButtons}>
+                            <button className={styles.newSignUpFormButton} onClick={() => setShowFormWizard(true)}><span>Sign Up</span><br></br>Form</button>
+                            <button className={styles.newBasicFormButton} onClick={() => setShowFormWizard(true)}><span>Basic</span><br></br> Form</button>
                         </div>
-
-                        
-                
-                  
-                        <div className={styles.formList}>
-                                    {forms.map(form => (
-                            <div key={form._id} className={styles.formItem}>
-                                <h3>{form.title}</h3>
-                                {/* Display other form details as needed */}
-                            </div>
-                        ))}
                     </div>
 
+                 
 
 
-                    </div>
+          
 
-                   
+                    <Footer />
                 </>
             )}
         </div>
+
+
+        
+   
     );
 }
 
