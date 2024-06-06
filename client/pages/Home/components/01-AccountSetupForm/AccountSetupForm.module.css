@@ -153,13 +153,15 @@
 
 .accountSetupFormSect2 .userTestimonials {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center; /* Ensure alignment to the center */
     margin: 20px;
 }
 
 .userTestimonials .userReview {
     margin-bottom: 30px;
+    max-height: 700px;
+    min-height: 500px;
 }
 
 .userTestimonials .userReview .profilePicContainer {
@@ -185,6 +187,8 @@
 .userTestimonial_1, .userTestimonial_2, .userTestimonial_3 {
     width: 100%;
     min-width: 200px;
+    min-height: 800px;
+    max-height: 800px;
     background-color: #FFD9AA;
     margin: 20px;
     padding: 30px;
@@ -201,16 +205,20 @@
 
 }
 
-@media (max-width: 1000px) {
+@media (min-width: 1200px) {
     .accountSetupFormSect2 .userTestimonials {
         flex-direction: column;
         margin: 20px;
+        
+        
     }
 
     .accountSetupFormSect2 h1 {
         text-align: center;
     }
+
 }
+
 
 
 /* Third Section of 01-AccountSetupForm */
