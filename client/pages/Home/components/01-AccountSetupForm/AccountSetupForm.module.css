@@ -324,19 +324,35 @@
 
 /* Fifth Section of 01-AccountSetupForm */
 
-.accountSetupFormSect5 h1, h2, p, ul {
+.accountSetupFormSect5 {
+    margin: 20px;
+    padding: 20px;
+}
+
+.accountSetupFormSect5 h1, h2, p {
+    color: black;
+    text-align: center;
+}
+
+.accountSetupFormSect5 ul {
     color: black;
 }
 
 .pricingContainer {
     display: flex;
     flex-direction: row;
+    
+  
 }
 
 .pricingBox {
+  
     background-color: #FFD9AA;
-    width: 100%;
-    height: 100%;
+    width: 400px;
+    min-height: 300px;
     margin: 20px;
     padding: 20px;
+    border-radius: 30px;
+    justify-content: center;
+    box-shadow: 0 2.744px 5.488px rgba(0, 0, 0, 0.2);
 }
