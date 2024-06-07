@@ -162,18 +162,20 @@
 }
 
 /* For Webkit browsers */
-.dashboardForm::-webkit-scrollbar {
+.dashboardForms::-webkit-scrollbar {
     height: 8px;
+    background-color: #f0f0f0; /* Light grey background */
 }
 
-.dashboardForm::-webkit-scrollbar-track {
-    background: white;
-}
-
-.dashboardForm::-webkit-scrollbar-thumb {
-    background-color: blue;
+.dashboardForms::-webkit-scrollbar-track {
     border-radius: 10px;
-    border: 2px solid white;
+    background-color: #f0f0f0; /* Light grey to match the scrollbar height */
+}
+
+.dashboardForms::-webkit-scrollbar-thumb {
+    background-color: #828282; /* Dark grey to match the dashboard color theme */
+    border-radius: 10px;
+    border: 2px solid #f0f0f0; /* Light grey border to match the track */
 }
 
 .fadeEffect {
