@@ -1,24 +1,17 @@
 .dashboardContainer {
     display: flex;
-    width: 100%;  /* Ensure it spans the full viewport width */
-    height: 100vh; /* Ensure it spans the full viewport height */
     flex-direction: column;
-    justify-content: top; /* Center content vertically */
-    align-items: center; /* Center content horizontally */
+    align-items: center;
+    width: 100%;  /* Ensure it spans the full viewport width */
+    height: auto; /* Use viewport height to make it stretch full screen */
     padding: 50px 0 0; /* Adjust padding to only apply vertically */
-
-
     overflow: auto; /* Allows scrolling if content overflows */
-
-
     background-color: white;
-    
 }
 
-.dashboardContainer h3 {
-    font-size: 50px;
-    
 
+.dashboardContainer h3 {
+    font-size: 53px;
 }
 
 
@@ -26,20 +19,23 @@
 
 .dashboardSect1 {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+   
     color: #828282;
  
-    width: 100%;
+    background-color: blue;
 }
 
 .dashboardProfile {
     display: flex;
     flex-direction: row;
-    justify-content: left;
+
     align-items: flex-start;
-    margin: 20px;
+    margin: 10px;
     padding: 20px;
-    width: 100%;
+    background-color: red;
+    /* Ensure the height adjusts to the content */
+    height: auto;
 }
 
 .dashboardProfile .userInfo {
@@ -47,12 +43,21 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    background-color: green;
+    /* Ensure the height adjusts to the content */
+    height: auto;
+    padding: 0;
+    margin: 0;
+}
+
+.dashboardProfile .userInfo h1 {
+    font-size: 30px;
 }
 
 .dashboardProfile img {
-    height: 200px;
-    width: 200px;
-    min-width: 200px;
+    height: 150px;
+    width: 150px;
+    min-width: 100px;
     background-color: lightblue; /* Change background color to light blue */
     border-radius: 15px; /* Adjust border-radius to make it a rounded square */
     display: flex;
@@ -91,7 +96,7 @@
     background-color: #FFD9AA;
     color: black;
     padding: 20px;
-    font-size: 40px;
+    font-size: 30px;
     width: 200px;
     margin: 20px;
     text-align: left;
@@ -108,7 +113,7 @@
     background-color: #FFB577;
     color: black;
     padding: 20px;
-    font-size: 40px;
+    font-size: 30px;
     width: 200px;
     margin: 20px;
     text-align: left;
@@ -120,3 +125,41 @@
     font-weight: bold;
 }
 
+
+/* Dashboard Section 3 */
+
+.dashboardSect3 {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    background-color: pink;
+    height: 500px;
+    color: grey;
+}
+
+.dashboardForms {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 20px;
+    background-color: blue;
+    color: white;
+}
+
+.dashboardForm {
+    color: red;
+}
+
+.userFormButton {
+    background-color: #FFA500; /* Orange color */
+    color: white;
+    padding: 20px;
+    font-size: 20px;
+    width: 200px;
+    margin: 10px;
+    text-align: center;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    border: none;
+    cursor: pointer;
+}

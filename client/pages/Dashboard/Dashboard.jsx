@@ -4,6 +4,7 @@ import styles from './Dashboard.module.css'; // Importing styles
 import FormWizard from '../Home/components/FormWizard'; // Import the FormWizard component
 import { useAuth } from '../../../src/context/AuthContext'; // Import useAuth
 import Footer from '../Home/Footer';
+import { formatDistanceToNow } from 'date-fns'; // Import formatDistanceToNow from date-fns
 
 const Dashboard = () => {
     const { authToken } = useParams(); // Assuming 'authToken' is a route parameter
@@ -80,7 +81,6 @@ const Dashboard = () => {
                                     <p className={styles.userEmail}>{username || 'Not available'}</p>
                                 </div>
                             </div>
-                     
                     </div>
 
 
@@ -90,6 +90,19 @@ const Dashboard = () => {
                         <div className={styles.dashboardFormButtons}>
                             <button className={styles.newSignUpFormButton} onClick={() => setShowFormWizard(true)}><span>Sign Up</span><br></br>Form</button>
                             <button className={styles.newBasicFormButton} onClick={() => setShowFormWizard(true)}><span>Basic</span><br></br> Form</button>
+                        </div>
+                    </div>
+
+                {/* Dashboard Section 3 */}
+                    <div className={styles.dashboardSect3}>
+                        <h2>Your forms</h2>
+                        <div className={styles.dashboardForms}>
+                            {forms.map(form => (
+                                <div key={form.id} className={styles.dashboardForm}>
+                                    <h3>{form.title}</h3>
+                                    <p>{formatDistanceToNow(new Date(form.createdAt), { addSuffix: true })}</p>  
+                                </div>
+                            ))}
                         </div>
                     </div>
 
