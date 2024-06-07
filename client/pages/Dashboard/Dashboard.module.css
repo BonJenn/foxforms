@@ -2,39 +2,33 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;  /* Ensure it spans the full viewport width */
-    height: auto; /* Use viewport height to make it stretch full screen */
-    padding: 50px 0 0; /* Adjust padding to only apply vertically */
-    overflow: auto; /* Allows scrolling if content overflows */
+    width: 100%;
+    height: auto;
+    padding: 50px 0 0;
+    overflow: auto;
     background-color: white;
 }
-
 
 .dashboardContainer h3 {
     font-size: 53px;
 }
 
-
 /* Dashboard Section 1 */
-
 .dashboardSect1 {
     display: flex;
     flex-direction: column;
-   
     color: #828282;
- 
-    background-color: blue;
+
+    width: 100%;
 }
 
 .dashboardProfile {
     display: flex;
     flex-direction: row;
-
     align-items: flex-start;
     margin: 10px;
     padding: 20px;
-    background-color: red;
-    /* Ensure the height adjusts to the content */
+
     height: auto;
 }
 
@@ -43,8 +37,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    background-color: green;
-    /* Ensure the height adjusts to the content */
+   
     height: auto;
     padding: 0;
     margin: 0;
@@ -58,8 +51,8 @@
     height: 150px;
     width: 150px;
     min-width: 100px;
-    background-color: lightblue; /* Change background color to light blue */
-    border-radius: 15px; /* Adjust border-radius to make it a rounded square */
+    background-color: lightblue;
+    border-radius: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -68,13 +61,10 @@
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
-
-
 /* Dashboard Section 2 */
-
 .dashboardSect2 {
     display: flex;
-    flex-direction: column; 
+    flex-direction: column;
     width: 100%;
     padding: 20px;
 }
@@ -101,11 +91,16 @@
     margin: 20px;
     text-align: left;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
 .dashboardFormButtons .newSignUpFormButton span {
     color: black;
     font-weight: bold;
+}
+
+.dashboardFormButtons .newSignUpFormButton:hover {
+    transform: scale(1.05);
 }
 
 .dashboardFormButtons .newBasicFormButton {
@@ -118,6 +113,7 @@
     margin: 20px;
     text-align: left;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
 .dashboardFormButtons .newBasicFormButton span {
@@ -125,9 +121,11 @@
     font-weight: bold;
 }
 
+.dashboardFormButtons .newBasicFormButton:hover {
+    transform: scale(1.05);
+}
 
 /* Dashboard Section 3 */
-
 .dashboardSect3 {
     display: flex;
     flex-direction: column;
@@ -140,7 +138,7 @@
 
 .dashboardFormsContainer {
     position: relative;
-    overflow: hidden; /* Hide overflow to mask the inner scrolling element */
+    overflow: hidden;
     padding: 20px;
     margin: 10px;
 }
@@ -150,24 +148,29 @@
     flex-direction: row;
     overflow-x: auto;
     white-space: nowrap;
-    scroll-behavior: smooth; /* Enable smooth scrolling */
-    cursor: grab; /* Change cursor to grab */
+    scroll-behavior: smooth;
+    cursor: grab;
+    transition: transform 0.3s ease;
 }
 
-.dashboardForms:active {
-    cursor: grabbing; /* Change cursor to grabbing when active */
+.dashboardForm:hover {
+    transform: scale(1.05);
+}
+
+.dashboardForm:active {
+    cursor: grabbing;
 }
 
 /* For Webkit browsers */
-.dashboardForms::-webkit-scrollbar {
+.dashboardForm::-webkit-scrollbar {
     height: 8px;
 }
 
-.dashboardForms::-webkit-scrollbar-track {
+.dashboardForm::-webkit-scrollbar-track {
     background: white;
 }
 
-.dashboardForms::-webkit-scrollbar-thumb {
+.dashboardForm::-webkit-scrollbar-thumb {
     background-color: blue;
     border-radius: 10px;
     border: 2px solid white;
@@ -180,6 +183,7 @@
     width: 100px;
     pointer-events: none;
     z-index: 2;
+    transition: opacity 0.3s ease;
 }
 
 .fadeEffect.left {
@@ -206,9 +210,9 @@
 
 .dashboardForm h4 {
     font-size: 25px;
-    overflow-wrap: break-word; /* Ensures the text breaks to avoid spilling out */
-    word-break: break-word; /* Use this for better support in some browsers */
-    white-space: normal; /* Overrides any nowrap that might be inherited */
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: normal;
 }
 
 .dashboardForm p {
@@ -216,7 +220,7 @@
 }
 
 .userFormButton {
-    background-color: #FFA500; /* Orange color */
+    background-color: #FFA500;
     color: white;
     padding: 20px;
     font-size: 20px;

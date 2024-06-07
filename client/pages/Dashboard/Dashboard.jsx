@@ -1,46 +1,40 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom'; // Assuming you're using react-router for navigation
-import styles from './Dashboard.module.css'; // Importing styles
-import FormWizard from '../Home/components/FormWizard'; // Import the FormWizard component
-import { useAuth } from '../../../src/context/AuthContext'; // Import useAuth
+import { useNavigate, useParams } from 'react-router-dom';
+import styles from './Dashboard.module.css';
+import FormWizard from '../Home/components/FormWizard';
+import { useAuth } from '../../../src/context/AuthContext';
 import Footer from '../Home/Footer';
-import { formatDistanceToNow } from 'date-fns'; // Import formatDistanceToNow from date-fns
+import { formatDistanceToNow } from 'date-fns';
 
 const Dashboard = () => {
-    const { authToken } = useParams(); // Assuming 'authToken' is a route parameter
-    const { authState } = useAuth(); // Use useAuth to access authState
-    console.log('Auth State:', authState); // Debugging line to check authState
-    const userId = localStorage.getItem('userId'); // Get userId from local storage
-    console.log("Captured authToken:", authToken); // This should log the actual authToken or undefined
-    if (authToken === undefined) {
-        console.log("authToken is undefined, check route configuration and parameter passing.");
-    }
+    const { authToken } = useParams();
+    const { authState } = useAuth();
+    const userId = localStorage.getItem('userId');
+
     const [forms, setForms] = useState([]);
     const navigate = useNavigate();
-    const [showDashboard, setShowDashboard] = useState(true); // State to manage visibility of Dashboard
-    const [showFormWizard, setShowFormWizard] = useState(false); // State to manage visibility of FormWizard
-    const [username, setUsername] = useState(''); // State to store the username
-    const formsRef = useRef(null); // Create a ref for the forms container
+    const [showFormWizard, setShowFormWizard] = useState(false);
+    const [username, setUsername] = useState('');
+    const formsRef = useRef(null);
 
     const handleScroll = () => {
         const element = formsRef.current;
         const maxScroll = element.scrollWidth - element.clientWidth;
         const scrollPosition = element.scrollLeft;
 
-        // Control the visibility of the left gradient
-        const leftFade = element.querySelector('.dashboardForms::before');
-        const rightFade = element.querySelector('.dashboardForms::after');
+        const leftFade = element.parentElement.querySelector(`.${styles.left}`);
+        const rightFade = element.parentElement.querySelector(`.${styles.right}`);
 
         if (scrollPosition > 0) {
-            leftFade.style.display = 'block';
+            leftFade.style.opacity = '1';
         } else {
-            leftFade.style.display = 'none';
+            leftFade.style.opacity = '0';
         }
 
         if (scrollPosition < maxScroll) {
-            rightFade.style.display = 'block';
+            rightFade.style.opacity = '1';
         } else {
-            rightFade.style.display = 'none';
+            rightFade.style.opacity = '0';
         }
     };
 
@@ -54,7 +48,7 @@ const Dashboard = () => {
                 element.removeEventListener('scroll', handleScroll);
             }
         };
-    }, []); // Empty dependency array ensures this effect runs only once after the initial render
+    }, []);
 
     const fetchUsername = async () => {
         try {
@@ -67,7 +61,7 @@ const Dashboard = () => {
                 throw new Error('Failed to fetch username');
             }
             const data = await response.json();
-            setUsername(data.username); // Update the username state
+            setUsername(data.username);
         } catch (error) {
             console.error('Error fetching username:', error);
         }
@@ -80,9 +74,6 @@ const Dashboard = () => {
     }, [authToken]);
 
     useEffect(() => {
-        // Fetch the user's forms from the backend
-        console.log(`Fetching forms for authToken: ${authToken}`); // Log the fetch URL
-        console.log('Current authToken:', authToken); // Add this line to log the authToken
         fetch(`http://localhost:3000/forms?userId=${userId}`)
             .then(response => {
                 if (!response.ok) {
@@ -91,52 +82,73 @@ const Dashboard = () => {
                 return response.json();
             })
             .then(data => {
-                console.log('Fetched forms:', data); // Add this line to log fetched data
-                // Sort forms by 'createdAt' in descending order
                 const sortedForms = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setForms(sortedForms);
             })
             .catch(error => console.error('Error fetching forms:', error));
-    }, [authToken, userId]); // Dependency array includes authToken and userId
+    }, [authToken, userId]);
 
     const isDragging = useRef(false);
     const startX = useRef(0);
     const scrollLeft = useRef(0);
     const velocity = useRef(0);
+    const lastX = useRef(0);
+    const lastMoveTime = useRef(0);
     const animationFrameId = useRef(null);
 
     const handleMouseDown = (e) => {
         isDragging.current = true;
-        startX.current = e.pageX;
+        startX.current = e.pageX - formsRef.current.offsetLeft;
         scrollLeft.current = formsRef.current.scrollLeft;
-        velocity.current = 0; // Reset velocity on new drag start
-        e.preventDefault(); // Prevent text selection or other default actions
+        velocity.current = 0;
+        lastX.current = e.pageX;
+        lastMoveTime.current = Date.now();
+        cancelAnimationFrame(animationFrameId.current);  // Cancel any ongoing inertia
+        e.preventDefault();
     };
 
     const handleMouseUp = () => {
         isDragging.current = false;
-        const inertia = () => {
-            if (Math.abs(velocity.current) > 1) {
-                formsRef.current.scrollLeft += velocity.current;
-                velocity.current *= 0.95; // Dampen the velocity
-                animationFrameId.current = requestAnimationFrame(inertia);
-            } else {
-                cancelAnimationFrame(animationFrameId.current);
-            }
-        };
-        inertia();
+        const now = Date.now();
+        const timeElapsed = now - lastMoveTime.current;
+        const distanceMoved = lastX.current - startX.current;
+        const speed = distanceMoved / timeElapsed;
+
+        if (Math.abs(speed) > 0.3) {  // Adjust threshold for better natural feel
+            const inertia = () => {
+                if (Math.abs(velocity.current) > 1) {
+                    formsRef.current.scrollLeft += velocity.current;
+                    velocity.current *= 0.95;
+                    animationFrameId.current = requestAnimationFrame(inertia);
+                } else {
+                    cancelAnimationFrame(animationFrameId.current);
+                }
+            };
+            inertia();
+        } else {
+            velocity.current = 0;
+        }
     };
 
     const handleMouseMove = (e) => {
         if (!isDragging.current) return;
         e.preventDefault();
-        const x = e.pageX;
-        const walk = (x - startX.current) * 3; // Increase the scaling factor to 3 for higher sensitivity
+        const x = e.pageX - formsRef.current.offsetLeft;
+        const walk = (x - startX.current) * 2;
         formsRef.current.scrollLeft = scrollLeft.current - walk;
-        velocity.current = walk / 5; // Adjust this to control the initial velocity more sensitively
+        const now = Date.now();
+        const deltaTime = now - lastMoveTime.current;
+        if (deltaTime > 0) {
+            velocity.current = (x - lastX.current) / deltaTime;
+        }
+        lastX.current = x;
+        lastMoveTime.current = now;
     };
 
     const handleMouseLeave = () => {
+        if (isDragging.current) {
+            handleMouseUp();
+        }
         isDragging.current = false;
         cancelAnimationFrame(animationFrameId.current);
     };
@@ -162,30 +174,24 @@ const Dashboard = () => {
                 <FormWizard authToken={authToken} userId={userId} skipAccountSetup={true} />
             ) : (
                 <>
-
-
-                {/* Dashboard Section 2 */}
                     <div className={styles.dashboardSect1}>
-                            <div className={styles.dashboardProfile}>
-                                <img src={authState?.userProfilePic || 'default_profile_pic.png'} alt="Profile" className={styles.userProfilePic} />
-                                <div className={styles.userInfo}>
-                                    <h1 className={styles.usernameDisplay}>{username || 'Not available'}'s Forms</h1>
-                                    <p className={styles.userEmail}>{username || 'Not available'}</p>
-                                </div>
+                        <div className={styles.dashboardProfile}>
+                            <img src={authState?.userProfilePic || 'default_profile_pic.png'} alt="Profile" className={styles.userProfilePic} />
+                            <div className={styles.userInfo}>
+                                <h1 className={styles.usernameDisplay}>{username || 'Not available'}'s Forms</h1>
+                                <p className={styles.userEmail}>{username || 'Not available'}</p>
                             </div>
-                    </div>
-
-
-                {/* Dashboard Section 2 */}
-                    <div className={styles.dashboardSect2}> 
-                        <h2>Create a new form</h2>
-                        <div className={styles.dashboardFormButtons}>
-                            <button className={styles.newSignUpFormButton} onClick={() => setShowFormWizard(true)}><span>Sign Up</span><br></br>Form</button>
-                            <button className={styles.newBasicFormButton} onClick={() => setShowFormWizard(true)}><span>Basic</span><br></br> Form</button>
                         </div>
                     </div>
 
-                {/* Dashboard Section 3 */}
+                    <div className={styles.dashboardSect2}>
+                        <h2>Create a new form</h2>
+                        <div className={styles.dashboardFormButtons}>
+                            <button className={styles.newSignUpFormButton} onClick={() => setShowFormWizard(true)}><span>Sign Up</span><br />Form</button>
+                            <button className={styles.newBasicFormButton} onClick={() => setShowFormWizard(true)}><span>Basic</span><br /> Form</button>
+                        </div>
+                    </div>
+
                     <div className={styles.dashboardSect3}>
                         <h2>Your forms</h2>
                         <div className={styles.dashboardFormsContainer}>
