@@ -138,16 +138,52 @@
     color: grey;
 }
 
-.dashboardForms {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
+.dashboardFormsContainer {
+    position: relative;
+    overflow: hidden; /* Hide overflow to mask the inner scrolling element */
     padding: 20px;
-    background-color: blue;
-    color: white;
     margin: 10px;
+}
+
+.dashboardForms {
+    display: flex; /* Ensures children are laid out horizontally */
+    flex-direction: row; /* Align children in a row */
     overflow-x: auto; /* Enable horizontal scrolling */
     white-space: nowrap; /* Prevent wrapping of inner elements */
+}
+
+/* For Webkit browsers */
+.dashboardForms::-webkit-scrollbar {
+    height: 8px;
+}
+
+.dashboardForms::-webkit-scrollbar-track {
+    background: white;
+}
+
+.dashboardForms::-webkit-scrollbar-thumb {
+    background-color: blue;
+    border-radius: 10px;
+    border: 2px solid white;
+}
+
+.fadeEffect {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100px;
+    pointer-events: none;
+    z-index: 2;
+}
+
+.fadeEffect.left {
+    left: 0;
+    background: linear-gradient(to right, rgba(255,255,255,1), rgba(255,255,255,0));
+}
+
+.fadeEffect.right {
+    right: 0;
+    background: linear-gradient(to left, rgba(255,255,255,1), rgba(255,255,255,0));
 }
 
 .dashboardForm {
@@ -155,11 +191,22 @@
     color: black;
     padding: 20px;
     font-size: 30px;
-    width: 400px;
-    height: 200px;
+    min-width: 200px;
+    min-height: 150px;
     margin: 20px;
     text-align: left;
     box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+.dashboardForm h4 {
+    font-size: 25px;
+    overflow-wrap: break-word; /* Ensures the text breaks to avoid spilling out */
+    word-break: break-word; /* Use this for better support in some browsers */
+    white-space: normal; /* Overrides any nowrap that might be inherited */
+}
+
+.dashboardForm p {
+    font-size: 15px;
 }
 
 .userFormButton {
