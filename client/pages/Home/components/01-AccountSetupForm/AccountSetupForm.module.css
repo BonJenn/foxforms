@@ -300,3 +300,19 @@
     background-color: #FFD9AA;
     padding: 40px;
 }
+
+.featuresContent .feature {
+    display: flex;
+    flex-direction: row;
+    margin: 20px;
+}
+
+.feature .featureText {
+    display: flex;
+    flex-direction: column;
+ 
+    justify-content: center;
+    text-align: left;
+    margin: 10px;
+    padding: 10px;
+}

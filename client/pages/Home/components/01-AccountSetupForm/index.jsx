@@ -5,6 +5,9 @@ import formExampleIcon01 from '../../../../images/forms-concept-illustration/Acc
 import formExampleIcon02 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon02.png';
 import formExampleIcon03 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon03.png';
 import formExampleIcon04 from '../../../../images/forms-concept-illustration/AccountSetupForm_Sect3_Icon04.png';
+import dragAndDropAnimation from '../../../../images/forms-concept-illustration/drag-and-drop-animation.gif';
+import analyticsAnimation from '../../../../images/forms-concept-illustration/analytics-dashboard.gif';
+import buildingWebsiteImage from '../../../../images/forms-concept-illustration/building-website.png';
 import SignUp from '../../../Auth/SignUp.jsx';
 
 const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, setPassword, updateGlobalPayloadState }) => {
@@ -197,31 +200,58 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                         <div className={styles.featuresContent}>
                             <div className={styles.featuresRow}>
                                 <div className={styles.feature}>
-                                    <h2>Intuitive Drag-and-Drop Builder</h2>
-                                    <p>
-                                        Create stunning forms in minutes with our user-friendly
-                                        drag-and-drop builder. No coding skills required! Simply
-                                        drag the elements you need, drop them into place, and customize 
-                                        them to fit your specific needs. Our intuitive interface
-                                        ensures that building forms is as easy as it is fun. 
-                                    </p>
+
+                                    <img src={dragAndDropAnimation} alt="Drag and Drop Animation"></img>
+
+                                    <div className={styles.featureText}>
+
+                                        <h2>Intuitive Drag-and-Drop Builder</h2>
+                                        <p>
+                                            Create stunning forms in minutes with our user-friendly
+                                            drag-and-drop builder. No coding skills required! Simply
+                                            drag the elements you need, drop them into place, and customize 
+                                            them to fit your specific needs. Our intuitive interface
+                                            ensures that building forms is as easy as it is fun. 
+                                        </p>
+
+                                    </div>
+                                       
                                 </div>
                                 <div className={styles.feature}>
-                                    <h2>Advanced Analytics Reporting</h2>
-                                    <p>
-                                        Get detailed insights into customer behavior and preferences with our advanced analytics. 
-                                        We track user interactions, form completions, and more to provide a comprehensive understanding of your customers. 
-                                        This data is presented in a visually appealing dashboard, allowing you to take a deeper dive into customer preferences and identify areas for improvement. 
-                                        FoxForms's analytics are not just limited to forms, but extend to all your interactions with your customers. 
-                                    </p>
+
+                                    <img src={analyticsAnimation} alt="Drag and Drop Animation"></img>
+
+                                    <div className={styles.featureText}>
+
+                                        <h2>Advanced Analytics Reporting</h2>
+                                        <p>
+                                            Get detailed insights into customer behavior and preferences with our advanced analytics. 
+                                            We track user interactions, form completions, and more to provide a comprehensive understanding of your customers. 
+                                            This data is presented in a visually appealing dashboard, allowing you to take a deeper dive into customer preferences and identify areas for improvement. 
+                                            FoxForms's analytics are not just limited to forms, but extend to all your interactions with your customers. 
+                                        </p>
+
+                                    </div>
+                                    
+                                
                                 </div>
                                 <div className={styles.feature}>
-                                    <h2>Seamless Integration Into Your Website</h2>
-                                    <p>
-                                        Integrate forms into your website effortlessly with our easy-to-use embeds. 
-                                        Choose from a variety of options to match your website's design and branding. 
-                                        Whether you're a blog, e-commerce site, or any other type of website, FoxForms has you covered. 
-                                    </p>
+
+
+
+                                    <img src={buildingWebsiteImage} alt="Drag and Drop Animation"></img>
+
+                                    <div className={styles.featureText}>
+
+                                        <h2>Seamless Integration Into Your Website</h2>
+                                        <p>
+                                            Integrate forms into your website effortlessly with our easy-to-use embeds. 
+                                            Choose from a variety of options to match your website's design and branding. 
+                                            Whether you're a blog, e-commerce site, or any other type of website, FoxForms has you covered. 
+                                        </p>
+
+                                    </div>
+                                 
                                 </div>
                             </div>
                         </div>
