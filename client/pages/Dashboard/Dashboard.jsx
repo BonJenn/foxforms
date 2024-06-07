@@ -99,49 +99,62 @@ const Dashboard = () => {
             .catch(error => console.error('Error fetching forms:', error));
     }, [authToken, userId]); // Dependency array includes authToken and userId
 
-    const [isDragging, setIsDragging] = useState(false);
-    const [startX, setStartX] = useState(0);
-    const [scrollLeft, setScrollLeft] = useState(0);
+    const isDragging = useRef(false);
+    const startX = useRef(0);
+    const scrollLeft = useRef(0);
+    const velocity = useRef(0);
+    const animationFrameId = useRef(null);
 
     const handleMouseDown = (e) => {
-        setIsDragging(true);
-        setStartX(e.pageX - formsRef.current.offsetLeft);
-        setScrollLeft(formsRef.current.scrollLeft);
-    };
-
-    const handleMouseLeave = () => {
-        setIsDragging(false);
+        isDragging.current = true;
+        startX.current = e.pageX;
+        scrollLeft.current = formsRef.current.scrollLeft;
+        velocity.current = 0; // Reset velocity on new drag start
+        e.preventDefault(); // Prevent text selection or other default actions
     };
 
     const handleMouseUp = () => {
-        setIsDragging(false);
+        isDragging.current = false;
+        const inertia = () => {
+            if (Math.abs(velocity.current) > 1) {
+                formsRef.current.scrollLeft += velocity.current;
+                velocity.current *= 0.95; // Dampen the velocity
+                animationFrameId.current = requestAnimationFrame(inertia);
+            } else {
+                cancelAnimationFrame(animationFrameId.current);
+            }
+        };
+        inertia();
     };
 
     const handleMouseMove = (e) => {
-        if (!isDragging) return;
+        if (!isDragging.current) return;
         e.preventDefault();
-        const x = e.pageX - formsRef.current.offsetLeft;
-        const walk = (x - startX) * 2; // The number here determines the sensitivity of the drag
-        formsRef.current.scrollLeft = scrollLeft - walk;
+        const x = e.pageX;
+        const walk = (x - startX.current) * 3; // Increase the scaling factor to 3 for higher sensitivity
+        formsRef.current.scrollLeft = scrollLeft.current - walk;
+        velocity.current = walk / 5; // Adjust this to control the initial velocity more sensitively
+    };
+
+    const handleMouseLeave = () => {
+        isDragging.current = false;
+        cancelAnimationFrame(animationFrameId.current);
     };
 
     useEffect(() => {
         const element = formsRef.current;
-        if (element) {
-            element.addEventListener('mousedown', handleMouseDown);
-            element.addEventListener('mouseleave', handleMouseLeave);
-            element.addEventListener('mouseup', handleMouseUp);
-            element.addEventListener('mousemove', handleMouseMove);
-        }
+        element.addEventListener('mousedown', handleMouseDown);
+        element.addEventListener('mouseup', handleMouseUp);
+        element.addEventListener('mousemove', handleMouseMove);
+        element.addEventListener('mouseleave', handleMouseLeave);
+
         return () => {
-            if (element) {
-                element.removeEventListener('mousedown', handleMouseDown);
-                element.removeEventListener('mouseleave', handleMouseLeave);
-                element.removeEventListener('mouseup', handleMouseUp);
-                element.removeEventListener('mousemove', handleMouseMove);
-            }
+            element.removeEventListener('mousedown', handleMouseDown);
+            element.removeEventListener('mouseup', handleMouseUp);
+            element.removeEventListener('mousemove', handleMouseMove);
+            element.removeEventListener('mouseleave', handleMouseLeave);
         };
-    }, [isDragging, startX, scrollLeft]); // Dependencies ensure that updates to state are respected
+    }, []);
 
     return (
         <div className={styles.dashboardContainer}>
@@ -189,19 +202,10 @@ const Dashboard = () => {
                         </div>
                     </div>
 
-                 
-
-
-          
-
                     <Footer />
                 </>
             )}
         </div>
-
-
-        
-   
     );
 }
 

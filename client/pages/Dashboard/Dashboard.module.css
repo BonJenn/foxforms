@@ -133,7 +133,7 @@
     flex-direction: column;
     width: 100%;
     padding: 20px;
-    background-color: pink;
+    background-color: white;
     height: 500px;
     color: grey;
 }
@@ -146,10 +146,16 @@
 }
 
 .dashboardForms {
-    display: flex; /* Ensures children are laid out horizontally */
-    flex-direction: row; /* Align children in a row */
-    overflow-x: auto; /* Enable horizontal scrolling */
-    white-space: nowrap; /* Prevent wrapping of inner elements */
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto;
+    white-space: nowrap;
+    scroll-behavior: smooth; /* Enable smooth scrolling */
+    cursor: grab; /* Change cursor to grab */
+}
+
+.dashboardForms:active {
+    cursor: grabbing; /* Change cursor to grabbing when active */
 }
 
 /* For Webkit browsers */
