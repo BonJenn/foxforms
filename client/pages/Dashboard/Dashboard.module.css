@@ -140,15 +140,26 @@
 
 .dashboardForms {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     width: 100%;
     padding: 20px;
     background-color: blue;
     color: white;
+    margin: 10px;
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent wrapping of inner elements */
 }
 
 .dashboardForm {
-    color: red;
+    background-color: #FFD9AA;
+    color: black;
+    padding: 20px;
+    font-size: 30px;
+    width: 400px;
+    height: 200px;
+    margin: 20px;
+    text-align: left;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .userFormButton {
