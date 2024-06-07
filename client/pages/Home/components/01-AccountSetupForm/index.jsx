@@ -237,8 +237,6 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                                 </div>
                                 <div className={styles.feature}>
 
-
-
                                     <img src={buildingWebsiteImage} alt="Drag and Drop Animation"></img>
 
                                     <div className={styles.featureText}>
@@ -256,6 +254,78 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
                             </div>
                         </div>
                     </div>
+                </div>
+
+                {/*Section 5 - Pricing */}
+
+                <div className={styles.accountSetupFormSect5}>
+
+                    <h1>Affordable Pricing for Every Business</h1>
+                    <p>Choose the perfect plan for your needs</p>
+
+                    <div className={styles.pricingContainer}>
+
+                        <div className={styles.pricingBox}>
+                            <p>Basic Plan</p>
+                            <h1>$20</h1> <p>per month</p>
+
+                            <ul>
+                                <li>10 Forms</li>
+                                <li>Basic Templates</li>
+                                <li>Data Export</li>
+                                <li>Up to 5 Editors</li>
+                            </ul>
+
+                            <button>Select</button>
+
+                        </div>
+
+                        <div className={styles.pricingBox}>
+                            <p>Pro Plan</p>
+                            <h1>$30</h1> <p>per month</p>
+
+                            <ul>
+                                <li>Everything in Basic</li>
+                                <li>Advanced Templates</li>
+                                <li>Third-Party App Integration</li>
+                                <li>Up to 10 Editors</li>
+                            </ul>
+
+                            <button>Select</button>
+
+                        </div>
+
+                        <div className={styles.pricingBox}>
+                            <p>Business Plan</p>
+                            <h1>$40</h1> <p>per month</p>
+
+                            <ul>
+                                <li>Everything in Pro</li>
+                                <li>Dedicated Support</li>
+                                <li>Up to 20 Editors</li>
+                            </ul>
+
+                            <button>Select</button>
+
+                        </div>
+
+
+
+                        
+
+                   
+                        
+
+
+
+
+
+                    </div>
+
+
+
+
+
                 </div>
 
             </div>
