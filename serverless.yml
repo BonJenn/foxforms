@@ -17,7 +17,7 @@ functions:
     handler: index.handler  # or handler.handler if your main file is handler.js
     events:
       - http:
-          path: /
+          path: /hello
           method: any
           integration: AWS_PROXY
           uri: https://23cvva9qi2.execute-api.us-east-2.amazonaws.com/dev/
