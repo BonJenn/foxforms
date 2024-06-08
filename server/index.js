@@ -11,8 +11,9 @@ import rateLimit from 'express-rate-limit';
 
 const app = express();
 const uri = "mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-const PORT = process.env.PORT || 3000;
+// const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
+const serverless = require('serverless-http');
 
 app.use(express.json());
 app.use(cors({
@@ -41,7 +42,7 @@ async function connectToDatabase() {
 
 connectToDatabase().catch(console.error);
 
-app.get('/', (req, res) => {
+app.get('/hello', (req, res) => {
     res.send('Welcome to the Forms API!');
 });
 
@@ -440,9 +441,9 @@ app.use((err, req, res, next) => {
 });
 
 // Start the server
-connectToDatabase().then(() => {
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-}).catch(console.error);
+//connectToDatabase().then(() => {
+//    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+//}).catch(console.error);
 
 // Dashboard specific route
 app.get('/dashboard/:authToken', async (req, res) => {
@@ -470,3 +471,7 @@ app.get('/dashboard/:authToken', async (req, res) => {
         res.status(500).json({ message: 'Failed to fetch dashboard data.' });
     }
 });
+
+
+module.exports.handler = serverless(app);
+

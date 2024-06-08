@@ -336,6 +336,7 @@
 
 .accountSetupFormSect5 ul {
     color: black;
+    margin: 50px;
 }
 
 .pricingContainer {
@@ -346,13 +347,15 @@
 }
 
 .pricingBox {
-  
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
     background-color: #FFD9AA;
     width: 400px;
     min-height: 300px;
     margin: 20px;
     padding: 20px;
     border-radius: 30px;
-    justify-content: center;
     box-shadow: 0 2.744px 5.488px rgba(0, 0, 0, 0.2);
 }
