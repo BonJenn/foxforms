@@ -8,12 +8,11 @@ import jwt from 'jsonwebtoken';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import rateLimit from 'express-rate-limit';
+import serverless from 'serverless-http';
 
 const app = express();
-const uri = "mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
-// const PORT = process.env.PORT || 3000;
+const uri = process.env.MONGODB_URI; // Use environment variable for the MongoDB URI
 const JWT_SECRET = process.env.JWT_SECRET;
-const serverless = require('serverless-http');
 
 app.use(express.json());
 app.use(cors({
@@ -27,54 +26,53 @@ const limiter = rateLimit({
 app.use(limiter);
 
 let dbClient;
-const mongoClientOptions = { ssl: true };
+const mongoClientOptions = { useNewUrlParser: true, useUnifiedTopology: true, ssl: true };
 
 async function connectToDatabase() {
-    dbClient = new MongoClient(uri, mongoClientOptions);
-    try {
-        await dbClient.connect();
-        console.log('Connected to MongoDB');
-    } catch (err) {
-        console.error('Failed to connect to MongoDB', err);
-        process.exit(1);
+    if (!dbClient || !dbClient.isConnected()) {
+        dbClient = new MongoClient(uri, mongoClientOptions);
+        try {
+            await dbClient.connect();
+            console.log('Connected to MongoDB');
+        } catch (err) {
+            console.error('Failed to connect to MongoDB', err);
+            throw new Error('Failed to connect to MongoDB');
+        }
     }
 }
 
-connectToDatabase().catch(console.error);
-
-app.get('/hello', (req, res) => {
-    res.send('Welcome to the Forms API!');
+app.get('/', async (req, res) => {
+    try {
+        await connectToDatabase();
+        console.log('Hello world request received');
+        res.send('Welcome to the Forms API!');
+    } catch (error) {
+        console.error("Failed to handle /hello request:", error);
+        res.status(500).json({ error: "An error occurred while handling the request." });
+    }
 });
 
 // Forms CRUD operations
 app.post('/forms', async (req, res) => {
-    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots, items, slots, userId } = req.body; // Include items and slots in the destructuring
-    console.log('Received userId:', userId); // Log the received userId
-    if (!userId) {
-        console.error("UserId is missing in the request");
-        return res.status(400).json({ error: "UserId is required" });
-    }
+    await connectToDatabase();
+    const { title, customDomain, infoType, additionalFields, dates, hasTimeSlots, items, slots, userId } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        
-        // Check if customDomain already exists
-        const domainExists = await formsCollection.findOne({ customDomain: customDomain });
+        const domainExists = await formsCollection.findOne({ customDomain });
         if (domainExists) {
             return res.status(409).send('Custom domain is already taken.');
         }
-        
 
         const newForm = {
-            title, 
+            title,
             customDomain,
             infoType,
             additionalFields,
-            dates, // Add dates here
-            hasTimeSlots, // Add this line
-            userId, // Add userId to the form object
+            dates,
+            hasTimeSlots,
+            userId,
             createdAt: new Date(),
-     
         };
 
         const result = await formsCollection.insertOne(newForm);
@@ -91,11 +89,12 @@ app.post('/forms', async (req, res) => {
 });
 
 app.get('/forms', async (req, res) => {
-    const { userId } = req.query; // Retrieve userId from query parameters
+    await connectToDatabase();
+    const { userId } = req.query;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        const allForms = await formsCollection.find({ userId: userId }).toArray(); // Filter forms by userId
+        const allForms = await formsCollection.find({ userId }).toArray();
         res.json(allForms);
     } catch (error) {
         console.error("Failed to fetch forms:", error);
@@ -104,6 +103,7 @@ app.get('/forms', async (req, res) => {
 });
 
 app.get('/forms/:id', async (req, res) => {
+    await connectToDatabase();
     const { id } = req.params;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
@@ -120,20 +120,19 @@ app.get('/forms/:id', async (req, res) => {
 });
 
 // Update Forms
-
 app.put('/forms/:formId', async (req, res) => {
-    console.log("Received infoType:", req.body.infoType); // Add this line
+    await connectToDatabase();
     const { formId } = req.params;
-    const { additionalFields, infoType, dates } = req.body; // Include additionalFields and infoType in the destructuring
+    const { additionalFields, infoType, dates } = req.body;
 
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
         const updateDoc = {
             $set: {
-                ...(additionalFields && { additionalFields: additionalFields }),
-                ...(infoType && { infoType: infoType }),
-                ...(dates && { dates: dates })
+                ...(additionalFields && { additionalFields }),
+                ...(infoType && { infoType }),
+                ...(dates && { dates })
             }
         };
 
@@ -153,18 +152,17 @@ app.put('/forms/:formId', async (req, res) => {
     }
 });
 
-
 app.put('/forms/:formId/items', async (req, res) => {
+    await connectToDatabase();
     const { formId } = req.params;
-    const { items, slots } = req.body; // Adjusted to include items and slots
+    const { items, slots } = req.body;
+
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
-        // Logic to update the specific items and slots for the form
-        // This is a simplified example. You'll need to adjust it based on your data structure
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId) },
-            { $set: { items, slots } } // Updated to set items and slots
+            { $set: { items, slots } }
         );
 
         if (updateResult.matchedCount === 0) {
@@ -179,13 +177,9 @@ app.put('/forms/:formId/items', async (req, res) => {
 });
 
 // Delete Forms
-
 app.delete('/forms/:id', async (req, res) => {
+    await connectToDatabase();
     const { id } = req.params;
-    console.log(`Attempting to delete form with ID: ${id}`); // Ensure ID is logged
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-        return res.status(400).send("Invalid ID format");
-    }
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -204,6 +198,7 @@ app.delete('/forms/:id', async (req, res) => {
 
 // User authentication endpoints
 app.post('/signup', async (req, res) => {
+    await connectToDatabase();
     const { username, password } = req.body;
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
@@ -221,11 +216,9 @@ app.post('/signup', async (req, res) => {
         };
 
         const result = await usersCollection.insertOne(newUser);
-        console.log("JWT_SECRET:", process.env.JWT_SECRET); // Verify JWT_SECRET is available
-        console.log("Generating token for user:", { userId: result.insertedId, username: newUser.username });
         const token = jwt.sign({ userId: result.insertedId, username: newUser.username }, JWT_SECRET, { expiresIn: '24h' });
-        console.log("Generated authToken for signup:", token); // Add this line
-        res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 }); // 24 hours
+
+        res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 });
         res.status(201).json({ authToken: token, userId: result.insertedId, username: newUser.username });
     } catch (error) {
         console.error("Error signing up user:", error);
@@ -233,33 +226,28 @@ app.post('/signup', async (req, res) => {
     }
 });
 
-
 app.post('/login', async (req, res) => {
+    await connectToDatabase();
     const { username, password } = req.body;
-    console.log('Attempting to log in with:', username); // Log the username attempting to log in
 
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const user = await usersCollection.findOne({ username: username.toLowerCase() });
-        console.log('User found:', !!user); // Log whether the user was found
 
         if (!user) {
             return res.status(401).json({ message: 'User does not exist.' });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.passwordHash);
-        console.log('Password correct:', isPasswordCorrect); // Log the result of the password check
 
         if (!isPasswordCorrect) {
             return res.status(400).json({ message: 'Invalid credentials.' });
         }
 
-        console.log("JWT_SECRET:", process.env.JWT_SECRET); // Verify JWT_SECRET is available
-        console.log("Generating token for user:", { userId: user._id, username: user.username });
         const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
-        console.log("Generated authToken for login:", token); // Add this line
-        res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 }); // 24 hours
+
+        res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 });
         res.status(200).json({ authToken: token, userId: user._id, username: user.username });
     } catch (error) {
         console.error("Error logging in user:", error);
@@ -267,14 +255,9 @@ app.post('/login', async (req, res) => {
     }
 });
 
-
-
 app.put('/user/:id', async (req, res) => {
+    await connectToDatabase();
     const { id } = req.params;
-    console.log(`Attempting to update user with ID: ${id}`); // Ensure ID is logged
-    if (!/^[0-9a-fA-F]{24}$/.test(id)) {
-        return res.status(400).send("Invalid ID format");
-    }
     const { username, password } = req.body;
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
@@ -299,23 +282,21 @@ app.put('/user/:id', async (req, res) => {
     }
 });
 
-// Time-Slots
-
 app.post('/time-slots', async (req, res) => {
+    await connectToDatabase();
     const { eventID, startTime, endTime, maxParticipants, isBooked } = req.body;
     const timeSlotsCollection = dbClient.db('FoxForms').collection('Time-Slots');
 
     try {
         const newTimeSlot = {
-            eventID: new ObjectId(eventID), // Convert to ObjectId if necessary
-            startTime: new Date(startTime), // Ensure this is a Date object
-            endTime: new Date(endTime), // Ensure this is a Date object
+            eventID: new ObjectId(eventID),
+            startTime: new Date(startTime),
+            endTime: new Date(endTime),
             maxParticipants,
             isBooked
         };
 
         const result = await timeSlotsCollection.insertOne(newTimeSlot);
-        console.log("Insert result", result);
         res.status(201).json(result.ops[0]);
     } catch (error) {
         console.error("Failed to create time slot:", error);
@@ -324,6 +305,7 @@ app.post('/time-slots', async (req, res) => {
 });
 
 app.get('/time-slots', async (req, res) => {
+    await connectToDatabase();
     const timeSlotsCollection = dbClient.db('FoxForms').collection('Time-Slots');
 
     try {
@@ -336,8 +318,9 @@ app.get('/time-slots', async (req, res) => {
 });
 
 app.post('/forms/:formId/time-slots/items', async (req, res) => {
+    await connectToDatabase();
     const { formId } = req.params;
-    const { date, timeSlot, item, slots } = req.body; // Adjusted to match the instructions
+    const { date, timeSlot, item, slots } = req.body;
     const formsCollection = dbClient.db('FoxForms').collection('Forms');
 
     try {
@@ -357,76 +340,22 @@ app.post('/forms/:formId/time-slots/items', async (req, res) => {
     }
 });
 
-// Example implementation of processNestedStructure
-
-function processNestedStructure(updates) {
-    let processedUpdates = {};
-
-    if (updates.dates) {
-        processedUpdates.dates = updates.dates.map(date => {
-            let dateObj = { date: date.date };
-
-            if (date.timeSlots) {
-                dateObj.timeSlots = date.timeSlots.map(timeSlot => {
-                    let timeSlotObj = { startTime: timeSlot.startTime, endTime: timeSlot.endTime };
-
-                    if (timeSlot.items) {
-                        timeSlotObj.items = timeSlot.items.map(item => {
-                            let itemObj = { name: item.name };
-
-                            if (item.slots) {
-                                itemObj.slots = item.slots;
-                            }
-
-                            return itemObj;
-                        });
-                    }
-
-                    return timeSlotObj;
-                });
-            } else if (date.items) {
-                dateObj.items = date.items.map(item => {
-                    let itemObj = { name: item.name };
-
-                    if (item.slots) {
-                        itemObj.slots = item.slots;
-                    }
-
-                    return itemObj;
-                });
-            } else if (date.slots) {
-                dateObj.slots = date.slots;
-            }
-
-            return dateObj;
-        });
-    }
-
-    return processedUpdates;
-}
-
 app.get('/get-username', async (req, res) => {
-    // Extract the token from the Authorization header
     const authHeader = req.headers.authorization;
     if (!authHeader || !authHeader.startsWith('Bearer ')) {
         return res.status(401).send('Unauthorized: No token provided');
     }
 
     const token = authHeader.split(' ')[1];
-    console.log("Token received:", token); // Add this line to log the received token
     try {
-        // Assuming you have a function to verify the token and extract user information
-        // This could be a JWT token verification or a custom token validation logic
         const decoded = jwt.verify(token, JWT_SECRET);
         const userId = decoded.userId;
 
-        // Assuming you have a users collection and each user document has a username field
         const user = await dbClient.db('FoxForms').collection('Users').findOne({ _id: new ObjectId(userId) });
         if (!user) {
             return res.status(404).send('User not found');
         }
 
-        // Send back the username
         res.json({ username: user.username });
     } catch (error) {
         console.error('Error fetching username:', error);
@@ -440,31 +369,22 @@ app.use((err, req, res, next) => {
     res.status(500).json({ error: 'Something broke!' });
 });
 
-// Start the server
-//connectToDatabase().then(() => {
-//    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
-//}).catch(console.error);
-
 // Dashboard specific route
 app.get('/dashboard/:authToken', async (req, res) => {
     const { authToken } = req.params;
 
     try {
-        // Verify the token
         const decoded = jwt.verify(authToken, JWT_SECRET);
         const userId = decoded.userId;
 
-        // Fetch user-specific data
         const userData = await dbClient.db('FoxForms').collection('Users').findOne({ _id: new ObjectId(userId) });
 
         if (!userData) {
             return res.status(404).json({ message: 'User not found.' });
         }
 
-        // Fetch forms specific to the user
         const userForms = await dbClient.db('FoxForms').collection('Forms').find({ userId: userId }).toArray();
 
-        // Serve the dashboard content for the user
         res.json({ message: 'Dashboard content', data: userData, forms: userForms, formTitles: userForms.map(form => form.title) });
     } catch (error) {
         console.error('Error fetching dashboard data:', error);
@@ -472,6 +392,9 @@ app.get('/dashboard/:authToken', async (req, res) => {
     }
 });
 
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`Server running on port ${port}`);
+});
 
-module.exports.handler = serverless(app);
-
+export default serverless(app);
