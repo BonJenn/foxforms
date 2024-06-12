@@ -13,7 +13,7 @@ provider:
     MONGODB_URI: mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 
 functions:
-  app:
+  test:
     handler: index.handler  # or handler.handler if your main file is handler.js
     events:
       - http:

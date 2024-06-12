@@ -71,10 +71,10 @@
         }
       }
     },
-    "AppLogGroup": {
+    "TestLogGroup": {
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
-        "LogGroupName": "/aws/lambda/foxforms-dev-app"
+        "LogGroupName": "/aws/lambda/foxforms-dev-test"
       }
     },
     "IamRoleLambdaExecution": {
@@ -155,18 +155,18 @@
         }
       }
     },
-    "AppLambdaFunction": {
+    "TestLambdaFunction": {
       "Type": "AWS::Lambda::Function",
       "Properties": {
         "Code": {
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/foxforms/dev/1717828225170-2024-06-08T06:30:25.170Z/foxforms.zip"
+          "S3Key": "serverless/foxforms/dev/1718226913738-2024-06-12T21:15:13.738Z/foxforms.zip"
         },
         "Handler": "index.handler",
         "Runtime": "nodejs20.x",
-        "FunctionName": "foxforms-dev-app",
+        "FunctionName": "foxforms-dev-test",
         "MemorySize": 1024,
         "Timeout": 6,
         "Environment": {
@@ -183,17 +183,17 @@
         }
       },
       "DependsOn": [
-        "AppLogGroup"
+        "TestLogGroup"
       ]
     },
-    "AppLambdaVersionJySe8TBvtvkmd6oEmjpnJWpQGy8p3NRI1zqRYCTZTg": {
+    "TestLambdaVersionW57uwU5fUmwCeKJ07T2JOQIyyyEfaR9w09Xd7RCanM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
-          "Ref": "AppLambdaFunction"
+          "Ref": "TestLambdaFunction"
         },
-        "CodeSha256": "X7CqZN4Gn/0RevPZ41b/03Tf1e10E/NwH8142+T6kaY="
+        "CodeSha256": "oszPStkQA6qs3jlYN7TMXEyFiyX4NJeNzCdW8S71S8c="
       }
     },
     "ApiGatewayRestApi": {
@@ -206,6 +206,21 @@
           ]
         },
         "Policy": ""
+      }
+    },
+    "ApiGatewayResourceHello": {
+      "Type": "AWS::ApiGateway::Resource",
+      "Properties": {
+        "ParentId": {
+          "Fn::GetAtt": [
+            "ApiGatewayRestApi",
+            "RootResourceId"
+          ]
+        },
+        "PathPart": "hello",
+        "RestApiId": {
+          "Ref": "ApiGatewayRestApi"
+        }
       }
     },
     "ApiGatewayResourceProxyVar": {
@@ -223,16 +238,13 @@
         }
       }
     },
-    "ApiGatewayMethodAny": {
+    "ApiGatewayMethodHelloAny": {
       "Type": "AWS::ApiGateway::Method",
       "Properties": {
         "HttpMethod": "ANY",
         "RequestParameters": {},
         "ResourceId": {
-          "Fn::GetAtt": [
-            "ApiGatewayRestApi",
-            "RootResourceId"
-          ]
+          "Ref": "ApiGatewayResourceHello"
         },
         "RestApiId": {
           "Ref": "ApiGatewayRestApi"
@@ -257,7 +269,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "AppLambdaFunction",
+                    "TestLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -269,7 +281,7 @@
         "MethodResponses": []
       },
       "DependsOn": [
-        "AppLambdaPermissionApiGateway"
+        "TestLambdaPermissionApiGateway"
       ]
     },
     "ApiGatewayMethodProxyVarAny": {
@@ -303,7 +315,7 @@
                 ":lambda:path/2015-03-31/functions/",
                 {
                   "Fn::GetAtt": [
-                    "AppLambdaFunction",
+                    "TestLambdaFunction",
                     "Arn"
                   ]
                 },
@@ -315,10 +327,10 @@
         "MethodResponses": []
       },
       "DependsOn": [
-        "AppLambdaPermissionApiGateway"
+        "TestLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1717828222469": {
+    "ApiGatewayDeployment1718226911094": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -327,16 +339,16 @@
         "StageName": "dev"
       },
       "DependsOn": [
-        "ApiGatewayMethodAny",
+        "ApiGatewayMethodHelloAny",
         "ApiGatewayMethodProxyVarAny"
       ]
     },
-    "AppLambdaPermissionApiGateway": {
+    "TestLambdaPermissionApiGateway": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": {
           "Fn::GetAtt": [
-            "AppLambdaFunction",
+            "TestLambdaFunction",
             "Arn"
           ]
         },
@@ -378,13 +390,13 @@
         "Name": "sls-foxforms-dev-ServerlessDeploymentBucketName"
       }
     },
-    "AppLambdaFunctionQualifiedArn": {
+    "TestLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersionJySe8TBvtvkmd6oEmjpnJWpQGy8p3NRI1zqRYCTZTg"
+        "Ref": "TestLambdaVersionW57uwU5fUmwCeKJ07T2JOQIyyyEfaR9w09Xd7RCanM"
       },
       "Export": {
-        "Name": "sls-foxforms-dev-AppLambdaFunctionQualifiedArn"
+        "Name": "sls-foxforms-dev-TestLambdaFunctionQualifiedArn"
       }
     },
     "ServiceEndpoint": {

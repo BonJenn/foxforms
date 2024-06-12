@@ -1,0 +1,15 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-foxforms-dev-43c4b-authRole",
+      "UnauthRoleArn": "arn:aws:iam::905418133154:role/amplify-foxforms-dev-43c4b-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::905418133154:role/amplify-foxforms-dev-43c4b-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-foxforms-dev-43c4b-deployment",
+      "UnauthRoleName": "amplify-foxforms-dev-43c4b-unauthRole",
+      "StackName": "amplify-foxforms-dev-43c4b",
+      "StackId": "arn:aws:cloudformation:us-east-2:905418133154:stack/amplify-foxforms-dev-43c4b/3a89b2a0-2906-11ef-a2e6-025b8cc1bccb",
+      "AmplifyAppId": "dtf27r5oi87r8"
+    }
+  }
+}

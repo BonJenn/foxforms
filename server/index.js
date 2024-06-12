@@ -10,6 +10,30 @@ import bcrypt from 'bcrypt';
 import rateLimit from 'express-rate-limit';
 import serverless from 'serverless-http';
 
+// Load the AWS SDK
+const AWS = require('aws-sdk');
+
+// Set the region
+AWS.config.update({region: 'us-east-2'});
+
+// Create Lambda service object
+const lambda = new AWS.Lambda();
+
+// Parameters for the Lambda function
+var params = {
+  FunctionName: 'test', // Replace with your Lambda function name
+  InvocationType: 'RequestResponse'
+};
+
+// Invoke the Lambda function
+lambda.invoke(params, function(err, data) {
+  if (err) {
+    console.log(err, err.stack); // an error occurred
+  } else {
+    console.log(data); // successful response
+  }
+});
+
 const app = express();
 const uri = process.env.MONGODB_URI; // Use environment variable for the MongoDB URI
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -41,7 +65,7 @@ async function connectToDatabase() {
     }
 }
 
-app.get('/', async (req, res) => {
+app.get('/hello', async (req, res) => {
     try {
         await connectToDatabase();
         console.log('Hello world request received');
@@ -230,22 +254,28 @@ app.post('/login', async (req, res) => {
     await connectToDatabase();
     const { username, password } = req.body;
 
+    console.log(`Attempting to log in user: ${username}`);
+
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
     try {
         const user = await usersCollection.findOne({ username: username.toLowerCase() });
 
         if (!user) {
+            console.log('Login failed: User does not exist');
             return res.status(401).json({ message: 'User does not exist.' });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.passwordHash);
 
         if (!isPasswordCorrect) {
+            console.log('Login failed: Invalid credentials');
             return res.status(400).json({ message: 'Invalid credentials.' });
         }
 
         const token = jwt.sign({ userId: user._id, username: user.username }, JWT_SECRET, { expiresIn: '24h' });
+
+        console.log(`User logged in successfully: ${username}`);
 
         res.cookie('authToken', token, { sameSite: 'None', secure: true, httpOnly: true, maxAge: 86400000 });
         res.status(200).json({ authToken: token, userId: user._id, username: user.username });
@@ -326,7 +356,7 @@ app.post('/forms/:formId/time-slots/items', async (req, res) => {
     try {
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId), [`dates.${date}.timeSlots.${timeSlot}`]: { $exists: true } },
-            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { ...item, slots: slots } } }
+            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { ...item, slots: slots } } } }
         );
 
         if (updateResult.matchedCount === 0) {
@@ -392,9 +422,8 @@ app.get('/dashboard/:authToken', async (req, res) => {
     }
 });
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
-});
+if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  app.listen(3000, () => console.log('Server running on http://localhost:3000'));
+}
 
 export default serverless(app);
