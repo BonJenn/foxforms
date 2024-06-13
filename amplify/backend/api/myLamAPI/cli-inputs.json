@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "paths": {
+    "/woohoo": {
+      "name": "/woohoo",
+      "lambdaFunction": "myLamAPIFunc",
+      "permissions": {
+        "setting": "open"
+      }
+    }
+  }
+}

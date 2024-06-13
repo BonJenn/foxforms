@@ -11,12 +11,18 @@ import FormWizard from '../client/pages/Home/components/FormWizard'; // Adjust t
 import { AuthProvider, useAuth } from './context/AuthContext'; // Import AuthProvider and useAuth
 import ErrorBoundary from '../client/pages/Home/components/ErrorBoundary.jsx';
 
+
 function App() {
   const [cookies, setCookie, removeCookie] = useCookies(['AuthToken']);
   const [logoutMessage, setLogoutMessage] = useState('');
   const [cookieAuthToken, setCookieAuthToken] = useState(null);
   const navigate = useNavigate(); // Added useNavigate here
   const { userId } = useParams(); // Retrieve userId from URL
+
+ 
+
+
+
 
   useEffect(() => {
     const authToken = cookies.AuthToken || localStorage.getItem('authToken');

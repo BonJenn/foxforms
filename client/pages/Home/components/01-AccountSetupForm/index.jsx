@@ -32,7 +32,7 @@ const AccountSetupForm = ({ onBack, onNext, username, setUsername, password, set
             return;
         }
         try {
-            const response = await fetch('http://localhost:3000/signup', {
+            const response = await fetch('https://bc79it7o3f.execute-api.us-east-2.amazonaws.com/dev/woohoo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 {
-  "/Users/jonathanbenn/Desktop/Programming/foxforms": {
+  "/Volumes/G-DRIVE PRO/Programming/foxforms": {
     "versionSfCore": null,
     "versionFramework": "4.1.2",
     "isWithinCompose": false,
@@ -7,7 +7,7 @@
     "composeOrgName": null,
     "composeResolverProviders": {},
     "composeServiceName": null,
-    "servicePath": "/Users/jonathanbenn/Desktop/Programming/foxforms",
+    "servicePath": "/Volumes/G-DRIVE PRO/Programming/foxforms",
     "serviceConfigFileName": "serverless.yml",
     "service": {
       "org": "foxforms",
@@ -187,7 +187,7 @@
                   "S3Bucket": {
                     "Ref": "ServerlessDeploymentBucket"
                   },
-                  "S3Key": "serverless/foxforms/dev/1718226913738-2024-06-12T21:15:13.738Z/foxforms.zip"
+                  "S3Key": "serverless/foxforms/dev/1718241119917-2024-06-13T01:11:59.917Z/foxforms.zip"
                 },
                 "Handler": "index.handler",
                 "Runtime": "nodejs20.x",
@@ -211,14 +211,14 @@
                 "TestLogGroup"
               ]
             },
-            "TestLambdaVersionW57uwU5fUmwCeKJ07T2JOQIyyyEfaR9w09Xd7RCanM": {
+            "TestLambdaVersionFqczJVFKy6eNIb21V763MUy2MhBtXNGSdiMb8m7rQ": {
               "Type": "AWS::Lambda::Version",
               "DeletionPolicy": "Retain",
               "Properties": {
                 "FunctionName": {
                   "Ref": "TestLambdaFunction"
                 },
-                "CodeSha256": "oszPStkQA6qs3jlYN7TMXEyFiyX4NJeNzCdW8S71S8c="
+                "CodeSha256": "U5OEaQtAwKgX69WAA30XxqG0Ht4XaCxGJyJ7R02ecXs="
               }
             },
             "ApiGatewayRestApi": {
@@ -355,7 +355,7 @@
                 "TestLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1718226911094": {
+            "ApiGatewayDeployment1718241116037": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -418,7 +418,7 @@
             "TestLambdaFunctionQualifiedArn": {
               "Description": "Current Lambda function version",
               "Value": {
-                "Ref": "TestLambdaVersionW57uwU5fUmwCeKJ07T2JOQIyyyEfaR9w09Xd7RCanM"
+                "Ref": "TestLambdaVersionFqczJVFKy6eNIb21V763MUy2MhBtXNGSdiMb8m7rQ"
               },
               "Export": {
                 "Name": "sls-foxforms-dev-TestLambdaFunctionQualifiedArn"
@@ -563,7 +563,7 @@
           "timeout": 6,
           "runtime": "nodejs20.x",
           "vpc": {},
-          "versionLogicalId": "TestLambdaVersionW57uwU5fUmwCeKJ07T2JOQIyyyEfaR9w09Xd7RCanM"
+          "versionLogicalId": "TestLambdaVersionFqczJVFKy6eNIb21V763MUy2MhBtXNGSdiMb8m7rQ"
         }
       },
       "package": {
@@ -572,8 +572,8 @@
           ".git/**"
         ],
         "artifactsS3KeyDirname": "serverless/foxforms/dev/code-artifacts",
-        "artifact": "/Users/jonathanbenn/Desktop/Programming/foxforms/.serverless/foxforms.zip",
-        "artifactDirectoryName": "serverless/foxforms/dev/1718226913738-2024-06-12T21:15:13.738Z"
+        "artifact": "/Volumes/G-DRIVE PRO/Programming/foxforms/.serverless/foxforms.zip",
+        "artifactDirectoryName": "serverless/foxforms/dev/1718241119917-2024-06-13T01:11:59.917Z"
       }
     },
     "serviceRawFile": "# \"org\" ensures this Service is used with the correct Serverless Framework Access Key.\norg: foxforms\n# \"app\" enables Serverless Framework Dashboard features and sharing them with other Services.\napp: foxforms\nservice: foxforms\n\nprovider:\n  name: aws\n  runtime: nodejs20.x\n  region: us-east-2\n  environment:\n    JWT_SECRET: require('crypto').randomBytes(64).toString('hex')\n    MONGODB_URI: mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0\n\nfunctions:\n  test:\n    handler: index.handler  # or handler.handler if your main file is handler.js\n    events:\n      - http:\n          path: /hello\n          method: any\n          integration: AWS_PROXY\n          uri: https://23cvva9qi2.execute-api.us-east-2.amazonaws.com/dev/\n      - http:\n          path: /{proxy+}\n          method: any\n          integration: AWS_PROXY\n          uri: https://23cvva9qi2.execute-api.us-east-2.amazonaws.com/dev/{proxy+}\n\npackage:\n  exclude:\n    - node_modules/**\n    - .git/**\n",
@@ -583,7 +583,7 @@
     "options": {},
     "error": null,
     "params": {},
-    "machineId": "e7e8b5f3962b0e8b8dc58eaa600f5b03",
+    "machineId": "858658a6ab322f0d9668c2afff087b0d",
     "accessKeyV2": "<REDACTED>",
     "accessKeyV1": "<REDACTED>",
     "orgId": "c9b291b3-2347-4ccc-81b3-b2a3db6ea7e7",
@@ -620,12 +620,12 @@
     "serviceProviderAwsCfStackName": "foxforms-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-2:905418133154:stack/foxforms-dev/00b266e0-255e-11ef-998b-026b80187dd5",
     "serviceProviderAwsCfStackCreated": "2024-06-08T06:11:54.123Z",
-    "serviceProviderAwsCfStackUpdated": "2024-06-12T21:16:23.345Z",
+    "serviceProviderAwsCfStackUpdated": "2024-06-13T01:13:26.292Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {
         "OutputKey": "TestLambdaFunctionQualifiedArn",
-        "OutputValue": "arn:aws:lambda:us-east-2:905418133154:function:foxforms-dev-test:3",
+        "OutputValue": "arn:aws:lambda:us-east-2:905418133154:function:foxforms-dev-test:5",
         "Description": "Current Lambda function version",
         "ExportName": "sls-foxforms-dev-TestLambdaFunctionQualifiedArn"
       },

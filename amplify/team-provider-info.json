@@ -10,6 +10,17 @@
       "StackName": "amplify-foxforms-dev-43c4b",
       "StackId": "arn:aws:cloudformation:us-east-2:905418133154:stack/amplify-foxforms-dev-43c4b/3a89b2a0-2906-11ef-a2e6-025b8cc1bccb",
       "AmplifyAppId": "dtf27r5oi87r8"
+    },
+    "categories": {
+      "function": {
+        "myLamAPIFunc": {
+          "deploymentBucketName": "amplify-foxforms-dev-43c4b-deployment",
+          "s3Key": "amplify-builds/myLamAPIFunc-686757372f556779476c-build.zip"
+        }
+      },
+      "api": {
+        "myLamAPI": {}
+      }
     }
   }
 }

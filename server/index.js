@@ -9,6 +9,11 @@ import cors from 'cors';
 import bcrypt from 'bcrypt';
 import rateLimit from 'express-rate-limit';
 import serverless from 'serverless-http';
+import Amplify from 'aws-amplify';
+import awsExports from "./aws-exports";
+Amplify.configure(awsExports);
+const awsServerlessExpressMiddleware = require('aws-serverless-express/middleware')
+
 
 // Load the AWS SDK
 const AWS = require('aws-sdk');
@@ -35,8 +40,8 @@ lambda.invoke(params, function(err, data) {
 });
 
 const app = express();
-const uri = process.env.MONGODB_URI; // Use environment variable for the MongoDB URI
-const JWT_SECRET = process.env.JWT_SECRET;
+const uri = 'mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'; // Use environment variable for the MongoDB URI
+const JWT_SECRET = require('crypto').randomBytes(64).toString('hex');
 
 app.use(express.json());
 app.use(cors({
@@ -221,7 +226,7 @@ app.delete('/forms/:id', async (req, res) => {
 });
 
 // User authentication endpoints
-app.post('/signup', async (req, res) => {
+app.post('/woohoo', async (req, res) => {
     await connectToDatabase();
     const { username, password } = req.body;
     const usersCollection = dbClient.db('FoxForms').collection('Users');
@@ -356,7 +361,7 @@ app.post('/forms/:formId/time-slots/items', async (req, res) => {
     try {
         const updateResult = await formsCollection.updateOne(
             { _id: new ObjectId(formId), [`dates.${date}.timeSlots.${timeSlot}`]: { $exists: true } },
-            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { ...item, slots: slots } } } }
+            { $push: { [`dates.${date}.timeSlots.${timeSlot}.items`]: { ...item, slots: slots } } }
         );
 
         if (updateResult.matchedCount === 0) {
@@ -426,4 +431,34 @@ if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
   app.listen(3000, () => console.log('Server running on http://localhost:3000'));
 }
 
-export default serverless(app);
+exports.handler = async (event, context) => {
+    try {
+        // Your existing logic here
+        const result = someOperation();
+
+        const response = {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'Execution started successfully!',
+                data: result
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+
+        return response;
+    } catch (error) {
+        console.error('Error:', error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({
+                message: 'Internal Server Error',
+                error: error.message
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+    }
+};

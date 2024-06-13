@@ -1,1 +1,43 @@
-{}
+{
+  "api": {
+    "myLamAPI": {
+      "dependsOn": [
+        {
+          "attributes": [
+            "Name",
+            "Arn"
+          ],
+          "category": "function",
+          "resourceName": "myLamAPIFunc"
+        }
+      ],
+      "providerPlugin": "awscloudformation",
+      "service": "API Gateway"
+    }
+  },
+  "function": {
+    "myLamAPIFunc": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_myLamAPIFunc_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "myLamAPIFunc"
+        }
+      ]
+    },
+    "AMPLIFY_function_myLamAPIFunc_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "myLamAPIFunc"
+        }
+      ]
+    }
+  }
+}
