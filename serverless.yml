@@ -1,0 +1,59 @@
+service: foxforms
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  stage: dev
+  region: us-east-1
+  deploymentBucket:
+    name: my-foxforms-bucket
+  environment:
+    JWT_SECRET: 91a5be11fb7a59a2c36dbe20440522de2cf2a15299cccf1a290859171a48b5f7673ead5c2a8cd01d6e8cbc2143d56162fc8793aa6c5cf55972bab9ba0da2ef5b
+    URI: ${env:URI, 'http://localhost:3000'}
+    PORT: 3000
+  timeout: 30
+  memorySize: 1024
+
+functions:
+  app:
+    handler: server/index.handler
+    layers:
+      - arn:aws:lambda:us-east-1:905418133154:layer:foxforms-dependencies:1
+    events:
+      - http:
+          path: /{proxy+}
+          method: ANY
+
+plugins:
+  - serverless-offline
+  - serverless-dotenv-plugin
+  - serverless-plugin-include-dependencies
+
+custom:
+  dotenv:
+    path: ./server/.env
+  serverless-offline:
+    httpPort: 3000
+
+package:
+  individually: true
+  exclude:
+    - ./**
+    - .git/**
+    - client/**
+    - node_modules/**
+    - .serverless/**
+    - '**/*.eps'
+    - '**/*.gif'
+    - '**/*.map'
+    - '**/*.d.ts'
+    - '**/*.min.js'
+    - '**/aws-sdk-react-native.js'
+    - '**/aws-sdk.js'
+    - '**/java-invoke-local-all.jar'
+    - '**/json-refs.js'
+    - '**/react-dom.development.js'
+    - '**/xml2js.bc.js'
+  include:
+    - server/index.js
+    - package.json

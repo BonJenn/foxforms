@@ -1,0 +1,10 @@
+{
+  "aws_project_region": "us-east-2",
+  "aws_cloud_logic_custom": [
+    {
+      "name": "myLamAPI",
+      "endpoint": "https://bc79it7o3f.execute-api.us-east-2.amazonaws.com/dev",
+      "region": "us-east-2"
+    }
+  ]
+}
