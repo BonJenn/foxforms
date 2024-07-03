@@ -6,9 +6,9 @@ import mongodb from 'mongodb';
 const { MongoClient, ObjectId } = mongodb;
 import jwt from 'jsonwebtoken';
 import cors from 'cors';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs'; // Updated import
 import rateLimit from 'express-rate-limit';
-const awsServerlessExpress = require('aws-serverless-express');
+import awsServerlessExpress from 'aws-serverless-express'; // Updated import
 
 const app = express();
 const uri = "mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
@@ -423,7 +423,7 @@ app.use((err, req, res, next) => {
 
 const server = awsServerlessExpress.createServer(app);
 
-exports.handler = (event, context) => {
+export const handler = (event, context) => {
     awsServerlessExpress.proxy(server, event, context);
 };
 

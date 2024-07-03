@@ -2,7 +2,7 @@ service: foxforms
 
 provider:
   name: aws
-  runtime: nodejs20.x
+  runtime: nodejs16.x
   stage: dev
   region: us-east-1
   deploymentBucket:
@@ -41,7 +41,6 @@ package:
     - ./**
     - .git/**
     - client/**
-    - node_modules/**
     - .serverless/**
     - '**/*.eps'
     - '**/*.gif'
@@ -55,5 +54,6 @@ package:
     - '**/react-dom.development.js'
     - '**/xml2js.bc.js'
   include:
+    - node_modules/**
     - server/index.js
     - package.json

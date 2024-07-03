@@ -91,10 +91,10 @@
       "Properties": {
         "Code": {
           "S3Bucket": "my-foxforms-bucket",
-          "S3Key": "serverless/foxforms/dev/1719892519217-2024-07-02T03:55:19.217Z/app.zip"
+          "S3Key": "serverless/foxforms/dev/1719966134793-2024-07-03T00:22:14.793Z/app.zip"
         },
         "Handler": "server/index.handler",
-        "Runtime": "nodejs20.x",
+        "Runtime": "nodejs16.x",
         "FunctionName": "foxforms-dev-app",
         "MemorySize": 1024,
         "Timeout": 30,
@@ -119,14 +119,14 @@
         "AppLogGroup"
       ]
     },
-    "AppLambdaVersionJQsQPeOiu73vZ0eLqPtS9fA4AdnLXffKdPKXAh9c": {
+    "AppLambdaVersion5AIiY7WLSIzEpnNJYXLbGOOPtHnevfUyxrUR5daEM": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "AppLambdaFunction"
         },
-        "CodeSha256": "zzLqPsh3zpJaodiUV0pNev8inN117Onrnc42feHEL0o="
+        "CodeSha256": "2CygY4dXJfVHRHNpRg73wmfRPtUKllwo5EtYgjBUWUU="
       }
     },
     "ApiGatewayRestApi": {
@@ -202,7 +202,7 @@
         "AppLambdaPermissionApiGateway"
       ]
     },
-    "ApiGatewayDeployment1719892504784": {
+    "ApiGatewayDeployment1719966121755": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -262,7 +262,7 @@
     "AppLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "AppLambdaVersionJQsQPeOiu73vZ0eLqPtS9fA4AdnLXffKdPKXAh9c"
+        "Ref": "AppLambdaVersion5AIiY7WLSIzEpnNJYXLbGOOPtHnevfUyxrUR5daEM"
       },
       "Export": {
         "Name": "sls-foxforms-dev-AppLambdaFunctionQualifiedArn"
