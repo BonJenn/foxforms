@@ -114,7 +114,7 @@
             "Properties": {
               "Code": {
                 "S3Bucket": "my-foxforms-bucket",
-                "S3Key": "serverless/foxforms/dev/1719966134793-2024-07-03T00:22:14.793Z/app.zip"
+                "S3Key": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z/app.zip"
               },
               "Handler": "server/index.handler",
               "Runtime": "nodejs16.x",
@@ -142,14 +142,14 @@
               "AppLogGroup"
             ]
           },
-          "AppLambdaVersion5AIiY7WLSIzEpnNJYXLbGOOPtHnevfUyxrUR5daEM": {
+          "AppLambdaVersionFYJqEUejhU7naQfnkLcqQUS8M32ozJVWxPrMxskc": {
             "Type": "AWS::Lambda::Version",
             "DeletionPolicy": "Retain",
             "Properties": {
               "FunctionName": {
                 "Ref": "AppLambdaFunction"
               },
-              "CodeSha256": "2CygY4dXJfVHRHNpRg73wmfRPtUKllwo5EtYgjBUWUU="
+              "CodeSha256": "lRPc/4WSx8i/PvyZawS4tNrWQivxQU+BgBNwnTBUAqA="
             }
           },
           "ApiGatewayRestApi": {
@@ -225,7 +225,7 @@
               "AppLambdaPermissionApiGateway"
             ]
           },
-          "ApiGatewayDeployment1719966121755": {
+          "ApiGatewayDeployment1719968396914": {
             "Type": "AWS::ApiGateway::Deployment",
             "Properties": {
               "RestApiId": {
@@ -285,7 +285,7 @@
           "AppLambdaFunctionQualifiedArn": {
             "Description": "Current Lambda function version",
             "Value": {
-              "Ref": "AppLambdaVersion5AIiY7WLSIzEpnNJYXLbGOOPtHnevfUyxrUR5daEM"
+              "Ref": "AppLambdaVersionFYJqEUejhU7naQfnkLcqQUS8M32ozJVWxPrMxskc"
             },
             "Export": {
               "Name": "sls-foxforms-dev-AppLambdaFunctionQualifiedArn"
@@ -1620,7 +1620,7 @@
         "timeout": 30,
         "runtime": "nodejs16.x",
         "vpc": {},
-        "versionLogicalId": "AppLambdaVersion5AIiY7WLSIzEpnNJYXLbGOOPtHnevfUyxrUR5daEM"
+        "versionLogicalId": "AppLambdaVersionFYJqEUejhU7naQfnkLcqQUS8M32ozJVWxPrMxskc"
       }
     },
     "configValidationMode": "warn",
@@ -1668,7 +1668,7 @@
         "patterns": [
           "!node_modules/**"
         ],
-        "artifactDirectoryName": "serverless/foxforms/dev/1719966134793-2024-07-03T00:22:14.793Z"
+        "artifactDirectoryName": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z"
       }
     },
     "appId": null,
@@ -1677,7 +1677,7 @@
   },
   "package": {
     "individually": true,
-    "artifactDirectoryName": "serverless/foxforms/dev/1719966134793-2024-07-03T00:22:14.793Z",
+    "artifactDirectoryName": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z",
     "artifact": ""
   }
 }

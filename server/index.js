@@ -11,6 +11,7 @@ import rateLimit from 'express-rate-limit';
 import awsServerlessExpress from 'aws-serverless-express'; // Updated import
 
 const app = express();
+app.enable('trust proxy');
 const uri = "mongodb+srv://bonjennprojects:123@cluster0.hggbu5a.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const PORT = process.env.PORT || 3000;
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -23,7 +24,13 @@ app.use(cors({
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    keyGenerator: (req) => {
+        return req.ip || req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    },
 });
+
 app.use(limiter);
 
 let dbClient;
@@ -225,8 +232,18 @@ app.post('/signup', async (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+    console.log('Received login request');
+    console.log('Request body:', JSON.stringify(req.body));
+    console.log('Content-Type:', req.get('Content-Type'));
+
     const { username, password } = req.body;
-    console.log('Attempting to log in with:', username);
+    console.log('Attempting to log in with username:', username);
+    console.log('Extracted username:', username);
+    console.log('Extracted password:', password ? '[REDACTED]' : 'undefined');
+
+    if (!username || !password) {
+        return res.status(400).json({ message: 'Username and password are required.' });
+    }
 
     const usersCollection = dbClient.db('FoxForms').collection('Users');
 
@@ -237,6 +254,14 @@ app.post('/login', async (req, res) => {
         if (!user) {
             return res.status(401).json({ message: 'User does not exist.' });
         }
+
+        if (!user.passwordHash) {
+            console.error('User found but passwordHash is missing:', user);
+            return res.status(500).json({ message: 'Invalid user data.' });
+        }
+
+        console.log('Received password:', password);
+        console.log('Stored password hash:', user.passwordHash);
 
         const isPasswordCorrect = await bcrypt.compare(password, user.passwordHash);
         console.log('Password correct:', isPasswordCorrect);
@@ -253,9 +278,10 @@ app.post('/login', async (req, res) => {
         res.status(200).json({ authToken: token, userId: user._id, username: user.username });
     } catch (error) {
         console.error("Error logging in user:", error);
-        res.status(500).json({ message: "Error logging in user." });
+        res.status(500).json({ message: "Error logging in user.", error: error.toString() });
     }
 });
+
 
 app.put('/user/:id', async (req, res) => {
     const { id } = req.params;
