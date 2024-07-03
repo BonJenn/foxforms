@@ -32,7 +32,7 @@ const SignUp = ({ setShowComponent }) => {
       return;
     }
     try {
-      const response = await fetch('http://localhost:3000/signup', {
+      const response = await fetch('https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/dev/signup', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

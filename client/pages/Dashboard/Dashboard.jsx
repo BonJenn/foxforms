@@ -77,6 +77,7 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
+        console.log('Current authToken:', authToken);
         if (authToken) {
             fetchUsername();
         }

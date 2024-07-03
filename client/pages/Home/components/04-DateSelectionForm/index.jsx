@@ -52,7 +52,7 @@ const DateSelectionForm = ({ onBack, onNext, formId, updateSelectedDates, setUsi
     const handleDateFormSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await fetch(`http://localhost:3000/forms/${formId}`, {
+            const response = await fetch(`https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/dev/forms/${formId}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

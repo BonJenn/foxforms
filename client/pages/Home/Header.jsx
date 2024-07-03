@@ -67,7 +67,7 @@ const Header = ({ cookieAuthToken }) => {
             console.log('No token found in localStorage');
             return;
         }
-        const response = await fetch('http://localhost:3000/get-username', {
+        const response = await fetch('https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/dev/get-username', {
             headers: {
                 'Authorization': `Bearer ${token}`
             }

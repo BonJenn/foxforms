@@ -12,7 +12,7 @@ const BasicInfoForm = ({ updateFormId, onNext, formName, setFormName, customDoma
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const url = formId ? `http://localhost:3000/forms/${formId}` : 'http://localhost:3000/forms';
+        const url = formId ? `https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/dev/login/forms/${formId}` : 'https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/dev/forms';
         const method = formId ? 'PUT' : 'POST';
         const userId = localStorage.getItem('userId');
 
