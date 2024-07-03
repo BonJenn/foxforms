@@ -121,7 +121,7 @@
                     "Properties": {
                       "Code": {
                         "S3Bucket": "my-foxforms-bucket",
-                        "S3Key": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z/app.zip"
+                        "S3Key": "serverless/foxforms/dev/1719982333264-2024-07-03T04:52:13.264Z/app.zip"
                       },
                       "Handler": "server/index.handler",
                       "Runtime": "nodejs16.x",
@@ -232,7 +232,7 @@
                       "AppLambdaPermissionApiGateway"
                     ]
                   },
-                  "ApiGatewayDeployment1719968396914": {
+                  "ApiGatewayDeployment1719982318780": {
                     "Type": "AWS::ApiGateway::Deployment",
                     "Properties": {
                       "RestApiId": {
@@ -1658,7 +1658,7 @@
               "patterns": [
                 "!node_modules/**"
               ],
-              "artifactDirectoryName": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z"
+              "artifactDirectoryName": "serverless/foxforms/dev/1719982333264-2024-07-03T04:52:13.264Z"
             }
           },
           "configFileDirPath": "/Volumes/G-DRIVE PRO/Programming/foxforms",
@@ -1787,7 +1787,7 @@
               "Properties": {
                 "Code": {
                   "S3Bucket": "my-foxforms-bucket",
-                  "S3Key": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z/app.zip"
+                  "S3Key": "serverless/foxforms/dev/1719982333264-2024-07-03T04:52:13.264Z/app.zip"
                 },
                 "Handler": "server/index.handler",
                 "Runtime": "nodejs16.x",
@@ -1898,7 +1898,7 @@
                 "AppLambdaPermissionApiGateway"
               ]
             },
-            "ApiGatewayDeployment1719968396914": {
+            "ApiGatewayDeployment1719982318780": {
               "Type": "AWS::ApiGateway::Deployment",
               "Properties": {
                 "RestApiId": {
@@ -3324,7 +3324,7 @@
         "patterns": [
           "!node_modules/**"
         ],
-        "artifactDirectoryName": "serverless/foxforms/dev/1719968409102-2024-07-03T01:00:09.102Z"
+        "artifactDirectoryName": "serverless/foxforms/dev/1719982333264-2024-07-03T04:52:13.264Z"
       }
     },
     "serviceRawFile": "service: foxforms\n\nprovider:\n  name: aws\n  runtime: nodejs16.x\n  stage: dev\n  region: us-east-1\n  deploymentBucket:\n    name: my-foxforms-bucket\n  environment:\n    JWT_SECRET: 91a5be11fb7a59a2c36dbe20440522de2cf2a15299cccf1a290859171a48b5f7673ead5c2a8cd01d6e8cbc2143d56162fc8793aa6c5cf55972bab9ba0da2ef5b\n    URI: ${env:URI, 'http://localhost:3000'}\n    PORT: 3000\n  timeout: 30\n  memorySize: 1024\n\nfunctions:\n  app:\n    handler: server/index.handler\n    layers:\n      - arn:aws:lambda:us-east-1:905418133154:layer:foxforms-dependencies:1\n    events:\n      - http:\n          path: /{proxy+}\n          method: ANY\n\nplugins:\n  - serverless-offline\n  - serverless-dotenv-plugin\n  - serverless-plugin-include-dependencies\n\ncustom:\n  dotenv:\n    path: ./server/.env\n  serverless-offline:\n    httpPort: 3000\n\npackage:\n  individually: true\n  exclude:\n    - ./**\n    - .git/**\n    - client/**\n    - .serverless/**\n    - '**/*.eps'\n    - '**/*.gif'\n    - '**/*.map'\n    - '**/*.d.ts'\n    - '**/*.min.js'\n    - '**/aws-sdk-react-native.js'\n    - '**/aws-sdk.js'\n    - '**/java-invoke-local-all.jar'\n    - '**/json-refs.js'\n    - '**/react-dom.development.js'\n    - '**/xml2js.bc.js'\n  include:\n    - node_modules/**\n    - server/index.js\n    - package.json",
@@ -3334,7 +3334,7 @@
     "options": {},
     "error": null,
     "params": {},
-    "machineId": "5d78dbc66e06f8977a46a407a278e9af",
+    "machineId": "8935781e290410b0c1e021d29ebdd81e",
     "accessKeyV2": "<REDACTED>",
     "accessKeyV1": "<REDACTED>",
     "orgId": "c9b291b3-2347-4ccc-81b3-b2a3db6ea7e7",
@@ -3358,7 +3358,7 @@
     "serviceProviderAwsCfStackName": "foxforms-dev",
     "serviceProviderAwsCfStackId": "arn:aws:cloudformation:us-east-1:905418133154:stack/foxforms-dev/d39510e0-3822-11ef-8de4-12a9ac332c9b",
     "serviceProviderAwsCfStackCreated": "2024-07-02T03:26:10.320Z",
-    "serviceProviderAwsCfStackUpdated": "2024-07-03T01:00:27.403Z",
+    "serviceProviderAwsCfStackUpdated": "2024-07-03T04:45:54.890Z",
     "serviceProviderAwsCfStackStatus": "UPDATE_COMPLETE",
     "serviceProviderAwsCfStackOutputs": [
       {

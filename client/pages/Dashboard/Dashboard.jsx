@@ -1,15 +1,18 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import styles from './Dashboard.module.css';
 import FormWizard from '../Home/components/FormWizard';
 import { useAuth } from '../../../src/context/AuthContext';
 import Footer from '../Home/Footer';
 import { formatDistanceToNow } from 'date-fns';
 
+// Replace this with your actual API Gateway URL
+const API_URL = 'https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/prod';
+
 const Dashboard = () => {
-    const { authToken } = useParams();
     const { authState } = useAuth();
-    const userId = localStorage.getItem('userId');
+    const userId = authState.userId || localStorage.getItem('userId');
+    const authToken = authState.token;
 
     const [forms, setForms] = useState([]);
     const navigate = useNavigate();
@@ -51,8 +54,13 @@ const Dashboard = () => {
     }, []);
 
     const fetchUsername = async () => {
+        if (!authToken) {
+            console.error('No auth token available');
+            return;
+        }
+
         try {
-            const response = await fetch('http://localhost:3000/get-username', {
+            const response = await fetch(`${API_URL}/get-username`, {
                 headers: {
                     'Authorization': `Bearer ${authToken}`
                 }
@@ -64,6 +72,7 @@ const Dashboard = () => {
             setUsername(data.username);
         } catch (error) {
             console.error('Error fetching username:', error);
+            // Handle error (e.g., show error message to user)
         }
     };
 
@@ -74,7 +83,12 @@ const Dashboard = () => {
     }, [authToken]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000/forms?userId=${userId}`)
+        if (userId && authToken) {
+            fetch(`${API_URL}/forms?userId=${userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            })
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -85,7 +99,11 @@ const Dashboard = () => {
                 const sortedForms = data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
                 setForms(sortedForms);
             })
-            .catch(error => console.error('Error fetching forms:', error));
+            .catch(error => {
+                console.error('Error fetching forms:', error);
+                // Handle error (e.g., show error message to user)
+            });
+        }
     }, [authToken, userId]);
 
     const isDragging = useRef(false);
@@ -178,8 +196,8 @@ const Dashboard = () => {
                         <div className={styles.dashboardProfile}>
                             <img src={authState?.userProfilePic || 'default_profile_pic.png'} alt="Profile" className={styles.userProfilePic} />
                             <div className={styles.userInfo}>
-                                <h1 className={styles.usernameDisplay}>{username || 'Not available'}'s Forms</h1>
-                                <p className={styles.userEmail}>{username || 'Not available'}</p>
+                                <h1 className={styles.usernameDisplay}>{username || 'Loading...'}'s Forms</h1>
+                                <p className={styles.userEmail}>{username || 'Loading...'}</p>
                             </div>
                         </div>
                     </div>
