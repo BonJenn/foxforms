@@ -54,21 +54,22 @@ const Dashboard = () => {
     }, []);
 
     const fetchUsername = async () => {
-        if (!authToken) {
-            console.error('No auth token available');
+        const token = localStorage.getItem('authToken');
+        if (!token) {
+            console.log('No token found in localStorage');
             return;
         }
-
         try {
-            const response = await fetch(`${API_URL}/get-username`, {
+            const response = await fetch('https://u6n71jw2d7.execute-api.us-east-1.amazonaws.com/dev/get-username', {
                 headers: {
-                    'Authorization': `Bearer ${authToken}`
+                    'Authorization': `Bearer ${token}`
                 }
             });
             if (!response.ok) {
-                throw new Error('Failed to fetch username');
+                throw new Error('Network response was not ok');
             }
             const data = await response.json();
+            console.log('Fetched username:', data.username);
             setUsername(data.username);
         } catch (error) {
             console.error('Error fetching username:', error);
@@ -77,11 +78,12 @@ const Dashboard = () => {
     };
 
     useEffect(() => {
-        console.log('Current authToken:', authToken);
-        if (authToken) {
+        const token = localStorage.getItem('authToken');
+        console.log('Current authToken:', token);
+        if (token) {
             fetchUsername();
         }
-    }, [authToken]);
+    }, []);
 
     useEffect(() => {
         if (userId && authToken) {
