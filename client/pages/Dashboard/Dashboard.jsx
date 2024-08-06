@@ -19,6 +19,7 @@ const Dashboard = () => {
     const [showFormWizard, setShowFormWizard] = useState(false);
     const [username, setUsername] = useState('');
     const formsRef = useRef(null);
+    const [formType, setFormType] = useState('');
 
     const handleScroll = () => {
         const element = formsRef.current;
@@ -28,17 +29,8 @@ const Dashboard = () => {
         const leftFade = element.parentElement.querySelector(`.${styles.left}`);
         const rightFade = element.parentElement.querySelector(`.${styles.right}`);
 
-        if (scrollPosition > 0) {
-            leftFade.style.opacity = '1';
-        } else {
-            leftFade.style.opacity = '0';
-        }
-
-        if (scrollPosition < maxScroll) {
-            rightFade.style.opacity = '1';
-        } else {
-            rightFade.style.opacity = '0';
-        }
+        leftFade.style.opacity = scrollPosition > 0 ? '1' : '0';
+        rightFade.style.opacity = scrollPosition < maxScroll ? '1' : '0';
     };
 
     useEffect(() => {
@@ -73,7 +65,6 @@ const Dashboard = () => {
             setUsername(data.username);
         } catch (error) {
             console.error('Error fetching username:', error);
-            // Handle error (e.g., show error message to user)
         }
     };
 
@@ -104,7 +95,6 @@ const Dashboard = () => {
             })
             .catch(error => {
                 console.error('Error fetching forms:', error);
-                // Handle error (e.g., show error message to user)
             });
         }
     }, [authToken, userId]);
@@ -124,7 +114,7 @@ const Dashboard = () => {
         velocity.current = 0;
         lastX.current = e.pageX;
         lastMoveTime.current = Date.now();
-        cancelAnimationFrame(animationFrameId.current);  // Cancel any ongoing inertia
+        cancelAnimationFrame(animationFrameId.current);
         e.preventDefault();
     };
 
@@ -135,7 +125,7 @@ const Dashboard = () => {
         const distanceMoved = lastX.current - startX.current;
         const speed = distanceMoved / timeElapsed;
 
-        if (Math.abs(speed) > 0.3) {  // Adjust threshold for better natural feel
+        if (Math.abs(speed) > 0.3) {
             const inertia = () => {
                 if (Math.abs(velocity.current) > 1) {
                     formsRef.current.scrollLeft += velocity.current;
@@ -192,7 +182,7 @@ const Dashboard = () => {
     return (
         <div className={styles.dashboardContainer}>
             {showFormWizard ? (
-                <FormWizard authToken={authToken} userId={userId} skipAccountSetup={true} />
+                <FormWizard type={formType} authToken={authToken} userId={userId} skipAccountSetup={true} />
             ) : (
                 <>
                     <div className={styles.dashboardSect1}>
@@ -208,24 +198,25 @@ const Dashboard = () => {
                     <div className={styles.dashboardSect2}>
                         <h2>Create a new form</h2>
                         <div className={styles.dashboardFormButtons}>
-                            <button className={styles.newSignUpFormButton} onClick={() => setShowFormWizard(true)}><span>Sign Up</span><br />Form</button>
-                            <button className={styles.newBasicFormButton} onClick={() => setShowFormWizard(true)}><span>Basic</span><br /> Form</button>
+                            <button className={styles.newSignUpFormButton} onClick={() => { setFormType('signup'); setShowFormWizard(true); }}><span>Sign Up</span><br />Form</button>
+                            <button className={styles.newBasicFormButton} onClick={() => { setFormType('basic'); setShowFormWizard(true); }}><span>Basic</span><br /> Form</button>
+                            <button className={styles.newBasicFormButton} onClick={() => { setFormType('ai'); setShowFormWizard(true); }}><span>AI-Generated</span><br /> Form</button>
                         </div>
-                    </div>
 
-                    <div className={styles.dashboardSect3}>
-                        <h2>Your forms</h2>
-                        <div className={styles.dashboardFormsContainer}>
-                            <div className={styles.dashboardForms} ref={formsRef}>
-                                {forms.map(form => (
-                                    <div key={form.id} className={styles.dashboardForm}>
-                                        <h4>{form.title}</h4>
-                                        <p>{formatDistanceToNow(new Date(form.createdAt), { addSuffix: true })}</p>  
-                                    </div>
-                                ))}
+                        <div className={styles.dashboardSect3}>
+                            <h2>Your forms</h2>
+                            <div className={styles.dashboardFormsContainer}>
+                                <div className={styles.dashboardForms} ref={formsRef}>
+                                    {forms.map(form => (
+                                        <div key={form.id} className={styles.dashboardForm}>
+                                            <h4>{form.title}</h4>
+                                            <p>{formatDistanceToNow(new Date(form.createdAt), { addSuffix: true })}</p>  
+                                        </div>
+                                    ))}
+                                </div>
+                                <div className={`${styles.fadeEffect} ${styles.left}`}></div>
+                                <div className={`${styles.fadeEffect} ${styles.right}`}></div>
                             </div>
-                            <div className={`${styles.fadeEffect} ${styles.left}`}></div>
-                            <div className={`${styles.fadeEffect} ${styles.right}`}></div>
                         </div>
                     </div>
 
