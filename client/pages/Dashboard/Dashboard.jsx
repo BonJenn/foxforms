@@ -21,8 +21,15 @@ const Dashboard = () => {
     const formsRef = useRef(null);
     const [formType, setFormType] = useState('');
 
+    useEffect(() => {
+        if (!authState.isLoggedIn) {
+            navigate('/');
+        }
+    }, [authState.isLoggedIn, navigate]);
+
     const handleScroll = () => {
         const element = formsRef.current;
+        if (!element) return; // Ensure element is not null
         const maxScroll = element.scrollWidth - element.clientWidth;
         const scrollPosition = element.scrollLeft;
 
@@ -166,23 +173,26 @@ const Dashboard = () => {
 
     useEffect(() => {
         const element = formsRef.current;
-        element.addEventListener('mousedown', handleMouseDown);
-        element.addEventListener('mouseup', handleMouseUp);
-        element.addEventListener('mousemove', handleMouseMove);
-        element.addEventListener('mouseleave', handleMouseLeave);
-
+        if (element) {
+            element.addEventListener('mousedown', handleMouseDown);
+            element.addEventListener('mouseup', handleMouseUp);
+            element.addEventListener('mousemove', handleMouseMove);
+            element.addEventListener('mouseleave', handleMouseLeave);
+        }
         return () => {
-            element.removeEventListener('mousedown', handleMouseDown);
-            element.removeEventListener('mouseup', handleMouseUp);
-            element.removeEventListener('mousemove', handleMouseMove);
-            element.removeEventListener('mouseleave', handleMouseLeave);
+            if (element) {
+                element.removeEventListener('mousedown', handleMouseDown);
+                element.removeEventListener('mouseup', handleMouseUp);
+                element.removeEventListener('mousemove', handleMouseMove);
+                element.removeEventListener('mouseleave', handleMouseLeave);
+            }
         };
     }, []);
 
     return (
         <div className={styles.dashboardContainer}>
             {showFormWizard ? (
-                <FormWizard type={formType} authToken={authToken} userId={userId} skipAccountSetup={true} />
+                <FormWizard type={formType} authToken={authToken} userId={userId} skipAccountSetup={false} />
             ) : (
                 <>
                     <div className={styles.dashboardSect1}>

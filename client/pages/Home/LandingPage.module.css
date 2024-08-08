@@ -1,0 +1,96 @@
+/* Importing Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Protest+Strike&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+/* Root variables for colors and fonts */
+:root {
+    --primary-color: #387ADF;
+    --secondary-color: #FBA834;
+    --background-color: #ffffff;
+    --font-family: 'Inter', sans-serif;
+}
+
+/* General reset and box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Styling for the landing page container */
+.landingPage {
+    color: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100vh;
+    background-color: var(--background-color);
+    font-family: var(--font-family);
+    border: 5px solid red; /* Debugging style */
+}
+
+/* Header styling */
+.header {
+    width: 100%;
+    padding: 20px;
+    background-color: var(--primary-color);
+    color: white; /* Ensure text color is white */
+    text-align: center;
+    font-size: 2em;
+    font-family: 'Protest Strike', sans-serif;
+    border: 5px solid blue; /* Debugging style */
+}
+
+/* Main content styling */
+.mainContent {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    text-align: center;
+    border: 5px solid green; /* Debugging style */
+}
+
+.mainContent h1 {
+    font-size: 3em;
+    color: var(--primary-color); /* Ensure text color is primary color */
+    border: 5px solid yellow; /* Debugging style */
+}
+
+.mainContent p {
+    font-size: 1.2em;
+    color: var(--secondary-color); /* Ensure text color is secondary color */
+    margin: 20px 0;
+    border: 5px solid purple; /* Debugging style */
+}
+
+/* Button styling */
+.button {
+    padding: 10px 20px;
+    font-size: 1em;
+    color: white;
+    background-color: var(--primary-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border: 5px solid orange; /* Debugging style */
+}
+
+.button:hover {
+    background-color: var(--secondary-color);
+}
+
+/* Footer styling */
+.footer {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: white;
+    text-align: center;
+    font-size: 1em;
+}

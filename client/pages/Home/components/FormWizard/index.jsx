@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../../../../src/context/AuthContext';
 import SignUpFormWizard from './SignUpFormWizard';
@@ -12,6 +12,11 @@ const FormWizard = ({ type, authToken, skipAccountSetup }) => {
     const [currentStep, setCurrentStep] = useState(skipAccountSetup ? 1 : 0);
     const [formId, setFormId] = useState(null);
     const [globalPayload, setGlobalPayload] = useState({});
+
+    useEffect(() => {
+        console.log('FormWizard rendered with type:', type);
+        console.log('Current Step:', currentStep);
+    }, [type, currentStep]);
 
     const updateGlobalPayloadState = (updates) => {
         setGlobalPayload(prevState => ({ ...prevState, ...updates }));

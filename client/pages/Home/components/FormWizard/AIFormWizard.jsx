@@ -1,22 +1,17 @@
 import React, { useState } from 'react';
-import AIFormInput from '../AIForm/AIFormInput';
-import AIFormSuggestions from '../AIForm/AIFormSuggestions';
-import AIFormReview from '../AIForm/AIFormReview';
+import AIFormInput from '../AIForm/01-AIFormInput/AIFormInput';
+import AIFormSuggestions from '../AIForm/02-AIFormSuggestions/AIFormSuggestions';
+import AIFormReview from '../AIForm/03-AIFormReview/AIFormReview';
+import { useAuth } from '../../../../../src/context/AuthContext';
 
-
-const AIFormWizard = ({ authToken }) => {
-    const [currentStep, setCurrentStep] = useState(0);
-    const [formId, setFormId] = useState(null);
-    const [globalPayload, setGlobalPayload] = useState({});
-
-    const updateGlobalPayloadState = (updates) => {
-        setGlobalPayload(prevState => ({ ...prevState, ...updates }));
-    };
+const AIFormWizard = ({ authToken, userId, globalPayload, updateGlobalPayloadState, currentStep, setCurrentStep, formId, setFormId }) => {
+    const { authState } = useAuth();
 
     const nextStep = () => setCurrentStep(currentStep + 1);
     const prevStep = () => setCurrentStep(currentStep - 1);
 
     const renderStep = () => {
+        console.log('AIFormWizard Current Step:', currentStep); // Debugging log
         switch (currentStep) {
             case 0:
                 return (

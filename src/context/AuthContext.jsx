@@ -38,3 +38,5 @@ export const useAuth = () => {
     }
     return context;
 };
+
+export { AuthContext }; // Add this line to export AuthContext
