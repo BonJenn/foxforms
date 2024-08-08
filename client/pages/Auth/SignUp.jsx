@@ -1,10 +1,10 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import styles from './SignUp.module.css';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../../src/context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
-const SignUp = ({ setShowComponent }) => {
+const SignUp = forwardRef(({ showComponent, setShowComponent }, ref) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -56,7 +56,7 @@ const SignUp = ({ setShowComponent }) => {
   };
 
   return (
-    <div className={styles.modalBackground}>
+    <div ref={ref} className={styles.modalBackground}>
       <div className={styles.modalContent} ref={modalRef}>
         <button onClick={() => setShowComponent('')} className={styles.closeButton}>X</button>
         <h2>Sign Up</h2>
@@ -76,6 +76,6 @@ const SignUp = ({ setShowComponent }) => {
       </div>
     </div>
   );
-};
+});
 
 export default SignUp;

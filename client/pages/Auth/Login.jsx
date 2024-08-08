@@ -1,14 +1,14 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, forwardRef } from 'react';
 import styles from './Login.module.css';
 import { useDispatch } from 'react-redux';
 import { useAuth } from '../../../src/context/AuthContext.jsx';
 import { useNavigate } from 'react-router-dom';
 
-const Login = ({ onClose }) => {
+const Login = forwardRef(({ setShowComponent }, ref) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const modalRef = useRef(null);
+  const modalRef = ref;
   const dispatch = useDispatch();
   const { login } = useAuth();
   const navigate = useNavigate();
@@ -44,7 +44,7 @@ const Login = ({ onClose }) => {
 
   const handleClose = (e) => {
     if (modalRef.current && !modalRef.current.contains(e.target)) {
-      onClose();
+      setShowComponent('');
     }
   };
 
@@ -56,9 +56,9 @@ const Login = ({ onClose }) => {
   }, []);
 
   return (
-    <div className={styles.modalBackground}>
-      <div className={styles.modalContent} ref={modalRef}>
-        <button onClick={onClose} className={styles.closeButton}>X</button>
+    <div ref={modalRef} className={styles.modalBackground}>
+      <div className={styles.modalContent}>
+        <button onClick={() => setShowComponent('')} className={styles.closeButton}>X</button>
         <h2>Login</h2>
         {error && <p className={styles.errorMessage}>{error}</p>}
         <form onSubmit={handleLogin}>
@@ -85,6 +85,6 @@ const Login = ({ onClose }) => {
       </div>
     </div>
   );
-};
+});
 
 export default Login;
